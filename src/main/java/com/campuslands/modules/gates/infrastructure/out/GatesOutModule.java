@@ -26,39 +26,43 @@ public class GatesOutModule {
     }
 
     public JMenu options() {
-        JMenu option = new JMenu("Tipo de Documentos");
-        option.add(new JMenuItem(new AbstractAction("Registrar Tipo de Documentos") {
+        JMenu option = new JMenu("Tipo de puertas");
+        option.add(new JMenuItem(new AbstractAction("Registrar Tipo de puertas") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // employeesAdapter.createEmployee();
+                gatesAdapter.createGate();
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Actualizar Tipo de Documentos") {
+        option.add(new JMenuItem(new AbstractAction("Actualizar Tipo de puertas") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // employeesAdapter.updateEmployee();
+                gatesAdapter.updateGate();
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Eliminar Tipo de Documentos") {
+        option.add(new JMenuItem(new AbstractAction("Eliminar Tipo de puertas") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // employeesAdapter.deleteEmployee();
+                gatesAdapter.deleteGate();
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Buscar Tipo de Documentos") {
+        option.add(new JMenuItem(new AbstractAction("Buscar Tipo de puertas") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // adapter.VFindAirportAll();
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Mostrar todos los Tipo de Documentos") {
+        option.add(new JMenuItem(new AbstractAction("Mostrar todos los Tipo de puertas") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // employeesAdapter.findAllEmployees();
+                gatesAdapter.findAllGates();
             }
         }));
 

@@ -6,13 +6,18 @@ public class FlightConnection {
     int id_trip;
     int id_plane;
     String id_airport;
+    String type_flight;
+    String Last_Scale;
 
-    public FlightConnection(int id, String connection_number, int id_trip, int id_plane, String id_airport) {
+    public FlightConnection(int id, String connection_number, int id_trip, int id_plane, String id_airport,
+            String type_fright, String Last_Scale) {
         this.id = id;
         this.connection_number = connection_number;
         this.id_trip = id_trip;
         this.id_plane = id_plane;
         this.id_airport = id_airport;
+        this.type_flight = type_fright;
+        this.Last_Scale = Last_Scale;
     }
 
     public int getId() {
@@ -53,5 +58,21 @@ public class FlightConnection {
 
     public void setId_airport(String id_airport) {
         this.id_airport = id_airport;
+    }
+
+    public String getType_flight() {
+        return type_flight;
+    }
+
+    public void setType_fright(String type_fright) {
+        this.type_flight = type_fright;
+    }
+
+    public String getLast_Scale() {
+        return Last_Scale;
+    }
+
+    public void setLast_Scale(String Last_Scale) {
+        this.Last_Scale = Last_Scale;
     }
 }

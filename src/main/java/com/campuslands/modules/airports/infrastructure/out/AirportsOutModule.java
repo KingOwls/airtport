@@ -26,28 +26,30 @@ public class AirportsOutModule {
         return adapter;
     }
 
-    public JMenu options() {
+    public JMenu options(Boolean CRUD) {
         JMenu option = new JMenu("Aeropuertos");
-        option.add(new JMenuItem(new AbstractAction("Registrar Aeropuertos") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                adapter.VCreateAirport();
-            }
-        }));
+        if (CRUD) {
+            option.add(new JMenuItem(new AbstractAction("Registrar Aeropuertos") {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    adapter.VCreateAirport();
+                }
+            }));
 
-        option.add(new JMenuItem(new AbstractAction("Actualizar Aeropuertos") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                adapter.VUpdateAirport();
-            }
-        }));
+            option.add(new JMenuItem(new AbstractAction("Actualizar Aeropuertos") {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    adapter.VUpdateAirport();
+                }
+            }));
 
-        option.add(new JMenuItem(new AbstractAction("Eliminar Aeropuertos") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                adapter.VDeleteAirport();
-            }
-        }));
+            option.add(new JMenuItem(new AbstractAction("Eliminar Aeropuertos") {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    adapter.VDeleteAirport();
+                }
+            }));
+        }
 
         option.add(new JMenuItem(new AbstractAction("Buscar Aeropuerto") {
             @Override

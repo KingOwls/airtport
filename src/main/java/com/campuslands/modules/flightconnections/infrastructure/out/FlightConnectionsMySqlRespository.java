@@ -13,7 +13,7 @@ import com.campuslands.core.MySQL;
 import com.campuslands.modules.flightconnections.domain.models.FlightConnection;
 import com.campuslands.modules.flightconnections.domain.repository.FlightConnectionsRepository;
 
-public class FlightConnectionsMySqlRespository extends MySQL implements FlightConnectionsRepository{
+public class FlightConnectionsMySqlRespository extends MySQL implements FlightConnectionsRepository {
 
     public FlightConnectionsMySqlRespository() {
         super();
@@ -24,8 +24,13 @@ public class FlightConnectionsMySqlRespository extends MySQL implements FlightCo
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             String query = "INSERT INTO flight_connections (departure, arrival) VALUES (?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setString(1, flightConnections.getConnection_number());
-                statement.setString(2, flightConnections.getId_airport());
+                statement.setInt(1, flightConnections.getId());
+                statement.setString(2, flightConnections.getConnection_number());
+                statement.setInt(3, flightConnections.getId_trip());
+                statement.setInt(4, flightConnections.getId_plane());
+                statement.setString(5, flightConnections.getId_airport());
+                statement.setString(6, flightConnections.getType_flight());
+                statement.setString(7, flightConnections.getLast_Scale());
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
@@ -40,9 +45,11 @@ public class FlightConnectionsMySqlRespository extends MySQL implements FlightCo
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, flightConnections.getId());
                 statement.setString(2, flightConnections.getConnection_number());
-                statement.setInt(1, flightConnections.getId_trip());
-                statement.setInt(1, flightConnections.getId_plane());
-                statement.setString(3, flightConnections.getId_airport());
+                statement.setInt(3, flightConnections.getId_trip());
+                statement.setInt(4, flightConnections.getId_plane());
+                statement.setString(5, flightConnections.getId_airport());
+                statement.setString(6, flightConnections.getType_flight());
+                statement.setString(7, flightConnections.getLast_Scale());
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
@@ -59,12 +66,13 @@ public class FlightConnectionsMySqlRespository extends MySQL implements FlightCo
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
                         FlightConnection flightConnections = new FlightConnection(
-                            resultSet.getInt("id"),
-                        resultSet.getString("connection_number"),
-                        resultSet.getInt("id_trip"),
-                        resultSet.getInt("id_plane"),
-                        resultSet.getString("id_airport")
-                        );
+                                resultSet.getInt("id"),
+                                resultSet.getString("connection_number"),
+                                resultSet.getInt("id_trip"),
+                                resultSet.getInt("id_plane"),
+                                resultSet.getString("id_airport"),
+                                resultSet.getString("type_flight"),
+                                resultSet.getString("Last_Scale"));
                         return Optional.of(flightConnections);
                     }
                 }
@@ -94,14 +102,16 @@ public class FlightConnectionsMySqlRespository extends MySQL implements FlightCo
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             String query = "SELECT * FROM flight_connections";
             try (PreparedStatement statement = connection.prepareStatement(query);
-                 ResultSet resultSet = statement.executeQuery()) {
+                    ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     FlightConnection flightConnection = new FlightConnection(
-                        resultSet.getInt("id"),
-                        resultSet.getString("connection_number"),
-                        resultSet.getInt("id_trip"),
-                        resultSet.getInt("id_plane"),
-                        resultSet.getString("id_airport")
+                            resultSet.getInt("id"),
+                            resultSet.getString("connection_number"),
+                            resultSet.getInt("id_trip"),
+                            resultSet.getInt("id_plane"),
+                            resultSet.getString("id_airport"),
+                            resultSet.getString("type_flight"),
+                            resultSet.getString("Last_Scale")
 
                     );
                     flightConnections.add(flightConnection);
@@ -113,5 +123,3 @@ public class FlightConnectionsMySqlRespository extends MySQL implements FlightCo
         return flightConnections;
     }
 }
-
-

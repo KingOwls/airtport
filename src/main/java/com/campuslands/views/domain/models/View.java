@@ -1,20 +1,16 @@
 package com.campuslands.views.domain.models;
 
-
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
-
 
 import java.awt.BorderLayout;
 
 import java.util.HashMap;
 import java.util.Map;
 
-
-
 public class View {
-    
+
     private static JFrame frame;
     private static JPanel mainPanel;
 
@@ -22,8 +18,7 @@ public class View {
 
     private static View instance;
 
-
-    public View(){
+    public View() {
         historyPanel = new HashMap<>();
         frame = new JFrame("Airport Management");
         mainPanel = new JPanel(new BorderLayout());
@@ -33,7 +28,7 @@ public class View {
         frame.add(mainPanel);
     }
 
-    public void addHeader(JMenuBar menuBar){
+    public void addHeader(JMenuBar menuBar) {
         frame.getContentPane().add(BorderLayout.NORTH, menuBar);
     }
 
@@ -41,29 +36,30 @@ public class View {
         return historyPanel.get(key);
     }
 
-       // Method to reload the center panel
+    // Method to reload the center panel
     public void loadBody(JPanel div) {
         // Remove existing center component
         if (mainPanel.getComponentCount() > 0) {
             mainPanel.remove(0);
         }
-    
+
         // Add the new component
         mainPanel.add(div, BorderLayout.CENTER);
         mainPanel.revalidate();
         mainPanel.repaint();
     }
 
+    public void addBackView(String key, JPanel div) {
+        historyPanel.put(key, div);
+    }
 
-
-    public void fire(){
+    public void fire() {
         frame.setVisible(true);
     }
 
-    public void close(){
+    public void close() {
         frame.setVisible(false);
     }
-
 
     public static View getInstance() {
         // Verifica si la instancia ya ha sido creada
@@ -74,8 +70,5 @@ public class View {
         // Retorna la instancia única
         return instance;
     }
-
-
-
 
 }

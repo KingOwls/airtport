@@ -2,12 +2,17 @@ package com.campuslands.modules.auth.infrastructure.in;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Optional;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import com.campuslands.modules.auth.application.AuthService;
+import com.campuslands.modules.auth.domain.models.Auth;
+import com.campuslands.views.domain.models.View;
+import com.campuslands.views.infrastructure.out.HeaderOut;
 import com.campuslands.views.infrastructure.out.ViewOut;
 
 public class AuthAdapter {
@@ -15,6 +20,7 @@ public class AuthAdapter {
     ViewOut v;
     private final AuthService authService;
     JTabbedPane tabbedPane;
+    Optional<Auth> user;
 
     public AuthAdapter(AuthService authService) {
         this.authService = authService;
@@ -30,9 +36,23 @@ public class AuthAdapter {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-
+                    user = authService.login(nameInput.getText(), passwordInput.getText());
+                    user.ifPresentOrElse(
+                            p -> {
+                                HeaderOut header = new HeaderOut();
+                                header.loadHeader(Auth.getInstance().getRol());
+                                JPanel jPanel = new JPanel();
+                                jPanel.add(new JLabel("Bienvenido: " + Auth.getInstance().getRol()));
+                                View.getInstance().addBackView("inicio", jPanel);
+                                ;
+                                View.getInstance().loadBody(jPanel);
+                                ;
+                            },
+                            () -> {
+                                v.showError("Usuario o Contraseña Incorrectos");
+                            });
                 } catch (Exception a) {
-
+                    v.showError(a.getMessage());
                 }
             }
         });

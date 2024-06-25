@@ -19,18 +19,24 @@ public class TripsAdapter {
 
     public void createTrip() {
         v = new ViewOut();
+         ViewOut.VInput idInput = v.new VInput("Ingresa el id del Viaje", 30);
         ViewOut.VInput dateInput = v.new VInput("Ingresa la Fecha del Viaje (YYYY-MM-DD)", 30);
         ViewOut.VInput priceInput = v.new VInput("Ingresa el Precio del Viaje", 30);
+        ViewOut.VInput depurateInput = v.new VInput("Destino de salida", 30);
+        ViewOut.VInput arrivalInput = v.new VInput("Destino de llegad", 30);
 
         JButton addButton = new JButton("Agregar Viaje");
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    int id = idInput.getInt();
                     Date date = Date.valueOf(dateInput.getText());
                     double price = Double.parseDouble(priceInput.getText());
+                    String depurate_airport = depurateInput.getText();
+                    String arrival_airport = depurateInput.getText();
 
-                    Trips trip = new Trips(0, date, price); // El ID se asignará automáticamente en la base de datos
+                    Trips trip = new Trips(id, date, price,  depurate_airport, arrival_airport); // El ID se asignará automáticamente en la base de datos
                     tripsService.createTrip(trip);
                     JOptionPane.showMessageDialog(v.container, "Viaje agregado exitosamente.");
                 } catch (Exception ex) {
@@ -39,9 +45,11 @@ public class TripsAdapter {
                 }
             }
         });
-
+        v.container.add(idInput.getDiv());
         v.container.add(dateInput.getDiv());
         v.container.add(priceInput.getDiv());
+        v.container.add(depurateInput.getDiv());
+        v.container.add(arrivalInput.getDiv());
         v.printBody(addButton, v.BackButton());
     }
 
@@ -50,6 +58,9 @@ public class TripsAdapter {
         ViewOut.VInput idInput = v.new VInput("Ingresa el ID del Viaje", 30);
         ViewOut.VInput dateInput = v.new VInput("Ingresa la Fecha del Viaje (YYYY-MM-DD)", 30);
         ViewOut.VInput priceInput = v.new VInput("Ingresa el Precio del Viaje", 30);
+        ViewOut.VInput depurateInput = v.new VInput("Destino de salida", 30);
+        ViewOut.VInput arrivalInput = v.new VInput("Destino de llegada", 30);
+
 
         JButton updateButton = new JButton("Actualizar Viaje");
         updateButton.addActionListener(new ActionListener() {
@@ -59,8 +70,10 @@ public class TripsAdapter {
                     int id = Integer.parseInt(idInput.getText());
                     Date date = Date.valueOf(dateInput.getText());
                     double price = Double.parseDouble(priceInput.getText());
+                    String depurate_airport = depurateInput.getText();
+                    String arrival_airport = depurateInput.getText();
 
-                    Trips trip = new Trips(id, date, price);
+                    Trips trip = new Trips(id, date, price,depurate_airport,arrival_airport);
                     tripsService.updateTrip(trip);
                     JOptionPane.showMessageDialog(v.container, "Viaje actualizado exitosamente.");
                 } catch (Exception ex) {
@@ -73,6 +86,8 @@ public class TripsAdapter {
         v.container.add(idInput.getDiv());
         v.container.add(dateInput.getDiv());
         v.container.add(priceInput.getDiv());
+        v.container.add(depurateInput.getDiv());
+        v.container.add(arrivalInput.getDiv());
         v.printBody(updateButton, v.BackButton());
     }
 

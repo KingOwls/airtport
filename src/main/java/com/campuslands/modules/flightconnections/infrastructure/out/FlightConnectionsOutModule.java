@@ -27,39 +27,39 @@ public class FlightConnectionsOutModule {
     }
 
     public JMenu options() {
-        JMenu option = new JMenu("Tipo de Documentos");
-        option.add(new JMenuItem(new AbstractAction("Registrar Tipo de Documentos") {
+        JMenu option = new JMenu(" Conexiónes de vuelos ");
+        option.add(new JMenuItem(new AbstractAction("Registrar  Conexiónes de vuelo") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // employeesAdapter.createEmployee();
+                flightConnectionsAdapter.createFlightConnection();
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Actualizar Tipo de Documentos") {
+        option.add(new JMenuItem(new AbstractAction("Actualizar   Conexiónes de vuelo") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // employeesAdapter.updateEmployee();
+                flightConnectionsAdapter.updateFlightConnection();
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Eliminar Tipo de Documentos") {
+        option.add(new JMenuItem(new AbstractAction("Eliminar Conexiónes de vuelo") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // employeesAdapter.deleteEmployee();
+                flightConnectionsAdapter.deleteFlightConnection();
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Buscar Tipo de Documentos") {
+        option.add(new JMenuItem(new AbstractAction("Buscar  Conexiónes de vuelo") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // adapter.VFindAirportAll();
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Mostrar todos los Tipo de Documentos") {
+        option.add(new JMenuItem(new AbstractAction("Mostrar todos los Conexiónes de vuelos ") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // employeesAdapter.findAllEmployees();
+                flightConnectionsAdapter.findAllFlightConnections();
             }
         }));
 

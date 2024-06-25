@@ -18,23 +18,29 @@ public class FlightConnectionsAdapter {
 
     public void createFlightConnection() {
         v = new ViewOut();
+        ViewOut.VInput idInput = v.new VInput("Ingresa el ID de Conexión de Vuelo", 30);
         ViewOut.VInput connectionNumberInput = v.new VInput("Ingresa el Número de Conexión de Vuelo", 30);
         ViewOut.VInput idTripInput = v.new VInput("Ingresa el ID del Viaje", 10);
         ViewOut.VInput idPlaneInput = v.new VInput("Ingresa el ID del Avión", 10);
         ViewOut.VInput idAirportInput = v.new VInput("Ingresa el ID del Aeropuerto", 30);
+        ViewOut.VInput typefrightInput = v.new VInput("Ingresa el ID del Vuelo", 30);
+        ViewOut.VInput lastScaleInput = v.new VInput("Ingresa el ID del Vuelo", 30);
 
         JButton addButton = new JButton("Agregar Nueva Conexión de Vuelo");
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    int id = idInput.getInt();
                     String connectionNumber = connectionNumberInput.getText();
                     int idTrip = idTripInput.getInt();
                     int idPlane = idPlaneInput.getInt();
                     String idAirport = idAirportInput.getText();
+                    String typefright = typefrightInput.getText();
+                    String lastScale = lastScaleInput.getText();
 
-                    FlightConnection flightConnection = new FlightConnection(0, connectionNumber, idTrip, idPlane,
-                            idAirport);
+                    FlightConnection flightConnection = new FlightConnection(id, connectionNumber, idTrip, idPlane,
+                            idAirport, typefright, lastScale);
                     flightConnectionsService.createFlightConnection(flightConnection);
                     JOptionPane.showMessageDialog(v.container, "Conexión de Vuelo agregada exitosamente.");
                 } catch (Exception ex) {
@@ -45,20 +51,25 @@ public class FlightConnectionsAdapter {
             }
         });
 
+        v.container.add(idInput.getDiv());
         v.container.add(connectionNumberInput.getDiv());
         v.container.add(idTripInput.getDiv());
         v.container.add(idPlaneInput.getDiv());
         v.container.add(idAirportInput.getDiv());
+        v.container.add(typefrightInput.getDiv());
+        v.container.add(lastScaleInput.getDiv());
         v.printBody(addButton, v.BackButton());
     }
 
     public void updateFlightConnection() {
         v = new ViewOut();
-        ViewOut.VInput idInput = v.new VInput("Ingresa el ID de la Conexión de Vuelo", 30);
+        ViewOut.VInput idInput = v.new VInput("Ingresa el ID de Conexión de Vuelo", 30);
         ViewOut.VInput connectionNumberInput = v.new VInput("Ingresa el Número de Conexión de Vuelo", 30);
         ViewOut.VInput idTripInput = v.new VInput("Ingresa el ID del Viaje", 10);
         ViewOut.VInput idPlaneInput = v.new VInput("Ingresa el ID del Avión", 10);
         ViewOut.VInput idAirportInput = v.new VInput("Ingresa el ID del Aeropuerto", 30);
+        ViewOut.VInput typefrightInput = v.new VInput("Ingresa el ID del Vuelo", 30);
+        ViewOut.VInput lastScaleInput = v.new VInput("Ingresa el ID del Vuelo", 30);
 
         JButton updateButton = new JButton("Actualizar Conexión de Vuelo");
         updateButton.addActionListener(new ActionListener() {
@@ -70,9 +81,11 @@ public class FlightConnectionsAdapter {
                     int idTrip = idTripInput.getInt();
                     int idPlane = idPlaneInput.getInt();
                     String idAirport = idAirportInput.getText();
+                    String typefright = typefrightInput.getText();
+                    String lastScale = lastScaleInput.getText();
 
                     FlightConnection flightConnection = new FlightConnection(id, connectionNumber, idTrip, idPlane,
-                            idAirport);
+                            idAirport, typefright, lastScale);
                     flightConnectionsService.updateFlightConnection(flightConnection);
                     JOptionPane.showMessageDialog(v.container, "Conexión de Vuelo actualizada exitosamente.");
                 } catch (Exception ex) {
@@ -88,7 +101,8 @@ public class FlightConnectionsAdapter {
         v.container.add(idTripInput.getDiv());
         v.container.add(idPlaneInput.getDiv());
         v.container.add(idAirportInput.getDiv());
-        v.printBody(updateButton, v.BackButton());
+        v.container.add(typefrightInput.getDiv());
+        v.container.add(lastScaleInput.getDiv());
     }
 
     public void deleteFlightConnection() {

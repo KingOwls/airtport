@@ -28,39 +28,39 @@ public class ManufacturersOutModule {
     }
 
     public JMenu options() {
-        JMenu option = new JMenu("Tipo de Documentos");
-        option.add(new JMenuItem(new AbstractAction("Registrar Tipo de Documentos") {
+        JMenu option = new JMenu("Fabricantes");
+        option.add(new JMenuItem(new AbstractAction("Registrar Fabricantes") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // employeesAdapter.createEmployee();
+                manufacturersAdapter.createManufacturer();
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Actualizar Tipo de Documentos") {
+        option.add(new JMenuItem(new AbstractAction("Actualizar Fabricantes") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // employeesAdapter.updateEmployee();
+                manufacturersAdapter.updateManufacturer();
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Eliminar Tipo de Documentos") {
+        option.add(new JMenuItem(new AbstractAction("Eliminar Fabricantes") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // employeesAdapter.deleteEmployee();
+                manufacturersAdapter.deleteManufacturer();
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Buscar Tipo de Documentos") {
+        option.add(new JMenuItem(new AbstractAction("Buscar Fabricantes") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // adapter.VFindAirportAll();
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Mostrar todos los Tipo de Documentos") {
+        option.add(new JMenuItem(new AbstractAction("Mostrar todos los Fabricantes") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // employeesAdapter.findAllEmployees();
+                manufacturersAdapter.findAllManufacturers();
             }
         }));
 

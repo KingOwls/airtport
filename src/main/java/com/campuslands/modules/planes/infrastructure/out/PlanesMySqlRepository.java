@@ -22,9 +22,16 @@ public class PlanesMySqlRepository extends MySQL implements PlanesRepository {
     @Override
     public void save(Planes planes) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "INSERT INTO planes (name) VALUES (?)";
+            String query = "INSERT INTO planes (id, plates, capacity, fabrication_date, id_status, id_model) " +
+                    "VALUES (?, ?, ?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setString(1, planes.getPlates());
+                statement.setInt(1, planes.getId());
+                statement.setString(2, planes.getPlates());
+                statement.setInt(3, planes.getCapacity());
+                statement.setDate(4, new java.sql.Date(planes.getFabrication_date().getTime()));
+                statement.setInt(5, planes.getId_status());
+                statement.setInt(6, planes.getId_model());
+
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
@@ -55,13 +62,12 @@ public class PlanesMySqlRepository extends MySQL implements PlanesRepository {
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
                         Planes planes = new Planes(
-                            resultSet.getInt("id"),
-                            resultSet.getString("name"),
-                            resultSet.getInt("plates"),
-                            resultSet.getDate("capacity"),
-                            resultSet.getInt("fabrication_date"),
-                            resultSet.getInt("id_status")
-                        );
+                                resultSet.getInt("id"),
+                                resultSet.getString("name"),
+                                resultSet.getInt("plates"),
+                                resultSet.getDate("capacity"),
+                                resultSet.getInt("fabrication_date"),
+                                resultSet.getInt("id_status"));
                         return Optional.of(planes);
                     }
                 }
@@ -91,16 +97,15 @@ public class PlanesMySqlRepository extends MySQL implements PlanesRepository {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             String query = "SELECT * FROM planes";
             try (PreparedStatement statement = connection.prepareStatement(query);
-                 ResultSet resultSet = statement.executeQuery()) {
+                    ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     Planes plane = new Planes(
-                        resultSet.getInt("id"),
-                        resultSet.getString("name"),
-                        resultSet.getInt("plates"),
-                        resultSet.getDate("capacity"),
-                        resultSet.getInt("fabrication_date"),
-                        resultSet.getInt("id_status")
-                    );
+                            resultSet.getInt("id"),
+                            resultSet.getString("name"),
+                            resultSet.getInt("plates"),
+                            resultSet.getDate("capacity"),
+                            resultSet.getInt("fabrication_date"),
+                            resultSet.getInt("id_status"));
                     planes.add(plane);
                 }
             }

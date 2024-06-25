@@ -29,36 +29,38 @@ public class TripcrewsOutModule {
      * }
      */
     public JMenu options() {
-        JMenu option = new JMenu("Tipo de Documentos");
-        option.add(new JMenuItem(new AbstractAction("Registrar Tipo de Documentos") {
+        JMenu option = new JMenu("Tipo de tripulantes");
+        option.add(new JMenuItem(new AbstractAction("Registrar Tipo de tripulantes") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // employeesAdapter.createEmployee();
+
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Actualizar Tipo de Documentos") {
+        option.add(new JMenuItem(new AbstractAction("Actualizar Tipo de tripulantes") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // employeesAdapter.updateEmployee();
+
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Eliminar Tipo de Documentos") {
+        option.add(new JMenuItem(new AbstractAction("Eliminar Tipo de tripulantes") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // employeesAdapter.deleteEmployee();
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Buscar Tipo de Documentos") {
+        option.add(new JMenuItem(new AbstractAction("Buscar Tipo de tripulantes") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // adapter.VFindAirportAll();
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Mostrar todos los Tipo de Documentos") {
+        option.add(new JMenuItem(new AbstractAction("Mostrar todos los Tipo de tripulantes") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // employeesAdapter.findAllEmployees();

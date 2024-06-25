@@ -27,39 +27,39 @@ public class FlightfaresOutModule {
     }
 
     public JMenu options() {
-        JMenu option = new JMenu("Tipo de Documentos");
-        option.add(new JMenuItem(new AbstractAction("Registrar Tipo de Documentos") {
+        JMenu option = new JMenu("Tarifas de vuelo");
+        option.add(new JMenuItem(new AbstractAction("Registrar Tarifas de vuelo") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // employeesAdapter.createEmployee();
+                flightFaresAdapter.createFlightfare();
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Actualizar Tipo de Documentos") {
+        option.add(new JMenuItem(new AbstractAction("Actualizar Tarifas de vuelo") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // employeesAdapter.updateEmployee();
+                flightFaresAdapter.updateFlightfare();
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Eliminar Tipo de Documentos") {
+        option.add(new JMenuItem(new AbstractAction("Eliminar Tarifas de vuelo") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // employeesAdapter.deleteEmployee();
+                flightFaresAdapter.deleteFlightfare();
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Buscar Tipo de Documentos") {
+        option.add(new JMenuItem(new AbstractAction("Buscar Tarifas de vuelo") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // adapter.VFindAirportAll();
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Mostrar todos los Tipo de Documentos") {
+        option.add(new JMenuItem(new AbstractAction("Mostrar todos los Tarifas de vuelo") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // employeesAdapter.findAllEmployees();
+                flightFaresAdapter.findAllFlightfares();
             }
         }));
 

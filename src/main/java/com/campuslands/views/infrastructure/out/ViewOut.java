@@ -3,11 +3,15 @@ package com.campuslands.views.infrastructure.out;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Date;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import com.campuslands.modules.trips.domain.models.Trips;
 import com.campuslands.views.application.ViewsService;
 import com.campuslands.views.domain.models.DateInput;
 import com.campuslands.views.domain.models.Header;
@@ -73,13 +77,24 @@ public class ViewOut extends ViewsService {
     }
 
     public JButton ExitButton() {
-        View.getInstance().loadBody(View.getInstance().getHistoryPanel("inicio"));
         JButton backButton = new JButton("Salir");
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                View.getInstance().close();
+            }
+        });
         return backButton;
     }
 
     public JButton BackButton() {
         JButton backButton = new JButton("Regresar");
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                View.getInstance().loadBody(View.getInstance().getHistoryPanel("inicio"));
+            }
+        });
         return backButton;
     }
 

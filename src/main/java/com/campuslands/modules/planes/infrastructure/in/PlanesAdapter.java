@@ -22,7 +22,8 @@ public class PlanesAdapter {
         v = new ViewOut();
         ViewOut.VInput platesInput = v.new VInput("Ingresa las placas del avión", 30);
         ViewOut.VInput capacityInput = v.new VInput("Ingresa la capacidad del avión", 30);
-        ViewOut.VInput fabricationDateInput = v.new VInput("Ingresa la fecha de fabricación del avión (YYYY-MM-DD)", 30);
+        ViewOut.VDate fabricationDateInput = v.new VDate("Ingresa la fecha de fabricación del avión (YYYY-MM-DD)",
+                "date");
         ViewOut.VInput idStatusInput = v.new VInput("Ingresa el ID de estado del avión", 30);
         ViewOut.VInput idModelInput = v.new VInput("Ingresa el ID del modelo del avión", 30);
 
@@ -33,7 +34,7 @@ public class PlanesAdapter {
                 try {
                     String plates = platesInput.getText();
                     int capacity = capacityInput.getInt();
-                    Date fabricationDate = Date.valueOf(fabricationDateInput.getText());
+                    Date fabricationDate = fabricationDateInput.getValue();
                     int idStatus = idStatusInput.getInt();
                     int idModel = idModelInput.getInt();
 
@@ -61,7 +62,8 @@ public class PlanesAdapter {
         ViewOut.VInput idInput = v.new VInput("Ingresa el ID del Avión", 30);
         ViewOut.VInput platesInput = v.new VInput("Ingresa las placas del avión", 30);
         ViewOut.VInput capacityInput = v.new VInput("Ingresa la capacidad del avión", 30);
-        ViewOut.VInput fabricationDateInput = v.new VInput("Ingresa la fecha de fabricación del avión (YYYY-MM-DD)", 30);
+        ViewOut.VDate fabricationDateInput = v.new VDate("Ingresa la fecha de fabricación del avión (YYYY-MM-DD)",
+                "date");
         ViewOut.VInput idStatusInput = v.new VInput("Ingresa el ID de estado del avión", 30);
         ViewOut.VInput idModelInput = v.new VInput("Ingresa el ID del modelo del avión", 30);
 
@@ -73,7 +75,7 @@ public class PlanesAdapter {
                     int id = idInput.getInt();
                     String plates = platesInput.getText();
                     int capacity = capacityInput.getInt();
-                    Date fabricationDate = Date.valueOf(fabricationDateInput.getText());
+                    Date fabricationDate = fabricationDateInput.getValue();
                     int idStatus = idStatusInput.getInt();
                     int idModel = idModelInput.getInt();
 
