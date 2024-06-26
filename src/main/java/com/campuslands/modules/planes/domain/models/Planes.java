@@ -8,15 +8,23 @@ import java.sql.Date;
 public class Planes {
 
     int id;
-    String plates;
+    String plateNumber;
     int capacity;
     Date fabrication_date;
     int id_status;
     int id_model;
 
-    public Planes(int id, String plates, int capacity, Date fabrication_date, int id_status, int id_model) {
+    public Planes(String plateNumber, int capacity, Date fabrication_date, int id_status, int id_model) {
+        this.plateNumber = plateNumber;
+        this.capacity = capacity;
+        this.fabrication_date = fabrication_date;
+        this.id_status = id_status;
+        this.id_model = id_model;
+    }
+
+    public Planes(int id, String plateNumber, int capacity, Date fabrication_date, int id_status, int id_model) {
         this.id = id;
-        this.plates = plates;
+        this.plateNumber = plateNumber;
         this.capacity = capacity;
         this.fabrication_date = fabrication_date;
         this.id_status = id_status;
@@ -29,11 +37,11 @@ public class Planes {
     public void setId(int id) {
         this.id = id;
     }
-    public String getPlates() {
-        return plates;
+    public String getPlateNumber() {
+        return plateNumber;
     }
-    public void setPlates(String plates) {
-        this.plates = plates;
+    public void setPlates(String plateNumber) {
+        this.plateNumber = plateNumber;
     }
     public int getCapacity() {
         return capacity;

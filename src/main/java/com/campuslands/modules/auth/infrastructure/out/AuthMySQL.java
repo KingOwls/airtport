@@ -37,12 +37,14 @@ public class AuthMySQL extends MySQL implements AuthRepository {
                 statement.setString(1, email);
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
-                        Auth auth = Auth.getInstance();
-                        auth.setUid(resultSet.getString("id"));
-                        auth.setEmail(resultSet.getString("email"));
-                        auth.setPassword(resultSet.getString("password"));
-                        auth.setRol(resultSet.getString("rol"));
-                        return Optional.of(auth);
+                        if (resultSet.getString("password").equals(pas)) {
+                            Auth auth = Auth.getInstance();
+                            auth.setUid(resultSet.getString("id"));
+                            auth.setEmail(resultSet.getString("email"));
+                            auth.setPassword(resultSet.getString("password"));
+                            auth.setRol(resultSet.getString("rol"));
+                            return Optional.of(auth);
+                        }
                     }
                 }
             }
@@ -61,12 +63,14 @@ public class AuthMySQL extends MySQL implements AuthRepository {
                 statement.setString(1, email);
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
-                        Auth auth = Auth.getInstance();
-                        auth.setUid(resultSet.getString("id"));
-                        auth.setEmail(resultSet.getString("email"));
-                        auth.setPassword(resultSet.getString("password"));
-                        auth.setRol("cliente");
-                        return Optional.of(auth);
+                        if (resultSet.getString("password") == pas) {
+                            Auth auth = Auth.getInstance();
+                            auth.setUid(resultSet.getString("id"));
+                            auth.setEmail(resultSet.getString("email"));
+                            auth.setPassword(resultSet.getString("password"));
+                            auth.setRol("cliente");
+                            return Optional.of(auth);
+                        }
                     }
                 }
             }

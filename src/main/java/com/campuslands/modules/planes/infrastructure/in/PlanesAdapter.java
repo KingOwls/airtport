@@ -37,10 +37,9 @@ public class PlanesAdapter {
                     Date fabricationDate = fabricationDateInput.getValue();
                     int idStatus = idStatusInput.getInt();
                     int idModel = idModelInput.getInt();
-
-                    Planes plane = new Planes(0, plates, capacity, fabricationDate, idStatus, idModel);
+                    Planes plane = new Planes(plates, capacity, fabricationDate, idStatus, idModel);
                     planesService.createPlane(plane);
-                    JOptionPane.showMessageDialog(v.container, "Avión agregado exitosamente.");
+                   
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container,
                             "Error al agregar el avión: " + ex.getMessage(), "Error",
@@ -134,7 +133,7 @@ public class PlanesAdapter {
                     StringBuilder planesList = new StringBuilder("Lista de Aviones:\n");
                     for (Planes plane : planes) {
                         planesList.append("ID: ").append(plane.getId()).append(", Placas: ")
-                                .append(plane.getPlates()).append(", Capacidad: ")
+                                .append(plane.getPlateNumber()).append(", Capacidad: ")
                                 .append(plane.getCapacity()).append(", Fecha de Fabricación: ")
                                 .append(plane.getFabrication_date()).append(", ID de Estado: ")
                                 .append(plane.getId_status()).append(", ID de Modelo: ")

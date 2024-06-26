@@ -73,7 +73,7 @@ public class Auth {
     }
 
     // Verifica si la contraseña proporcionada coincide con el hash almacenado
-    public static boolean verifyUserPassword(String providedPassword, String securedPassword, byte[] salt)
+    public boolean verifyUserPassword(String providedPassword, String securedPassword, byte[] salt)
             throws NoSuchAlgorithmException {
         String newSecurePassword = getSecurePassword(providedPassword, salt);
         return newSecurePassword.equals(securedPassword);

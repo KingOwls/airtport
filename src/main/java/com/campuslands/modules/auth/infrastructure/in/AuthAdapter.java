@@ -44,9 +44,7 @@ public class AuthAdapter {
                                 JPanel jPanel = new JPanel();
                                 jPanel.add(new JLabel("Bienvenido: " + Auth.getInstance().getRol()));
                                 View.getInstance().addBackView("inicio", jPanel);
-                                ;
                                 View.getInstance().loadBody(jPanel);
-                                ;
                             },
                             () -> {
                                 v.showError("Usuario o Contraseña Incorrectos");

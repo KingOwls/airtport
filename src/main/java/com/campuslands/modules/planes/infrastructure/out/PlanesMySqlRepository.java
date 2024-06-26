@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.swing.JOptionPane;
+
 import com.campuslands.core.MySQL;
 import com.campuslands.modules.planes.domain.models.Planes;
 import com.campuslands.modules.planes.domain.repository.PlanesRepository;
@@ -22,20 +24,21 @@ public class PlanesMySqlRepository extends MySQL implements PlanesRepository {
     @Override
     public void save(Planes planes) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "INSERT INTO planes (id, plates, capacity, fabrication_date, id_status, id_model) " +
+            String query = "INSERT INTO planes (id, plateNumber, capacity, fabrication_date, id_status, id_model) " +
                     "VALUES (?, ?, ?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, planes.getId());
-                statement.setString(2, planes.getPlates());
+                statement.setString(2, planes.getPlateNumber());
                 statement.setInt(3, planes.getCapacity());
                 statement.setDate(4, new java.sql.Date(planes.getFabrication_date().getTime()));
                 statement.setInt(5, planes.getId_status());
                 statement.setInt(6, planes.getId_model());
-
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Avión agregado exitosamente.", "INSERT", 2);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
@@ -44,7 +47,7 @@ public class PlanesMySqlRepository extends MySQL implements PlanesRepository {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             String query = "UPDATE planes SET name = ? WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setString(1, planes.getPlates());
+                statement.setString(1, planes.getPlateNumber());
                 statement.setInt(2, planes.getId());
                 statement.executeUpdate();
             }

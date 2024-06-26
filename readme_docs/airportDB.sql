@@ -14,7 +14,7 @@ CREATE TABLE `airlines` (
 -- Table structure for table `countries`
 DROP TABLE IF EXISTS `countries`;
 CREATE TABLE `countries` (
-  `id` int NOT NULL ,
+  `id` varchar(255) NOT NULL ,
   `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -79,7 +79,7 @@ CREATE TABLE `manufacturers` (
 -- Table structure for table `cities`
 DROP TABLE IF EXISTS `cities`;
 CREATE TABLE `cities` (
-  `id` int NOT NULL ,
+  `id` varchar(255) NOT NULL ,
   `name` varchar(255) DEFAULT NULL,
   `idcountry` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -90,7 +90,7 @@ CREATE TABLE `cities` (
 -- Table structure for table `airports`
 DROP TABLE IF EXISTS `airports`;
 CREATE TABLE `airports` (
-  `id` int NOT NULL ,
+  `id` varchar(255) NOT NULL ,
   `name` varchar(255)  DEFAULT NULL,
   `idcity` varchar(255) DEFAULT NULL,  
   PRIMARY KEY (`id`),
@@ -102,7 +102,7 @@ CREATE TABLE `airports` (
 -- Table structure for table `customers`
 DROP TABLE IF EXISTS `customers`;
 CREATE TABLE `customers` (
-  `id` int NOT NULL ,
+  `id` varchar(255) NOT NULL ,
   `name` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
@@ -119,7 +119,7 @@ CREATE TABLE `customers` (
 -- Table structure for table `employees`
 DROP TABLE IF EXISTS `employees`;
 CREATE TABLE `employees` (
-  `id` int NOT NULL ,
+  `id` varchar(255) NOT NULL ,
   `name` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
@@ -149,13 +149,13 @@ CREATE TABLE `models` (
 DROP TABLE IF EXISTS `planes`;
 CREATE TABLE `planes` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `plates` varchar(255) DEFAULT NULL,
+  `plateNumber` varchar(255) DEFAULT NULL,
   `capacity` int DEFAULT NULL,
   `fabrication_date` date DEFAULT NULL,
   `id_status` int DEFAULT NULL,
   `id_model` int DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `planes` (`planes`),
+  UNIQUE KEY `plateNumber` (`plateNumber`),
   KEY `fk_id_status_plane` (`id_status`),
   KEY `fk_id_model_plane` (`id_model`),
   CONSTRAINT `fk_id_model_plane` FOREIGN KEY (`id_model`) REFERENCES `models` (`id`),
@@ -285,6 +285,14 @@ INSERT INTO airport.tripulationroles
 (id, name)
 VALUES(1, 'administrador');
 
+INSERT INTO airport.tripulationroles
+(id, name)
+VALUES(2, 'ventas');
+
+INSERT INTO airport.tripulationroles
+(id, name)
+VALUES(3, 'tecnico');
+
 INSERT INTO airport.documenttypes
 (id, name)
 VALUES(1, 'cedula');
@@ -296,5 +304,25 @@ VALUES('WQESD', 'CLIENTE', 'cliente', 'cliente', 2, 1);
 
 INSERT INTO airport.employees
 (id, name, email, password, idrol, ingressdate, idairline, idairport)
-VALUES('ASASF', 'TEST', 'admin', 'admin', 1, '2022-02-02', 1, 'CYOW');
+VALUES('ADMIN', 'TEST', 'admin', 'admin', 1, '2022-02-02', 1, 'CYOW');
 
+INSERT INTO airport.employees
+(id, name, email, password, idrol, ingressdate, idairline, idairport)
+VALUES('VENTAS', 'TEST', 'ventas', 'ventas', 2, '2022-02-02', 1, 'CYOW');
+
+INSERT INTO airport.employees
+(id, name, email, password, idrol, ingressdate, idairline, idairport)
+VALUES('TECNICO', 'TEST', 'tecnico', 'tecnico', 3, '2022-02-02', 1, 'CYOW');
+
+
+INSERT INTO airport.statuses
+(id, name)
+VALUES(1, 'activo');
+
+INSERT INTO airport.manufacturers
+(id, name)
+VALUES(1, 'A');
+
+INSERT INTO airport.models
+(id, name, manufacturerid)
+VALUES(1, ' boeing 747', 1);
