@@ -42,7 +42,8 @@ public class FlightConnectionsAdapter {
                     FlightConnection flightConnection = new FlightConnection(id, connectionNumber, idTrip, idPlane,
                             idAirport, typefright, lastScale);
                     flightConnectionsService.createFlightConnection(flightConnection);
-                    JOptionPane.showMessageDialog(v.container, "Conexión de Vuelo agregada exitosamente.");
+                    // JOptionPane.showMessageDialog(v.container, "Conexión de Vuelo agregada
+                    // exitosamente.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container,
                             "Error al agregar la conexión de vuelo: " + ex.getMessage(), "Error",
@@ -87,7 +88,8 @@ public class FlightConnectionsAdapter {
                     FlightConnection flightConnection = new FlightConnection(id, connectionNumber, idTrip, idPlane,
                             idAirport, typefright, lastScale);
                     flightConnectionsService.updateFlightConnection(flightConnection);
-                    JOptionPane.showMessageDialog(v.container, "Conexión de Vuelo actualizada exitosamente.");
+                    // JOptionPane.showMessageDialog(v.container, "Conexión de Vuelo actualizada
+                    // exitosamente.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container,
                             "Error al actualizar la conexión de vuelo: " + ex.getMessage(), "Error",
@@ -116,7 +118,8 @@ public class FlightConnectionsAdapter {
                 try {
                     int id = idInput.getInt();
                     flightConnectionsService.deleteFlightConnection(id);
-                    JOptionPane.showMessageDialog(v.container, "Conexión de Vuelo eliminada exitosamente.");
+                    // JOptionPane.showMessageDialog(v.container, "Conexión de Vuelo eliminada
+                    // exitosamente.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container,
                             "Error al eliminar la conexión de vuelo: " + ex.getMessage(), "Error",

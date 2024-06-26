@@ -6,6 +6,8 @@ import com.campuslands.views.infrastructure.out.ViewOut;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
+
 import com.campuslands.modules.cities.application.CitiesService;
 import com.campuslands.modules.cities.domain.models.Cities;
 
@@ -28,9 +30,10 @@ public class CitiesAdapter {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    Cities city = new Cities(0, nameInput.getText(), countryInput.getText());
+                    Cities city = new Cities(0, nameInput.getText(), countryInput.getInt());
                     citiesService.createCities(city);
-                    v.showMessage("Ciudad creada exitosamente.");
+                    // v.showMessage("Ciudad creada exitosamente.");
+
                 } catch (Exception ex) {
                     v.showError("Error al crear la ciudad: " + ex.getMessage());
                 }
@@ -56,10 +59,11 @@ public class CitiesAdapter {
                 try {
                     int id = idInput.getInt();
                     String name = nameInput.getText();
-                    String idCountry = countryInput.getText();
+                    int idCountry = countryInput.getInt();
                     Cities city = new Cities(id, name, idCountry);
                     citiesService.updateCities(city);
-                    v.showMessage("Ciudad actualizada exitosamente.");
+                    // v.showMessage("Ciudad actualizada exitosamente.");
+
                 } catch (Exception ex) {
                     v.showError("Error al actualizar la ciudad: " + ex.getMessage());
                 }
@@ -85,7 +89,7 @@ public class CitiesAdapter {
                 try {
                     int id = idInput.getInt();
                     citiesService.deleteCities(id);
-                    v.showMessage("Ciudad borrada exitosamente.");
+                    // v.showMessage("Ciudad borrada exitosamente.");
                 } catch (Exception ex) {
                     v.showError("Error al borrar la ciudad: " + ex.getMessage());
                 }
@@ -99,22 +103,18 @@ public class CitiesAdapter {
 
     public void findCityAll() {
         v = new ViewOut();
+        List<Cities> cities = citiesService.getAllCities();
+        String[] columnNames = { "ID", "Ciudad", "id Pais" };
+        Object[][] data = new Object[cities.size()][3];
 
-        JButton findButton = new JButton("Buscar");
-        findButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    // Aquí debes implementar la lógica para obtener todas las ciudades
-                    // Ejemplo: List<Cities> citiesList = citiesService.findAllCities();
-                    // y luego mostrar los resultados en la vista.
-                    v.showMessage("Resultado de búsqueda: ");
-                } catch (Exception ex) {
-                    v.showError("Error al buscar ciudades: " + ex.getMessage());
-                }
-            }
-        });
+        for (int i = 0; i < cities.size(); i++) {
+            Cities plane = cities.get(i);
+            data[i][0] = plane.getId();
+            data[i][1] = plane.getName();
+            data[i][2] = plane.getIdCountry();
+        }
 
-        v.printBody(findButton, v.BackButton());
+        v.container.add(v.new VTable(columnNames, data).getDiv());
+        v.printBody(v.BackButton());
     }
 }

@@ -26,36 +26,36 @@ public class TripsOutModule {
     }
 
     public JMenu options() {
-        JMenu option = new JMenu("Trayectorias");
-        option.add(new JMenuItem(new AbstractAction("Registrar Trayectorias") {
+        JMenu option = new JMenu("Viaje");
+        option.add(new JMenuItem(new AbstractAction("Registrar Viaje") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 tripsAdapter.createTrip();
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Actualizar Trayectorias") {
+        option.add(new JMenuItem(new AbstractAction("Actualizar Viaje") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 tripsAdapter.updateTrip();
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Eliminar Trayectorias") {
+        option.add(new JMenuItem(new AbstractAction("Eliminar Viaje") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 tripsAdapter.deleteTrip();
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Buscar Trayectorias") {
+        option.add(new JMenuItem(new AbstractAction("Buscar Viaje") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // adapter.VFindAirportAll();
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Mostrar todos los Trayectorias") {
+        option.add(new JMenuItem(new AbstractAction("Mostrar todos los Viaje") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 tripsAdapter.findAllTrips();

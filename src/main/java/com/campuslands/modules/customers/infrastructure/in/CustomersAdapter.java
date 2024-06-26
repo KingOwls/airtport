@@ -7,6 +7,7 @@ import com.campuslands.views.infrastructure.out.ViewOut;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class CustomersAdapter {
     private ViewOut v;
@@ -38,7 +39,7 @@ public class CustomersAdapter {
                     String password = passwordInput.getText();
                     Customer customer = new Customer(id, name, age, idDocument, password, email);
                     customersService.createCustomer(customer);
-                    JOptionPane.showMessageDialog(v.container, "Cliente agregado exitosamente.");
+                    // JOptionPane.showMessageDialog(v.container, "Cliente agregado exitosamente.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container, "Error al agregar el cliente: " + ex.getMessage(),
                             "Error", JOptionPane.ERROR_MESSAGE);
@@ -78,7 +79,8 @@ public class CustomersAdapter {
 
                     Customer customer = new Customer(id, name, age, idDocument, password, email);
                     customersService.updateCustomer(customer);
-                    JOptionPane.showMessageDialog(v.container, "Cliente actualizado exitosamente.");
+                    // JOptionPane.showMessageDialog(v.container, "Cliente actualizado
+                    // exitosamente.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container, "Error al actualizar el cliente: " + ex.getMessage(),
                             "Error", JOptionPane.ERROR_MESSAGE);
@@ -105,7 +107,8 @@ public class CustomersAdapter {
             public void actionPerformed(ActionEvent e) {
                 try {
                     customersService.deleteCustomer(idInput.getInt());
-                    JOptionPane.showMessageDialog(v.container, "Cliente eliminado exitosamente.");
+                    // JOptionPane.showMessageDialog(v.container, "Cliente eliminado
+                    // exitosamente.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container, "Error al eliminar el cliente: " + ex.getMessage(),
                             "Error", JOptionPane.ERROR_MESSAGE);
@@ -119,26 +122,22 @@ public class CustomersAdapter {
 
     public void findAllCustomers() {
         v = new ViewOut();
-        JButton findButton = new JButton("Buscar Todos los Clientes");
-        findButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    java.util.List<Customer> customers = customersService.getAllCustomers();
-                    StringBuilder customersList = new StringBuilder("Lista de Clientes:\n");
-                    for (Customer customer : customers) {
-                        customersList.append("ID: ").append(customer.getId()).append(", Nombre: ")
-                                .append(customer.getName()).append(", Edad: ").append(customer.getAge())
-                                .append(", Documento: ").append(customer.getIddocument()).append("\n");
-                    }
-                    JOptionPane.showMessageDialog(v.container, customersList.toString());
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(v.container, "Error al buscar los clientes: " + ex.getMessage(),
-                            "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
+        List<Customer> customers = customersService.getAllCustomers();
+        String[] columnNames = { "ID", "Nombre" };
+        Object[][] data = new Object[customers.size()][7];
 
-        v.printBody(findButton, v.BackButton());
+        for (int i = 0; i < customers.size(); i++) {
+            Customer customer = customers.get(i);
+            data[i][0] = customer.getId();
+            data[i][1] = customer.getName();
+            data[i][2] = customer.getAge();
+            data[i][3] = customer.getIddocument();
+            data[i][4] = customer.getPassword();
+            data[i][5] = customer.getEmail();
+            data[i][6] = customer.getPassword();
+        }
+
+        v.container.add(v.new VTable(columnNames, data).getDiv());
+        v.printBody(v.BackButton());
     }
 }

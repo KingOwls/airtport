@@ -6,9 +6,9 @@ package com.campuslands.modules.cities.domain.models;
 public class Cities {
     int id;
     String name;
-    String idCountry;
+    int idCountry;
 
-    public Cities(int id, String name, String idCountry) {
+    public Cities(int id, String name, int idCountry) {
         this.id = id;
         this.name = name;
         this.idCountry = idCountry;
@@ -30,11 +30,11 @@ public class Cities {
         this.name = name;
     }
 
-    public String getIdCountry() {
+    public int getIdCountry() {
         return idCountry;
     }
 
-    public void setIdCountry(String idCountry) {
+    public void setIdCountry(int idCountry) {
         this.idCountry = idCountry;
     }
 

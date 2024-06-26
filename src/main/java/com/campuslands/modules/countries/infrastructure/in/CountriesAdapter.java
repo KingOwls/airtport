@@ -6,6 +6,7 @@ import com.campuslands.views.infrastructure.out.ViewOut;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JButton;
 
@@ -29,7 +30,7 @@ public class CountriesAdapter {
                 try {
                     Country country = new Country(0, nameInput.getText());
                     countriesService.createCountry(country);
-                    v.showMessage("País agregado exitosamente.");
+                    // v.showMessage("País agregado exitosamente.");
                 } catch (Exception ex) {
                     v.showError("Error al agregar el país: " + ex.getMessage());
                 }
@@ -52,7 +53,7 @@ public class CountriesAdapter {
                 try {
                     Country country = new Country(idInput.getInt(), nameInput.getText());
                     countriesService.updateCountry(country);
-                    v.showMessage("País actualizado exitosamente");
+                    // v.showMessage("País actualizado exitosamente");
                 } catch (Exception ex) {
                     v.showMessage("Error al actualizar el país: " + ex.getMessage());
                 }
@@ -74,7 +75,7 @@ public class CountriesAdapter {
             public void actionPerformed(ActionEvent e) {
                 try {
                     countriesService.deleteCountry(idInput.getInt());
-                    v.showMessage("País borrado exitosamente.");
+                    // v.showMessage("País borrado exitosamente.");
                 } catch (Exception ex) {
                     v.showMessage("Error al borrar el país: " + ex.getMessage());
                 }
@@ -87,24 +88,17 @@ public class CountriesAdapter {
 
     public void findAllCountries() {
         v = new ViewOut();
-        JButton findButton = new JButton("Buscar Todos los Países");
-        findButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    java.util.List<Country> countries = countriesService.getAllCountries();
-                    StringBuilder countriesList = new StringBuilder("Lista de Países:\n");
-                    for (Country country : countries) {
-                        countriesList.append("ID: ").append(country.getId()).append(", Nombre: ")
-                                .append(country.getName()).append("\n");
-                    }
-                    v.showMessage(countriesList.toString());
-                } catch (Exception ex) {
-                    v.showMessage("Error al buscar los países: " + ex.getMessage());
-                }
-            }
-        });
+        List<Country> countries = countriesService.getAllCountries();
+        String[] columnNames = { "ID", "Nombre" };
+        Object[][] data = new Object[countries.size()][6];
 
-        v.printBody(findButton, v.BackButton());
+        for (int i = 0; i < countries.size(); i++) {
+            Country country = countries.get(i);
+            data[i][0] = country.getId();
+            data[i][1] = country.getName();
+        }
+
+        v.container.add(v.new VTable(columnNames, data).getDiv());
+        v.printBody(v.BackButton());
     }
 }

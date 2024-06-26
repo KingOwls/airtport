@@ -34,7 +34,7 @@ public class PlanesMySqlRepository extends MySQL implements PlanesRepository {
                 statement.setInt(5, planes.getId_status());
                 statement.setInt(6, planes.getId_model());
                 statement.executeUpdate();
-                JOptionPane.showMessageDialog(null, "Avión agregado exitosamente.", "INSERT", 2);
+                JOptionPane.showMessageDialog(null, "Avión agregado exitosamente.", "INSERT", 1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -45,14 +45,27 @@ public class PlanesMySqlRepository extends MySQL implements PlanesRepository {
     @Override
     public void update(Planes planes) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "UPDATE planes SET name = ? WHERE id = ?";
+            String query = "UPDATE planes SET " +
+                    "    plateNumber = ?," +
+                    "    capacity = ?," +
+                    "    fabrication_date = ?," +
+                    "    id_status = ?, " +
+                    "    id_model = ? " +
+                    "WHERE " +
+                    "    id = ?;";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, planes.getPlateNumber());
-                statement.setInt(2, planes.getId());
+                statement.setInt(2, planes.getCapacity());
+                statement.setDate(3, new java.sql.Date(planes.getFabrication_date().getTime()));
+                statement.setInt(4, planes.getId_status());
+                statement.setInt(5, planes.getId_model());
+                statement.setInt(6, planes.getId());
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Avión Actualizado exitosamente.", "UPDATE", 0);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
@@ -77,6 +90,7 @@ public class PlanesMySqlRepository extends MySQL implements PlanesRepository {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
         return Optional.empty();
     }
@@ -88,9 +102,11 @@ public class PlanesMySqlRepository extends MySQL implements PlanesRepository {
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, id);
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Avión Borrado exitosamente.", "DELETE", 0);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
@@ -104,16 +120,18 @@ public class PlanesMySqlRepository extends MySQL implements PlanesRepository {
                 while (resultSet.next()) {
                     Planes plane = new Planes(
                             resultSet.getInt("id"),
-                            resultSet.getString("name"),
-                            resultSet.getInt("plates"),
-                            resultSet.getDate("capacity"),
-                            resultSet.getInt("fabrication_date"),
-                            resultSet.getInt("id_status"));
+                            resultSet.getString("plateNumber"),
+                            resultSet.getInt("capacity"),
+                            resultSet.getDate("fabrication_date"),
+                            resultSet.getInt("id_status"),
+                            resultSet.getInt("id_model"));
                     planes.add(plane);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
+
         }
         return planes;
     }

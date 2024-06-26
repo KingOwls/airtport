@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.swing.JOptionPane;
+
 import com.campuslands.core.MySQL;
 import com.campuslands.modules.employees.domain.models.Employee;
 
@@ -34,9 +36,11 @@ public class EmployeesMySQL extends MySQL implements EmployeesRepository {
                 statement.setString(7, employees.getPassword());
                 statement.setInt(8, employees.getIdairport());
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Empleado creado exitosamente", "INSERT", 0);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
@@ -54,9 +58,11 @@ public class EmployeesMySQL extends MySQL implements EmployeesRepository {
                 statement.setString(7, employees.getPassword());
                 statement.setInt(8, employees.getIdairport());
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Empleado actualizado exitosamente", "UPDATE", 0);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
@@ -83,6 +89,7 @@ public class EmployeesMySQL extends MySQL implements EmployeesRepository {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
         return Optional.empty();
     }
@@ -94,9 +101,11 @@ public class EmployeesMySQL extends MySQL implements EmployeesRepository {
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, id);
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Empleado borrado exitosamente", "DELETE", 0);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
@@ -121,10 +130,12 @@ public class EmployeesMySQL extends MySQL implements EmployeesRepository {
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
+                JOptionPane.showMessageDialog(null, e, "ERROR", 0);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
         return employee;
     }

@@ -17,8 +17,6 @@ public class TripbookingdetailsOutModule {
 
     public TripbookingdetailsOutModule() {
         tripBookingDetailsMySQL = new TripBookingdetailsMySQL();
-        // tripBookingDetailsService = new
-        // TripbookingdetailsService(tripBookingDetailsMySQL);
         tripBookingDetailsAdapter = new TripbookingdetailsAdapter(tripBookingDetailsService);
     }
 
@@ -27,36 +25,37 @@ public class TripbookingdetailsOutModule {
     }
 
     public JMenu options() {
-        JMenu option = new JMenu("Tipo de Documentos");
-        option.add(new JMenuItem(new AbstractAction("Registrar Tipo de Documentos") {
+        JMenu option = new JMenu("Detalles de reserva del viaje");
+        option.add(new JMenuItem(new AbstractAction("Registrar Detalles de reserva del viaje") {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 // employeesAdapter.createEmployee();
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Actualizar Tipo de Documentos") {
+        option.add(new JMenuItem(new AbstractAction("Actualizar Detalles de reserva del viaje") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // employeesAdapter.updateEmployee();
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Eliminar Tipo de Documentos") {
+        option.add(new JMenuItem(new AbstractAction("Eliminar Detalles de reserva del viaje") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // employeesAdapter.deleteEmployee();
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Buscar Tipo de Documentos") {
+        option.add(new JMenuItem(new AbstractAction("Buscar Detalles de reserva del viaje") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // adapter.VFindAirportAll();
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Mostrar todos los Tipo de Documentos") {
+        option.add(new JMenuItem(new AbstractAction("Mostrar todos los Detalles de reserva del viaje") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // employeesAdapter.findAllEmployees();

@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
 import com.campuslands.core.MySQL;
 import com.campuslands.modules.airports.domain.models.Airport;
 import com.campuslands.modules.airports.domain.repository.AirportsRepository;
@@ -17,7 +16,7 @@ import com.campuslands.modules.airports.domain.repository.AirportsRepository;
 /**
  * AirportsMySQL
  */
-public class AirportsMySQL  extends MySQL implements AirportsRepository{
+public class AirportsMySQL extends MySQL implements AirportsRepository {
 
     public AirportsMySQL() {
         super();
@@ -26,9 +25,11 @@ public class AirportsMySQL  extends MySQL implements AirportsRepository{
     @Override
     public void save(Airport airports) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "INSERT INTO airlines (name) VALUES (?)";
+            String query = "INSERT INTO airports (id, name, idcity) VALUES (?, ?, ?);";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, airports.getName());
+                statement.setInt(2, airports.getId());
+                statement.setInt(3, airports.getIdCity());
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
@@ -60,10 +61,9 @@ public class AirportsMySQL  extends MySQL implements AirportsRepository{
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
                         Airport airport = new Airport(
-                            resultSet.getInt("id"),
-                            resultSet.getString("name"),
-                            resultSet.getInt("city")
-                        );
+                                resultSet.getInt("id"),
+                                resultSet.getString("name"),
+                                resultSet.getInt("city"));
                         return Optional.of(airport);
                     }
                 }
@@ -89,25 +89,23 @@ public class AirportsMySQL  extends MySQL implements AirportsRepository{
 
     @Override
     public List<Airport> findAll() {
-        List<Airport> airport = new ArrayList<>();
+        List<Airport> airports = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             String query = "SELECT * FROM airports";
             try (PreparedStatement statement = connection.prepareStatement(query);
-                 ResultSet resultSet = statement.executeQuery()) {
+                    ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    Airport airp = new Airport(
-                        resultSet.getInt("id"),
-                        resultSet.getString("name"),
-                        resultSet.getInt("city")
-                    );
-                    airport.add(airp);
+                    Airport airport = new Airport(
+                            resultSet.getInt("id"),
+                            resultSet.getString("name"),
+                            resultSet.getInt("city"));
+                    airports.add(airport);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return airport;
+        return airports;
     }
 
-    
 }

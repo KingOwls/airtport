@@ -1,8 +1,9 @@
-DROP DATABASE IF EXISTS `airport`;
+DROP DATABASE IF EXISTS airport;
 CREATE DATABASE airport;
 USE airport;
 
--- Table structure for table `airlines`
+
+
 DROP TABLE IF EXISTS `airlines`;
 CREATE TABLE `airlines` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -11,13 +12,18 @@ CREATE TABLE `airlines` (
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
+
+
+
 -- Table structure for table `countries`
 DROP TABLE IF EXISTS `countries`;
 CREATE TABLE `countries` (
-  `id` varchar(255) NOT NULL ,
+  `id` int NOT NULL ,
   `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
 
 -- Table structure for table `flightfares`
 DROP TABLE IF EXISTS `flightfares`;
@@ -30,7 +36,11 @@ CREATE TABLE `flightfares` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
+
+
+
 -- Table structure for table `trips`
+
 DROP TABLE IF EXISTS `trips`;
 CREATE TABLE `trips` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -42,6 +52,9 @@ CREATE TABLE `trips` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
+
+
+
 -- Table structure for table `tripulationroles`
 DROP TABLE IF EXISTS `tripulationroles`;
 CREATE TABLE `tripulationroles` (
@@ -49,6 +62,8 @@ CREATE TABLE `tripulationroles` (
   `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
 
 -- Table structure for table `statuses`
 DROP TABLE IF EXISTS `statuses`;
@@ -59,6 +74,9 @@ CREATE TABLE `statuses` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
+
+
+
 -- Table structure for table `documenttypes`
 DROP TABLE IF EXISTS `documenttypes`;
 CREATE TABLE `documenttypes` (
@@ -66,6 +84,8 @@ CREATE TABLE `documenttypes` (
   `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
 
 -- Table structure for table `manufacturers`
 DROP TABLE IF EXISTS `manufacturers`;
@@ -76,33 +96,42 @@ CREATE TABLE `manufacturers` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
+
+
+
 -- Table structure for table `cities`
 DROP TABLE IF EXISTS `cities`;
 CREATE TABLE `cities` (
-  `id` varchar(255) NOT NULL ,
+  `id` int NOT NULL ,
   `name` varchar(255) DEFAULT NULL,
-  `idcountry` varchar(255) DEFAULT NULL,
+  `idcountry` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `Fk_city` (`idcountry`),
   CONSTRAINT `Fk_city` FOREIGN KEY (`idcountry`) REFERENCES `countries` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+
+
 -- Table structure for table `airports`
 DROP TABLE IF EXISTS `airports`;
 CREATE TABLE `airports` (
-  `id` varchar(255) NOT NULL ,
+  `id` int NOT NULL ,
   `name` varchar(255)  DEFAULT NULL,
-  `idcity` varchar(255) DEFAULT NULL,  
+  `idcity` int DEFAULT NULL,  
   PRIMARY KEY (`id`),
   KEY `fk_id_city_airport` (`idcity`),
   CONSTRAINT `fk_id_city_airport` FOREIGN KEY (`idcity`) REFERENCES `cities` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
+
+
+
 -- Table structure for table `customers`
+
 DROP TABLE IF EXISTS `customers`;
 CREATE TABLE `customers` (
-  `id` varchar(255) NOT NULL ,
+  `id` int NOT NULL ,
   `name` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
@@ -116,22 +145,31 @@ CREATE TABLE `customers` (
 
 
 
+
+
+
+
+
 -- Table structure for table `employees`
+
 DROP TABLE IF EXISTS `employees`;
 CREATE TABLE `employees` (
-  `id` varchar(255) NOT NULL ,
+  `id` int NOT NULL ,
   `name` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
   `idrol` int DEFAULT NULL,
   `ingressdate` date DEFAULT NULL,
   `idairline` int DEFAULT NULL,
-  `idairport` varchar(255) DEFAULT NULL,
+  `idairport` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_airline_employee` FOREIGN KEY (`idairline`) REFERENCES `airlines` (`id`),
   CONSTRAINT `fk_airport_employee` FOREIGN KEY (`idairport`) REFERENCES `airports` (`id`),
   CONSTRAINT `fk_rol_employee` FOREIGN KEY (`idrol`) REFERENCES `tripulationroles` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+
 
 
 -- Table structure for table `models`
@@ -145,7 +183,10 @@ CREATE TABLE `models` (
   CONSTRAINT `Fk_manufacturerid` FOREIGN KEY (`manufacturerid`) REFERENCES `manufacturers` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+
+
 -- Table structure for table `planes`
+
 DROP TABLE IF EXISTS `planes`;
 CREATE TABLE `planes` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -163,7 +204,11 @@ CREATE TABLE `planes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
+
+
+
 -- Table structure for table `flight_connections`
+
 DROP TABLE IF EXISTS `flight_connections`;
 CREATE TABLE `flight_connections` (
   `id` INT NOT NULL AUTO_INCREMENT,
@@ -175,11 +220,9 @@ CREATE TABLE `flight_connections` (
   PRIMARY KEY (`id`),
   KEY `fk_trip_connection` (`id_trip`),
   KEY `fk_plane_connection` (`id_plane`),
-
   CONSTRAINT `fk_plane_connection` FOREIGN KEY (`id_plane`) REFERENCES `planes` (`id`),
   CONSTRAINT `fk_trip_connection` FOREIGN KEY (`id_trip`) REFERENCES `trips` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
 
 
 
@@ -188,11 +231,14 @@ DROP TABLE IF EXISTS `gates`;
 CREATE TABLE `gates` (
   `id` int NOT NULL AUTO_INCREMENT,
   `gatenumber` varchar(255) DEFAULT NULL,
-  `idairport` varchar(255) DEFAULT NULL,
+  `idairport` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_airport_gate` (`idairport`),
   CONSTRAINT `fk_airport_gate` FOREIGN KEY (`idairport`) REFERENCES `airports` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+
 
 
 -- Table structure for table `revisions`
@@ -207,10 +253,13 @@ CREATE TABLE `revisions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
+
+
+
 -- Table structure for table `revemployee`
 DROP TABLE IF EXISTS `revemployee`;
 CREATE TABLE `revemployee` (
-  `idemployee` varchar(255) NOT NULL,
+  `idemployee` int NOT NULL,
   `idrevision` int NOT NULL,
   PRIMARY KEY (`idemployee`,`idrevision`),
   KEY `fk_id_revision_revemployee` (`idrevision`),
@@ -220,16 +269,22 @@ CREATE TABLE `revemployee` (
 
 
 
+
+
+
+
 -- Table structure for table `revision_details`
 DROP TABLE IF EXISTS `revision_details`;
 CREATE TABLE `revision_details` (
   `id` int NOT NULL ,
   `description` text,
-  `id_employee` varchar(255) DEFAULT NULL,
+  `id_employee` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_employee_revision_detail` (`id_employee`),
   CONSTRAINT `fk_employee_revision_detail` FOREIGN KEY (`id_employee`) REFERENCES `employees` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
 
 -- Table structure for table `tripbooking`
 DROP TABLE IF EXISTS `tripbooking`;
@@ -244,12 +299,16 @@ CREATE TABLE `tripbooking` (
 
 
 
+
+
+
+
 -- Table structure for table `tripbookingdetails`
 DROP TABLE IF EXISTS `tripbookingdetails`;
 CREATE TABLE `tripbookingdetails` (
   `id` int NOT NULL AUTO_INCREMENT,
   `idtripbooking` int DEFAULT NULL,
-  `idcustomers` varchar(255) DEFAULT NULL,
+  `idcustomers` int DEFAULT NULL,
   `idfares` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_tripbooking` (`idtripbooking`),
@@ -261,10 +320,11 @@ CREATE TABLE `tripbookingdetails` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
+
 -- Table structure for table `tripcrews`
 DROP TABLE IF EXISTS `tripcrews`;
 CREATE TABLE `tripcrews` (
-  `idemployees` varchar(255) NOT NULL,
+  `idemployees` int NOT NULL,
   `idconection` int NOT NULL,
   PRIMARY KEY (`idconection`,`idemployees`),
   KEY `fk_employees` (`idemployees`),
@@ -275,54 +335,135 @@ CREATE TABLE `tripcrews` (
 
 
 
+INSERT INTO airlines (id, name) VALUES 
+(1,'Airline A'), (2,'Airline B'), (3,'Airline C'), (4,'Airline D'), (5,'Airline E');
 
-INSERT INTO `airlines` VALUES (1,'American Airlines'),(2,'Delta Air Lines'),(3,'United Airlines'),(4,'Southwest Airlines'),(255,'JetBlue Airways'),(6,'Alaska Airlines'),(7,'Spirit Airlines'),(8,'Frontier Airlines'),(9,'Hawaiian Airlines'),(10,'Allegiant Air');
-INSERT INTO `countries` VALUES ('AR','Argentina'),('AU','Australia'),('BR','Brazil'),('CA','Canada'),('CN','China'),('DE','Germany'),('EG','Egypt'),('ES','Spain'),('FR','France'),('IN','India'),('IT','Italy'),('JP','Japan'),('KR','South Korea'),('MX','Mexico'),('NG','Nigeria'),('RU','Russia'),('TR','Turkey'),('UK','United Kingdom'),('US','United States'),('ZA','South Africa');
-INSERT INTO `cities` VALUES ('ABV','Abuja','NG'),('ADE','Adelaide','AU'),('ADN','Adana','TR'),('ALX','Alexandria','EG'),('ANK','Ankara','TR'),('BCN','Barcelona','ES'),('BEI','Beijing','CN'),('BER','Berlin','DE'),('BIL','Bilbao','ES'),('BIR','Birmingham','UK'),('BLR','Bangalore','IN'),('BNE','Brisbane','AU'),('BSB','Brasilia','BR'),('BUE','Buenos Aires','AR'),('BUR','Bursa','TR'),('BUS','Busan','KR'),('CAI','Cairo','EG'),('CAL','Calgary','CA'),('CD','Chengdu','CN'),('CGN','Cologne','DE'),('CHE','Chennai','IN'),('CHI','Chicago','US'),('COR','Córdoba','AR'),('CPT','Cape Town','ZA'),('DAE','Daegu','KR'),('DEL','Delhi','IN'),('DUR','Durban','ZA'),('EDI','Edinburgh','UK'),('EKB','Yekaterinburg','RU'),('FOR','Fortaleza','BR'),('FRA','Frankfurt','DE'),('FUK','Fukuoka','JP'),('GDL','Guadalajara','MX'),('GIZ','Giza','EG'),('GLA','Glasgow','UK'),('GWA','Gwangju','KR'),('GZ','Guangzhou','CN'),('HAM','Hamburg','DE'),('HOU','Houston','US'),('HUR','Hurghada','EG'),('HYD','Hyderabad','IN'),('IBA','Ibadan','NG'),('INC','Incheon','KR'),('IST','Istanbul','TR'),('IZM','Izmir','TR'),('JNB','Johannesburg','ZA'),('KAN','Kano','NG'),('LAX','Los Angeles','US'),('LON','London','UK'),('LOS','Lagos','NG'),('LP','La Plata','AR'),('LYO','Lyon','FR'),('MAD','Madrid','ES'),('MAN','Manchester','UK'),('MAR','Marseille','FR'),('MDZ','Mendoza','AR'),('MEL','Melbourne','AU'),('MEX','Mexico City','MX'),('MIL','Milan','IT'),('MON','Montreal','CA'),('MOS','Moscow','RU'),('MTY','Monterrey','MX'),('MUC','Munich','DE'),('MUM','Mumbai','IN'),('NAG','Nagoya','JP'),('NAP','Naples','IT'),('NIC','Nice','FR'),('NOV','Novosibirsk','RU'),('NYC','New York','US'),('OSA','Osaka','JP'),('OTT','Ottawa','CA'),('PAL','Palermo','IT'),('PAR','Paris','FR'),('PE','Port Elizabeth','ZA'),('PER','Perth','AU'),('PH','Port Harcourt','NG'),('PHX','Phoenix','US'),('PRY','Pretoria','ZA'),('PUE','Puebla','MX'),('RIO','Rio de Janeiro','BR'),('ROM','Rome','IT'),('ROS','Rosario','AR'),('SAL','Salvador','BR'),('SAM','Samara','RU'),('SAO','Sao Paulo','BR'),('SAP','Sapporo','JP'),('SEO','Seoul','KR'),('SEV','Seville','ES'),('SHA','Shanghai','CN'),('SHR','Sharm El Sheikh','EG'),('SPB','Saint Petersburg','RU'),('SYD','Sydney','AU'),('SZX','Shenzhen','CN'),('TJU','Tijuana','MX'),('TOK','Tokyo','JP'),('TOR','Toronto','CA'),('TORI','Turin','IT'),('TOU','Toulouse','FR'),('VAL','Valencia','ES'),('VAN','Vancouver','CA');
-INSERT INTO `airports` VALUES ('CYOW','Ottawa Macdonald-Cartier International Airport','OTT'),('CYUL','Montréal-Pierre Elliott Trudeau International Airport','MON'),('CYVR','Vancouver International Airport','VAN'),('CYYC','Calgary International Airport','CAL'),('CYYZ','Toronto Pearson International Airport','TOR'),('DNAA','Nnamdi Azikiwe International Airport','ABV'),('DNIB','Ibadan Airport','IBA'),('DNKN','Mallam Aminu Kano International Airport','KAN'),('DNMM','Murtala Muhammed International Airport','LOS'),('DNPO','Port Harcourt International Airport','PH'),('EDDF','Frankfurt Airport','FRA'),('EDDH','Hamburg Airport','HAM'),('EDDK','Cologne Bonn Airport','CGN'),('EDDM','Munich Airport','MUC'),('EDDT','Berlin Tegel Airport','BER'),('EGBB','Birmingham Airport','BIR'),('EGCC','Manchester Airport','MAN'),('EGLL','Heathrow Airport','LON'),('EGPF','Glasgow Airport','GLA'),('EGPH','Edinburgh Airport','EDI'),('FACT','Cape Town International Airport','CPT'),('FALE','King Shaka International Airport','DUR'),('FAOR','O.R. Tambo International Airport','JNB'),('FAPE','Port Elizabeth Airport','PE'),('FAWB','Wonderboom Airport','PRY'),('HEAX','Alexandria International Airport','ALX'),('HECA','Cairo International Airport','CAI'),('HEGN','Hurghada International Airport','HUR'),('HESH','Sharm El Sheikh International Airport','SHR'),('HESX','Sphinx International Airport','GIZ'),('KIAH','George Bush Intercontinental Airport','HOU'),('KJFK','John F. Kennedy International Airport','NYC'),('KLAX','Los Angeles International Airport','LAX'),('KORD','Hare International Airport','CHI'),('KPHX','Phoenix Sky Harbor International Airport','PHX'),('LEBB','Bilbao Airport','BIL'),('LEBL','Barcelona-El Prat Airport','BCN'),('LEMD','Adolfo Suárez Madrid_Barajas Airport','MAD'),('LEVC','Valencia Airport','VAL'),('LEZL','Seville Airport','SEV'),('LFBO','Toulouse-Blagnac Airport','TOU'),('LFLL','Lyon-Saint Exupéry Airport','LYO'),('LFML','Marseille Provence Airport','MAR'),('LFMN','Nice Côte d\'Azur Airport','NIC'),('LFPG','Charles de Gaulle Airport','PAR'),('LICJ','Palermo Airport','PAL'),('LIMC','Milan Malpensa Airport','MIL'),('LIMF','Turin Airport','TORI'),('LIRF','Leonardo da Vinci–Fiumicino Airport','ROM'),('LIRN','Naples International Airport','NAP'),('LTAC','Esenboğa International Airport','ANK'),('LTAF','Adana Şakirpaşa Airport','ADN'),('LTBJ','Adnan Menderes Airport','IZM'),('LTBR','Yenisehir Airport','BUR'),('LTFM','Istanbul Airport','IST'),('MMGL','Guadalajara International Airport','GDL'),('MMMX','Mexico City International Airport','MEX'),('MMMY','Monterrey International Airport','MTY'),('MMPB','Hermanos Serdán International Airport','PUE'),('MMTJ','Tijuana International Airport','TJU'),('RJBB','Kansai International Airport','OSA'),('RJCC','New Chitose Airport','SAP'),('RJFF','Fukuoka Airport','FUK'),('RJGG','Chubu Centrair International Airport','NAG'),('RJTT','Tokyo Haneda Airport','TOK'),('RKJJ','Gwangju Airport','GWA'),('RKPK','Gimhae International Airport','BUS'),('RKSI','Incheon International Airport','SEO'),('RKTN','Daegu International Airport','DAE'),('SAAR','Rosario – Islas Malvinas International Airport','ROS'),('SACO','Ingeniero Ambrosio L.V. Taravella International Airport','COR'),('SADL','La Plata Airport','LP'),('SAEZ','Ministro Pistarini International Airport','BUE'),('SAME','Governor Francisco Gabrielli International Airport','MDZ'),('SBBR','Brasília International Airport','BSB'),('SBFZ','Pinto Martins – Fortaleza International Airport','FOR'),('SBGL','Rio de Janeiro-Galeão International Airport','RIO'),('SBGR','São Paulo-Guarulhos International Airport','SAO'),('SBSV','Deputado Luís Eduardo Magalhães International Airport','SAL'),('ULLI','Pulkovo Airport','SPB'),('UNNT','Novosibirsk Tolmachevo Airport','NOV'),('USSS','Koltsovo Airport','EKB'),('UUEE','Sheremetyevo International Airport','MOS'),('UWWW','Kurumoch International Airport','SAM'),('VABB','Chhatrapati Shivaji Maharaj International Airport','MUM'),('VIDP','Indira Gandhi International Airport','DEL'),('VOBL','Kempegowda International Airport','BLR'),('VOHS','Rajiv Gandhi International Airport','HYD'),('VOMM','Chennai International Airport','CHE'),('YBBN','Brisbane Airport','BNE'),('YMML','Melbourne Airport','MEL'),('YPAD','Adelaide Airport','ADE'),('YPPH','Perth Airport','PER'),('YSSY','Sydney Kingsford Smith Airport','SYD'),('ZBAA','Beijing Capital International Airport','BEI'),('ZGGG','Guangzhou Baiyun International Airport','GZ'),('ZGSZ','Shenzhen Bao\'an International Airport','SZX'),('ZSPD','Shanghai Pudong International Airport','SHA'),('ZUUU','Chengdu Shuangliu International Airport','CD');
+INSERT INTO countries (id, name) VALUES 
+(1, 'Country A'), (2, 'Country B'), (3, 'Country C'), (4, 'Country D'), (5, 'Country E');
 
-INSERT INTO airport.tripulationroles
-(id, name)
-VALUES(1, 'administrador');
+INSERT INTO cities (id, name, idcountry) VALUES 
+(1, 'City A', 1), (2, 'City B', 2), (3, 'City C', 3), (4, 'City D', 4), (5, 'City E', 5);
 
-INSERT INTO airport.tripulationroles
-(id, name)
-VALUES(2, 'ventas');
+INSERT INTO airports (id, name, idcity) VALUES 
+(1, 'Airport A', 1), (2, 'Airport B', 2), (3, 'Airport C', 3), (4, 'Airport D', 4), (5, 'Airport E', 5);
 
-INSERT INTO airport.tripulationroles
-(id, name)
-VALUES(3, 'tecnico');
+INSERT INTO tripulationroles (name) VALUES 
+('administrador'), ('tecnico'), ('ventas'), ('Pilot'), ('Co-Pilot'), ('Flight Attendant'), ('Ground Staff');
 
-INSERT INTO airport.documenttypes
-(id, name)
-VALUES(1, 'cedula');
+INSERT INTO documenttypes (name) VALUES 
+('Passport'), ('ID Card'), ('Driver License'), ('Visa'), ('Work Permit');
 
-INSERT INTO airport.customers
-(id, name, email, password, age, iddocument)
-VALUES('WQESD', 'CLIENTE', 'cliente', 'cliente', 2, 1);
+INSERT INTO statuses (name) VALUES 
+('Active'), ('Inactive'), ('Under Maintenance'), ('Retired'), ('Scheduled for Maintenance');
 
+INSERT INTO manufacturers (name) VALUES 
+('Manufacturer A'), ('Manufacturer B'), ('Manufacturer C'), ('Manufacturer D'), ('Manufacturer E');
 
-INSERT INTO airport.employees
-(id, name, email, password, idrol, ingressdate, idairline, idairport)
-VALUES('ADMIN', 'TEST', 'admin', 'admin', 1, '2022-02-02', 1, 'CYOW');
-
-INSERT INTO airport.employees
-(id, name, email, password, idrol, ingressdate, idairline, idairport)
-VALUES('VENTAS', 'TEST', 'ventas', 'ventas', 2, '2022-02-02', 1, 'CYOW');
-
-INSERT INTO airport.employees
-(id, name, email, password, idrol, ingressdate, idairline, idairport)
-VALUES('TECNICO', 'TEST', 'tecnico', 'tecnico', 3, '2022-02-02', 1, 'CYOW');
+INSERT INTO manufacturers (name) VALUES 
+('Manufacturer A'), ('Manufacturer B'), ('Manufacturer C'), ('Manufacturer D'), ('Manufacturer E');
 
 
-INSERT INTO airport.statuses
-(id, name)
-VALUES(1, 'activo');
 
-INSERT INTO airport.manufacturers
-(id, name)
-VALUES(1, 'A');
+INSERT INTO customers (id, name, email, password, age, iddocument) VALUES 
+(1, 'cliente', 'cliente', 'cliente', 30, 1), 
+(2, 'Customer B', 'customerB@example.com', 'passwordB', 25, 2), 
+(3, 'Customer C', 'customerC@example.com', 'passwordC', 35, 3), 
+(4, 'Customer D', 'customerD@example.com', 'passwordD', 40, 4), 
+(5, 'Customer E', 'customerE@example.com', 'passwordE', 45, 5);
+
+INSERT INTO employees (id, name, email, password, idrol, ingressdate, idairline, idairport) VALUES 
+(1, 'admin', 'admin', 'admin', 1, '2015-06-01', 1, 1), 
+(2, 'tecnico', 'tecnico', 'tecnico', 2, '2016-07-01', 2, 2), 
+(3, 'ventas', 'ventas', 'ventas', 3, '2017-08-01', 3, 3), 
+(4, 'Employee D', 'employeeD@example.com', 'passwordD', 4, '2018-09-01', 4, 4), 
+(5, 'Employee E', 'employeeE@example.com', 'passwordE', 5, '2019-10-01', 5, 5);
+
+INSERT INTO trips (trip_date, price_tripe, departure_airport, arrival_airport) VALUES 
+('2024-07-01', 500.00, 'Airport A', 'Airport B'), 
+('2024-08-01', 600.00, 'Airport B', 'Airport C'), 
+('2024-09-01', 700.00, 'Airport C', 'Airport D'), 
+('2024-10-01', 800.00, 'Airport D', 'Airport E'), 
+('2024-11-01', 900.00, 'Airport E', 'Airport A');
+
+INSERT INTO flightfares (description, details, value) VALUES 
+('Economy', 'Basic economy fare', 100.000), 
+('Business', 'Business class fare', 200.000), 
+('First', 'First class fare', 300.000), 
+('Premium Economy', 'Premium economy fare', 150.000), 
+('Discount', 'Discounted fare', 50.000);
+
+
+
+INSERT INTO gates (gatenumber, idairport) VALUES 
+('Gate 1', 1), 
+('Gate 2', 2), 
+('Gate 3', 3), 
+('Gate 4', 4), 
+('Gate 5', 5);
+
+
+
+
+
+INSERT INTO revision_details (id, description, id_employee) VALUES 
+(1, 'Routine check-up', 1), 
+(2, 'Engine maintenance', 2), 
+(3, 'Landing gear inspection', 3), 
+(4, 'Electrical system check', 4), 
+(5, 'Interior cleaning', 5);
+
+INSERT INTO tripbooking (date, idtrips) VALUES 
+('2024-06-01', 1), 
+('2024-07-01', 2), 
+('2024-08-01', 3), 
+('2024-09-01', 4), 
+('2024-10-01', 5);
+
+INSERT INTO tripbookingdetails (idtripbooking, idcustomers, idfares) VALUES 
+(1, 1, 1), 
+(2, 2, 2), 
+(3, 3, 3), 
+(4, 4, 4), 
+(5, 5, 5);
 
 INSERT INTO airport.models
 (id, name, manufacturerid)
 VALUES(1, ' boeing 747', 1);
+
+
+INSERT INTO planes (plateNumber, capacity, fabrication_date, id_status, id_model) VALUES 
+('ABC123', 150, '2020-01-01', 1, 1), 
+('DEF456', 180, '2019-02-01', 2, 1), 
+('GHI789', 200, '2018-03-01', 3, 1), 
+('JKL012', 220, '2021-04-01', 4, 1), 
+('MNO345', 250, '2022-05-01', 5, 1);
+
+INSERT INTO flight_connections (connection_number, id_trip, id_plane, type_fright, Last_Scale) VALUES 
+('FC123', 1, 1, 'Domestic', 'City A'), 
+('FC456', 2, 2, 'International', 'City B'), 
+('FC789', 3, 3, 'Domestic', 'City C'), 
+('FC012', 4, 4, 'International', 'City D'), 
+('FC345', 5, 5, 'Domestic', 'City E');
+
+INSERT INTO tripcrews (idemployees, idconection) VALUES 
+(1, 1), 
+(2, 2), 
+(3, 3), 
+(4, 4), 
+(5, 5);
+
+INSERT INTO revisions (revision_date, id_plane) VALUES 
+('2024-01-01', 1), 
+('2024-02-01', 2), 
+('2024-03-01', 3), 
+('2024-04-01', 4), 
+('2024-05-01', 5);
+
+INSERT INTO revemployee (idemployee, idrevision) VALUES 
+(1, 1), 
+(2, 2), 
+(3, 3), 
+(4, 4), 
+(5, 5);
+
+

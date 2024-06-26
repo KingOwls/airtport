@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.swing.JOptionPane;
+
 import com.campuslands.core.MySQL;
 import com.campuslands.modules.flightfares.domain.models.Flightfares;
 import com.campuslands.modules.flightfares.domain.repository.FlightfaresRepository;
@@ -28,9 +30,11 @@ public class FlightFaresMySQL extends MySQL implements FlightfaresRepository {
                 statement.setString(2, flightFares.getDescription());
                 statement.setString(3, flightFares.getDetails());
                 statement.setInt(4, flightFares.getValue());
+                JOptionPane.showMessageDialog(null, "Tarifa creada exitosamente ", "INSERT", 0);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
@@ -44,9 +48,11 @@ public class FlightFaresMySQL extends MySQL implements FlightfaresRepository {
                 statement.setString(3, flightFares.getDetails());
                 statement.setInt(4, flightFares.getValue());
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Tarifa actualizada exitosamente ", "UPDATE", 0);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
@@ -59,17 +65,17 @@ public class FlightFaresMySQL extends MySQL implements FlightfaresRepository {
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
                         Flightfares flightFares = new Flightfares(
-                            resultSet.getInt("id"),
-                            resultSet.getString("description"),
-                            resultSet.getString("details"),
-                            resultSet.getInt("value")
-                        );
+                                resultSet.getInt("id"),
+                                resultSet.getString("description"),
+                                resultSet.getString("details"),
+                                resultSet.getInt("value"));
                         return Optional.of(flightFares);
                     }
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
         return Optional.empty();
     }
@@ -81,9 +87,11 @@ public class FlightFaresMySQL extends MySQL implements FlightfaresRepository {
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, id);
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Tarifa eliminada exitosamente ", "DELETE", 0);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
@@ -93,19 +101,19 @@ public class FlightFaresMySQL extends MySQL implements FlightfaresRepository {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             String query = "SELECT * FROM flightfares";
             try (PreparedStatement statement = connection.prepareStatement(query);
-                 ResultSet resultSet = statement.executeQuery()) {
+                    ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     Flightfares fare = new Flightfares(
-                        resultSet.getInt("id"),
-                        resultSet.getString("description"),
-                        resultSet.getString("details"),
-                        resultSet.getInt("value")
-                    );
+                            resultSet.getInt("id"),
+                            resultSet.getString("description"),
+                            resultSet.getString("details"),
+                            resultSet.getInt("value"));
                     flightFares.add(fare);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
         return flightFares;
     }

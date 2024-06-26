@@ -29,7 +29,7 @@ public class StatusesAdapter {
 
                     Statuses status = new Statuses(0, name);
                     statusesService.createStatus(status);
-                    JOptionPane.showMessageDialog(v.container, "Estado agregado exitosamente.");
+                    // JOptionPane.showMessageDialog(v.container, "Estado agregado exitosamente.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container, "Error al agregar el estado: " + ex.getMessage(),
                             "Error", JOptionPane.ERROR_MESSAGE);
@@ -56,7 +56,8 @@ public class StatusesAdapter {
 
                     Statuses status = new Statuses(id, name);
                     statusesService.updateStatus(status);
-                    JOptionPane.showMessageDialog(v.container, "Estado actualizado exitosamente.");
+                    // JOptionPane.showMessageDialog(v.container, "Estado actualizado
+                    // exitosamente.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container, "Error al actualizar el estado: " + ex.getMessage(),
                             "Error", JOptionPane.ERROR_MESSAGE);
@@ -80,7 +81,7 @@ public class StatusesAdapter {
                 try {
                     int id = idInput.getInt();
                     statusesService.deleteStatus(id);
-                    JOptionPane.showMessageDialog(v.container, "Estado eliminado exitosamente.");
+                    // JOptionPane.showMessageDialog(v.container, "Estado eliminado exitosamente.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container, "Error al eliminar el estado: " + ex.getMessage(),
                             "Error", JOptionPane.ERROR_MESSAGE);
@@ -105,7 +106,7 @@ public class StatusesAdapter {
                         statusesList.append("ID: ").append(status.getId()).append(", Nombre: ")
                                 .append(status.getName()).append("\n");
                     }
-                    JOptionPane.showMessageDialog(v.container, statusesList.toString());
+                    // JOptionPane.showMessageDialog(v.container, statusesList.toString());
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container, "Error al buscar los estados: " + ex.getMessage(),
                             "Error", JOptionPane.ERROR_MESSAGE);

@@ -28,36 +28,36 @@ public class RevemployeeOutModule {
     }
 
     public JMenu options() {
-        JMenu option = new JMenu("Tipo de Documentos");
-        option.add(new JMenuItem(new AbstractAction("Registrar Tipo de Documentos") {
+        JMenu option = new JMenu(" Empleado de Revisión");
+        option.add(new JMenuItem(new AbstractAction("Registrar Empleado de Revisión") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // employeesAdapter.createEmployee();
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Actualizar Tipo de Documentos") {
+        option.add(new JMenuItem(new AbstractAction("Actualizar Empleado de Revisión") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // employeesAdapter.updateEmployee();
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Eliminar Tipo de Documentos") {
+        option.add(new JMenuItem(new AbstractAction("Eliminar Empleado de Revisión") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // employeesAdapter.deleteEmployee();
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Buscar Tipo de Documentos") {
+        option.add(new JMenuItem(new AbstractAction("Buscar Empleado de Revisión") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // adapter.VFindAirportAll();
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Mostrar todos los Tipo de Documentos") {
+        option.add(new JMenuItem(new AbstractAction("Mostrar todos los Empleados de Revisión") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // employeesAdapter.findAllEmployees();

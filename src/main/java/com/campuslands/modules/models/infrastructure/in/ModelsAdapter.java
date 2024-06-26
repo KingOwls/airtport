@@ -31,7 +31,8 @@ public class ModelsAdapter {
                     int manufactureId = manufactureIdInput.getInt();
                     Models model = new Models(0, name, manufactureId);
                     modelsService.createModel(model);
-                    JOptionPane.showMessageDialog(v.container, "Modelo agregado exitosamente.");
+                    JOptionPane.showMessageDialog(v.container, "Modelo agregado exitosamente.");// ELIMINAR ESTOS DEL
+                                                                                                // CRUD
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container,
                             "Error al agregar el modelo: " + ex.getMessage(), "Error",

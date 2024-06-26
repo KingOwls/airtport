@@ -31,7 +31,7 @@ public class GatesAdapter {
 
                     Gates gate = new Gates(0, number, idAirport);
                     gatesService.createGate(gate);
-                    JOptionPane.showMessageDialog(v.container, "Puerta agregada exitosamente.");
+                    // JOptionPane.showMessageDialog(v.container, "Puerta agregada exitosamente.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container, "Error al agregar la puerta: " + ex.getMessage(),
                             "Error", JOptionPane.ERROR_MESSAGE);
@@ -61,7 +61,8 @@ public class GatesAdapter {
 
                     Gates gate = new Gates(id, number, idAirport);
                     gatesService.updateGate(gate);
-                    JOptionPane.showMessageDialog(v.container, "Puerta actualizada exitosamente.");
+                    // JOptionPane.showMessageDialog(v.container, "Puerta actualizada
+                    // exitosamente.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container, "Error al actualizar la puerta: " + ex.getMessage(),
                             "Error", JOptionPane.ERROR_MESSAGE);
@@ -86,7 +87,7 @@ public class GatesAdapter {
                 try {
                     int id = idInput.getInt();
                     gatesService.deleteGate(id);
-                    JOptionPane.showMessageDialog(v.container, "Puerta eliminada exitosamente.");
+                    // JOptionPane.showMessageDialog(v.container, "Puerta eliminada exitosamente.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container, "Error al eliminar la puerta: " + ex.getMessage(),
                             "Error", JOptionPane.ERROR_MESSAGE);

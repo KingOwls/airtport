@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+import javax.swing.JOptionPane;
 import com.campuslands.core.MySQL;
 import com.campuslands.modules.countries.domain.models.Country;
 import com.campuslands.modules.countries.domain.repository.CountriesRepository;
@@ -26,9 +26,12 @@ public class CountriesMySQL extends MySQL implements CountriesRepository {
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, countries.getName());
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Pais Creado Correctamente", "INSERT", 0);
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
@@ -40,9 +43,11 @@ public class CountriesMySQL extends MySQL implements CountriesRepository {
                 statement.setString(1, countries.getName());
                 statement.setInt(2, countries.getId());
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Pais actualizado exitosamente", "UPDATE", 0);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showInputDialog(null, e, "Error", 0);
         }
     }
 
@@ -55,15 +60,15 @@ public class CountriesMySQL extends MySQL implements CountriesRepository {
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
                         Country countries = new Country(
-                            resultSet.getInt("id"),
-                            resultSet.getString("name")
-                        );
+                                resultSet.getInt("id"),
+                                resultSet.getString("name"));
                         return Optional.of(countries);
                     }
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showInputDialog(null, e, "Error", 0);
         }
         return Optional.empty();
     }
@@ -75,9 +80,11 @@ public class CountriesMySQL extends MySQL implements CountriesRepository {
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, id);
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Pais eleiminado exitosamente ", "DELETE", 0);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showInputDialog(null, e, "Error", 0);
         }
     }
 
@@ -87,17 +94,17 @@ public class CountriesMySQL extends MySQL implements CountriesRepository {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             String query = "SELECT * FROM countries";
             try (PreparedStatement statement = connection.prepareStatement(query);
-                 ResultSet resultSet = statement.executeQuery()) {
+                    ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     Country country = new Country(
-                        resultSet.getInt("id"),
-                        resultSet.getString("name")
-                    );
+                            resultSet.getInt("id"),
+                            resultSet.getString("name"));
                     countries.add(country);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showInputDialog(null, e, "Error", 0);
         }
         return countries;
     }

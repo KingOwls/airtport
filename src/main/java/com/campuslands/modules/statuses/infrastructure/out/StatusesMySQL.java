@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.swing.JOptionPane;
+
 import com.campuslands.core.MySQL;
 import com.campuslands.modules.statuses.domain.models.Statuses;
 import com.campuslands.modules.statuses.domain.repository.StatusesRepository;
@@ -26,9 +28,11 @@ public class StatusesMySQL extends MySQL implements StatusesRepository {
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, statuses.getName());
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Se Agrego Correctamente", "INSERT", 1);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            // e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
@@ -40,9 +44,11 @@ public class StatusesMySQL extends MySQL implements StatusesRepository {
                 statement.setString(1, statuses.getName());
                 statement.setInt(2, statuses.getId());
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Se Actualizo  correctamente", "UPDATE", 2);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            // e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
@@ -55,15 +61,15 @@ public class StatusesMySQL extends MySQL implements StatusesRepository {
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
                         Statuses statuses = new Statuses(
-                            resultSet.getInt("id"),
-                            resultSet.getString("name")
-                        );
+                                resultSet.getInt("id"),
+                                resultSet.getString("name"));
                         return Optional.of(statuses);
                     }
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            // e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
         return Optional.empty();
     }
@@ -75,9 +81,11 @@ public class StatusesMySQL extends MySQL implements StatusesRepository {
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, id);
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Se Elimino correctamente ", "DELETE", 0);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            // e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
@@ -87,17 +95,17 @@ public class StatusesMySQL extends MySQL implements StatusesRepository {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             String query = "SELECT * FROM statuses";
             try (PreparedStatement statement = connection.prepareStatement(query);
-                 ResultSet resultSet = statement.executeQuery()) {
+                    ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     Statuses status = new Statuses(
-                        resultSet.getInt("id"),
-                        resultSet.getString("name")
-                    );
+                            resultSet.getInt("id"),
+                            resultSet.getString("name"));
                     statuses.add(status);
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            // e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
         return statuses;
     }

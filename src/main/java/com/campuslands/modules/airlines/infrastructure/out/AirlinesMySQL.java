@@ -55,9 +55,8 @@ public class AirlinesMySQL extends MySQL implements AirlinesRepository {
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
                         Airlines airlines = new Airlines(
-                            resultSet.getInt("id"),
-                            resultSet.getString("name")
-                        );
+                                resultSet.getInt("id"),
+                                resultSet.getString("name"));
                         return Optional.of(airlines);
                     }
                 }
@@ -87,12 +86,11 @@ public class AirlinesMySQL extends MySQL implements AirlinesRepository {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             String query = "SELECT * FROM airlines";
             try (PreparedStatement statement = connection.prepareStatement(query);
-                 ResultSet resultSet = statement.executeQuery()) {
+                    ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     Airlines airline = new Airlines(
-                        resultSet.getInt("id"),
-                        resultSet.getString("name")
-                    );
+                            resultSet.getInt("id"),
+                            resultSet.getString("name"));
                     airlines.add(airline);
                 }
             }

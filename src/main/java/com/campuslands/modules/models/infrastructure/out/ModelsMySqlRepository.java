@@ -13,6 +13,8 @@ import com.campuslands.core.MySQL;
 import com.campuslands.modules.models.domain.models.Models;
 import com.campuslands.modules.models.domain.repository.ModelsRepository;
 
+//PENDIENTE TERMIANR LOS JOP 
+
 public class ModelsMySqlRepository extends MySQL implements ModelsRepository {
 
     public ModelsMySqlRepository() {
@@ -55,10 +57,9 @@ public class ModelsMySqlRepository extends MySQL implements ModelsRepository {
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
                         Models models = new Models(
-                            resultSet.getInt("id"),
-                            resultSet.getString("name"),
-                            resultSet.getInt("manuFactureId")
-                        );
+                                resultSet.getInt("id"),
+                                resultSet.getString("name"),
+                                resultSet.getInt("manuFactureId"));
                         return Optional.of(models);
                     }
                 }
@@ -88,13 +89,12 @@ public class ModelsMySqlRepository extends MySQL implements ModelsRepository {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             String query = "SELECT * FROM models";
             try (PreparedStatement statement = connection.prepareStatement(query);
-                 ResultSet resultSet = statement.executeQuery()) {
+                    ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     Models model = new Models(
-                        resultSet.getInt("id"),
+                            resultSet.getInt("id"),
                             resultSet.getString("name"),
-                            resultSet.getInt("manuFactureId")
-                    );
+                            resultSet.getInt("manuFactureId"));
                     models.add(model);
                 }
             }

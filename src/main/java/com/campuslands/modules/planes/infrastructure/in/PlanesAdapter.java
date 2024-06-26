@@ -39,7 +39,7 @@ public class PlanesAdapter {
                     int idModel = idModelInput.getInt();
                     Planes plane = new Planes(plates, capacity, fabricationDate, idStatus, idModel);
                     planesService.createPlane(plane);
-                   
+
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container,
                             "Error al agregar el avión: " + ex.getMessage(), "Error",
@@ -80,7 +80,6 @@ public class PlanesAdapter {
 
                     Planes plane = new Planes(id, plates, capacity, fabricationDate, idStatus, idModel);
                     planesService.updatePlane(plane);
-                    JOptionPane.showMessageDialog(v.container, "Avión actualizado exitosamente.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container,
                             "Error al actualizar el avión: " + ex.getMessage(), "Error",
@@ -109,7 +108,6 @@ public class PlanesAdapter {
                 try {
                     int id = idInput.getInt();
                     planesService.deletePlane(id);
-                    JOptionPane.showMessageDialog(v.container, "Avión eliminado exitosamente.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container,
                             "Error al eliminar el avión: " + ex.getMessage(), "Error",
@@ -124,30 +122,21 @@ public class PlanesAdapter {
 
     public void findAllPlanes() {
         v = new ViewOut();
-        JButton findButton = new JButton("Buscar Todos los Aviones");
-        findButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    List<Planes> planes = planesService.getAllPlanes();
-                    StringBuilder planesList = new StringBuilder("Lista de Aviones:\n");
-                    for (Planes plane : planes) {
-                        planesList.append("ID: ").append(plane.getId()).append(", Placas: ")
-                                .append(plane.getPlateNumber()).append(", Capacidad: ")
-                                .append(plane.getCapacity()).append(", Fecha de Fabricación: ")
-                                .append(plane.getFabrication_date()).append(", ID de Estado: ")
-                                .append(plane.getId_status()).append(", ID de Modelo: ")
-                                .append(plane.getId_model()).append("\n");
-                    }
-                    JOptionPane.showMessageDialog(v.container, planesList.toString());
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(v.container,
-                            "Error al buscar los aviones: " + ex.getMessage(), "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
+        List<Planes> planes = planesService.getAllPlanes();
+        String[] columnNames = { "ID", "Placas", "Capacidad", "Fecha de Fabricación", "ID de Estado", "ID de Modelo" };
+        Object[][] data = new Object[planes.size()][6];
 
-        v.printBody(findButton, v.BackButton());
+        for (int i = 0; i < planes.size(); i++) {
+            Planes plane = planes.get(i);
+            data[i][0] = plane.getId();
+            data[i][1] = plane.getPlateNumber();
+            data[i][2] = plane.getCapacity();
+            data[i][3] = plane.getFabrication_date();
+            data[i][4] = plane.getId_status();
+            data[i][5] = plane.getId_model();
+        }
+
+        v.container.add(v.new VTable(columnNames, data).getDiv());
+        v.printBody(v.BackButton());
     }
 }

@@ -23,7 +23,7 @@ public class CitiesService {
         citiesRepository.update(cities);
     }
 
-    public Optional<Cities> getAirlineById(int id) {
+    public Optional<Cities> getCityById(int id) {
         return citiesRepository.findById(id);
     }
 

@@ -6,64 +6,60 @@ import javax.swing.AbstractAction;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
-//import com.campuslands.modules.tripcrews.application.TripcrewsService;
-//import com.campuslands.modules.tripcrews.infrastructure.in.TripcrewsAdapter;
+import com.campuslands.modules.tripcrews.application.TripcrewsService;
+import com.campuslands.modules.tripcrews.infrastructure.in.TripcrewsAdapter;
 
 public class TripcrewsOutModule {
 
-    /*
-     * protected Tripcew tripcrewsMySQL;
-     * protected TripcrewsService tripcrewsService;
-     * protected TripcrewsAdapter tripcrewsAdapter;
-     * 
-     * public TripcrewsOutModule() {
-     * tripcrewsMySQL = new TripcrewsMySQL(); // Initialize TripcrewsMySQL instance
-     * tripcrewsService = new TripcrewsService(tripcrewsMySQL); // Initialize
-     * TripcrewsService with TripcrewsMySQL
-     * tripcrewsAdapter = new TripcrewsAdapter(tripcrewsService); // Initialize
-     * TripcrewsAdapter with TripcrewsService
-     * }
-     * 
-     * public TripcrewsAdapter module() {
-     * return tripcrewsAdapter; // Return the TripcrewsAdapter instance
-     * }
-     */
+    protected TripcrewsMySQL tripcrewsMySQL;
+    protected TripcrewsService tripcrewsService;
+    protected TripcrewsAdapter tripcrewsAdapter;
+
+    public TripcrewsOutModule() {
+        tripcrewsMySQL = new TripcrewsMySQL();
+        tripcrewsService = new TripcrewsService(tripcrewsMySQL);
+        tripcrewsAdapter = new TripcrewsAdapter(tripcrewsService);
+    }
+
+    public TripcrewsAdapter module() {
+        return tripcrewsAdapter; // Return the TripcrewsAdapter instance
+    }
+
     public JMenu options() {
-        JMenu option = new JMenu("Tipo de tripulantes");
-        option.add(new JMenuItem(new AbstractAction("Registrar Tipo de tripulantes") {
+        JMenu option = new JMenu("tripulantes");
+        option.add(new JMenuItem(new AbstractAction("Registrar tripulante") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // employeesAdapter.createEmployee();
+                tripcrewsAdapter.createTripcrew();
+            }
+        }));
+
+        option.add(new JMenuItem(new AbstractAction("Actualizar tripulante") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tripcrewsAdapter.updateTripcrew();
 
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Actualizar Tipo de tripulantes") {
+        option.add(new JMenuItem(new AbstractAction("Eliminar tripulante") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // employeesAdapter.updateEmployee();
-
+                tripcrewsAdapter.deleteTripcrew();
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Eliminar Tipo de tripulantes") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // employeesAdapter.deleteEmployee();
-            }
-        }));
-
-        option.add(new JMenuItem(new AbstractAction("Buscar Tipo de tripulantes") {
+        option.add(new JMenuItem(new AbstractAction("Buscar  tripulante") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // adapter.VFindAirportAll();
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Mostrar todos los Tipo de tripulantes") {
+        option.add(new JMenuItem(new AbstractAction("Mostrar todos los tripulantes") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // employeesAdapter.findAllEmployees();
+                tripcrewsAdapter.findAllTripcrews();
             }
         }));
 

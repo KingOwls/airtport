@@ -28,36 +28,36 @@ public class TripbookingOutModule {
     }
 
     public JMenu options() {
-        JMenu option = new JMenu("Tipo de Documentos");
-        option.add(new JMenuItem(new AbstractAction("Registrar Tipo de Documentos") {
+        JMenu option = new JMenu("Reserva de Viaje");
+        option.add(new JMenuItem(new AbstractAction("Registrar Reserva de Viaje") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // employeesAdapter.createEmployee();
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Actualizar Tipo de Documentos") {
+        option.add(new JMenuItem(new AbstractAction("Actualizar Reserva de Viaje") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // employeesAdapter.updateEmployee();
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Eliminar Tipo de Documentos") {
+        option.add(new JMenuItem(new AbstractAction("Eliminar Reserva de Viaje") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // employeesAdapter.deleteEmployee();
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Buscar Tipo de Documentos") {
+        option.add(new JMenuItem(new AbstractAction("Buscar Reserva de Viaje") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // adapter.VFindAirportAll();
             }
         }));
 
-        option.add(new JMenuItem(new AbstractAction("Mostrar todos los Tipo de Documentos") {
+        option.add(new JMenuItem(new AbstractAction("Mostrar todos las Reserva de Viaje") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // employeesAdapter.findAllEmployees();

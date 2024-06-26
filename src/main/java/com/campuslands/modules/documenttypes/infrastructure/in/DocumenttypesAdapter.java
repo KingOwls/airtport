@@ -7,6 +7,7 @@ import com.campuslands.views.infrastructure.out.ViewOut;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class DocumenttypesAdapter {
     private ViewOut v;
@@ -28,7 +29,8 @@ public class DocumenttypesAdapter {
                     String name = nameInput.getText();
                     DocumentType documentType = new DocumentType(0, name);
                     documentTypesService.createDocumentType(documentType);
-                    JOptionPane.showMessageDialog(v.container, "Tipo de Documento agregado exitosamente.");
+                    // JOptionPane.showMessageDialog(v.container, "Tipo de Documento agregado
+                    // exitosamente.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container,
                             "Error al agregar el tipo de documento: " + ex.getMessage(), "Error",
@@ -55,7 +57,8 @@ public class DocumenttypesAdapter {
                     String name = nameInput.getText();
                     DocumentType documentType = new DocumentType(id, name);
                     documentTypesService.updateDocumentType(documentType);
-                    JOptionPane.showMessageDialog(v.container, "Tipo de Documento actualizado exitosamente.");
+                    // JOptionPane.showMessageDialog(v.container, "Tipo de Documento actualizado
+                    // exitosamente.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container,
                             "Error al actualizar el tipo de documento: " + ex.getMessage(), "Error",
@@ -80,7 +83,8 @@ public class DocumenttypesAdapter {
                 try {
                     int id = idInput.getInt();
                     documentTypesService.deleteDocumentType(id);
-                    JOptionPane.showMessageDialog(v.container, "Tipo de Documento eliminado exitosamente.");
+                    // JOptionPane.showMessageDialog(v.container, "Tipo de Documento eliminado
+                    // exitosamente.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container,
                             "Error al eliminar el tipo de documento: " + ex.getMessage(), "Error",
@@ -95,26 +99,17 @@ public class DocumenttypesAdapter {
 
     public void findAllDocumentTypes() {
         v = new ViewOut();
-        JButton findButton = new JButton("Buscar Todos los Tipos de Documento");
-        findButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    java.util.List<DocumentType> documentTypes = documentTypesService.getAllDocumentTypes();
-                    StringBuilder documentTypesList = new StringBuilder("Lista de Tipos de Documento:\n");
-                    for (DocumentType documentType : documentTypes) {
-                        documentTypesList.append("ID: ").append(documentType.getId()).append(", Nombre: ")
-                                .append(documentType.getName()).append("\n");
-                    }
-                    JOptionPane.showMessageDialog(v.container, documentTypesList.toString());
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(v.container,
-                            "Error al buscar los tipos de documento: " + ex.getMessage(), "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
+        List<DocumentType> customers = documentTypesService.getAllDocumentTypes();
+        String[] columnNames = { "ID", "Nombre" };
+        Object[][] data = new Object[customers.size()][2];
 
-        v.printBody(findButton, v.BackButton());
+        for (int i = 0; i < customers.size(); i++) {
+            DocumentType customer = customers.get(i);
+            data[i][0] = customer.getId();
+            data[i][1] = customer.getName();
+        }
+
+        v.container.add(v.new VTable(columnNames, data).getDiv());
+        v.printBody(v.BackButton());
     }
 }

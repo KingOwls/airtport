@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import javax.swing.JOptionPane;
 
 import com.campuslands.core.MySQL;
 import com.campuslands.modules.tripulationroles.domain.models.Tripulationroles;
@@ -26,6 +27,7 @@ public class TripulationRolesMySQL extends MySQL implements TripulationRolesRepo
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, tripulationRoles.getName());
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Se Agrego  el rol de la Tripulacion", "INSERT", 0);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -40,9 +42,11 @@ public class TripulationRolesMySQL extends MySQL implements TripulationRolesRepo
                 statement.setString(1, tripulationRoles.getName());
                 statement.setInt(2, tripulationRoles.getId());
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Se Actualizo  el rol de la Tripulacion", "INSERT", 0);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            // e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
@@ -55,15 +59,18 @@ public class TripulationRolesMySQL extends MySQL implements TripulationRolesRepo
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
                         Tripulationroles tripulationRoles = new Tripulationroles(
-                            resultSet.getInt("id"),
-                            resultSet.getString("name")
+                                resultSet.getInt("id"),
+                                resultSet.getString("name")
+
                         );
+                        JOptionPane.showMessageDialog(null, "Se Encontro el Id del rol de la Tripulacion", "INSERT", 0);
                         return Optional.of(tripulationRoles);
                     }
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            // e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
         return Optional.empty();
     }
@@ -75,9 +82,11 @@ public class TripulationRolesMySQL extends MySQL implements TripulationRolesRepo
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, id);
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Se Elimino  el rol de la Tripulacion", "INSERT", 0);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            // e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
@@ -87,17 +96,18 @@ public class TripulationRolesMySQL extends MySQL implements TripulationRolesRepo
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             String query = "SELECT * FROM trips";
             try (PreparedStatement statement = connection.prepareStatement(query);
-                 ResultSet resultSet = statement.executeQuery()) {
+                    ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     Tripulationroles trip = new Tripulationroles(
-                        resultSet.getInt("id"),
-                        resultSet.getString("trip_name")
-                    );
+                            resultSet.getInt("id"),
+                            resultSet.getString("trip_name"));
                     trips.add(trip);
+                    JOptionPane.showMessageDialog(null, "Se Encontro todos los roles de la Tripulacion", "INSERT", 0);
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            // e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
         return trips;
     }

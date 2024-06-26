@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.swing.JOptionPane;
+
 import com.campuslands.core.MySQL;
 import com.campuslands.modules.flightconnections.domain.models.FlightConnection;
 import com.campuslands.modules.flightconnections.domain.repository.FlightConnectionsRepository;
@@ -32,9 +34,11 @@ public class FlightConnectionsMySqlRespository extends MySQL implements FlightCo
                 statement.setString(6, flightConnections.getType_flight());
                 statement.setString(7, flightConnections.getLast_Scale());
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Conexion creada  exitosamente", "INSERT", 0);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
@@ -54,6 +58,7 @@ public class FlightConnectionsMySqlRespository extends MySQL implements FlightCo
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
@@ -79,6 +84,7 @@ public class FlightConnectionsMySqlRespository extends MySQL implements FlightCo
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
         return Optional.empty();
     }
@@ -90,9 +96,11 @@ public class FlightConnectionsMySqlRespository extends MySQL implements FlightCo
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, id);
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Conexion borrada exitosamente", "DELTE", 0);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
@@ -119,6 +127,7 @@ public class FlightConnectionsMySqlRespository extends MySQL implements FlightCo
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
         return flightConnections;
     }

@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+import javax.swing.JOptionPane;
 import com.campuslands.core.MySQL;
 import com.campuslands.modules.customers.domain.models.Customer;
 import com.campuslands.modules.customers.domain.repository.CustomersRepository;
@@ -31,9 +31,11 @@ public class CustomersMySQL extends MySQL implements CustomersRepository {
                 statement.setString(5, customers.getPassword());
                 statement.setString(6, customers.getEmail());
                 statement.executeUpdate();
+                JOptionPane.showInputDialog(null, "Cliente creado exitosa mente", "INSERT", 0);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
@@ -48,11 +50,12 @@ public class CustomersMySQL extends MySQL implements CustomersRepository {
                 statement.setInt(4, customers.getIddocument());
                 statement.setString(5, customers.getPassword());
                 statement.setString(6, customers.getEmail());
-
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Cliente actualizado correctamente", "UPDATE", 0);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
@@ -77,6 +80,7 @@ public class CustomersMySQL extends MySQL implements CustomersRepository {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showInputDialog(null, e, "Error", 0);
         }
         return Optional.empty();
     }
@@ -88,9 +92,11 @@ public class CustomersMySQL extends MySQL implements CustomersRepository {
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, id);
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Cliente borrado exitosamente", "DELETE", 0);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showInputDialog(null, e, "Error", 0);
         }
     }
 
@@ -114,6 +120,7 @@ public class CustomersMySQL extends MySQL implements CustomersRepository {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showInputDialog(null, e, "Error", 0);
         }
         return customers;
     }

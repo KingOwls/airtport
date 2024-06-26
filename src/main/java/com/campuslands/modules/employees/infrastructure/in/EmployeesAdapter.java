@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
+import java.util.List;
 
 public class EmployeesAdapter {
     private ViewOut v;
@@ -45,7 +46,8 @@ public class EmployeesAdapter {
                     Employee employee = new Employee(id, name, email, ingressDate, idAirline, idAirport, password,
                             idRol);
                     employeesService.createEmployee(employee);
-                    JOptionPane.showMessageDialog(v.container, "Empleado agregado exitosamente.");
+                    // JOptionPane.showMessageDialog(v.container, "Empleado agregado
+                    // exitosamente.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container, "Error al agregar el empleado: " + ex.getMessage(),
                             "Error", JOptionPane.ERROR_MESSAGE);
@@ -92,7 +94,8 @@ public class EmployeesAdapter {
                     Employee employee = new Employee(id, name, email, ingressDate, idAirline, idAirport, password,
                             idRol);
                     employeesService.updateEmployee(employee);
-                    JOptionPane.showMessageDialog(v.container, "Empleado actualizado exitosamente.");
+                    // JOptionPane.showMessageDialog(v.container, "Empleado actualizado
+                    // exitosamente.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container, "Error al actualizar el empleado: " + ex.getMessage(),
                             "Error", JOptionPane.ERROR_MESSAGE);
@@ -122,7 +125,8 @@ public class EmployeesAdapter {
                 try {
                     int id = idInput.getInt();
                     employeesService.deleteEmployee(id);
-                    JOptionPane.showMessageDialog(v.container, "Empleado eliminado exitosamente.");
+                    // JOptionPane.showMessageDialog(v.container, "Empleado eliminado
+                    // exitosamente.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container, "Error al eliminar el empleado: " + ex.getMessage(),
                             "Error", JOptionPane.ERROR_MESSAGE);
@@ -136,30 +140,24 @@ public class EmployeesAdapter {
 
     public void findAllEmployees() {
         v = new ViewOut();
-        JButton findButton = new JButton("Buscar Todos los Empleados");
-        findButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    java.util.List<Employee> employees = employeesService.getAllEmployees();
-                    StringBuilder employeesList = new StringBuilder("Lista de Empleados:\n");
-                    for (Employee employee : employees) {
-                        employeesList.append("ID: ").append(employee.getId())
-                                .append(", Nombre: ").append(employee.getName())
-                                .append(", ID Rol: ").append(employee.getIdrol())
-                                .append(", Fecha de Ingreso: ").append(employee.getIngressdate())
-                                .append(", ID Aerolínea: ").append(employee.getIdairline())
-                                .append(", ID Aeropuerto: ").append(employee.getIdairport())
-                                .append("\n");
-                    }
-                    JOptionPane.showMessageDialog(v.container, employeesList.toString());
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(v.container, "Error al buscar los empleados: " + ex.getMessage(),
-                            "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
+        List<Employee> employees = employeesService.getAllEmployees();
+        String[] columnNames = { "ID", "Nombre", "Email", "Fecha Ingreso", "Id Aerolinea", "d Aeropuerto", "contraseña",
+                " Id Rol" };
+        Object[][] data = new Object[employees.size()][8];
 
-        v.printBody(findButton, v.BackButton());
+        for (int i = 0; i < employees.size(); i++) {
+            Employee employee = employees.get(i);
+            data[i][0] = employee.getId();
+            data[i][1] = employee.getName();
+            data[i][2] = employee.getEmail();
+            data[i][3] = employee.getIngressdate();
+            data[i][4] = employee.getIdairline();
+            data[i][5] = employee.getIdairport();
+            data[i][6] = employee.getPassword();
+            data[i][7] = employee.getIdrol();
+        }
+
+        v.container.add(v.new VTable(columnNames, data).getDiv());
+        v.printBody(v.BackButton());
     }
 }

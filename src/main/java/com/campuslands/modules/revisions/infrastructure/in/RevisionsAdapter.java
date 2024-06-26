@@ -1,6 +1,5 @@
 package com.campuslands.modules.revisions.infrastructure.in;
 
-
 import com.campuslands.modules.revisions.domain.models.Revisions;
 import com.campuslands.modules.revisions.application.RevisionsService;
 import com.campuslands.views.infrastructure.out.ViewOut;
@@ -21,7 +20,7 @@ public class RevisionsAdapter {
 
     public void createRevision() {
         v = new ViewOut();
-        ViewOut.VInput revisionDateInput = v.new VInput("Ingresa la Fecha de la Revisión (YYYY-MM-DD)", 30);
+        ViewOut.VDate revisionDateInput = v.new VDate("Ingresa la Fecha de la Revisión (YYYY-MM-DD)", "date");
         ViewOut.VInput idPlaneInput = v.new VInput("Ingresa el ID del Avión", 30);
 
         JButton addButton = new JButton("Agregar Nueva Revisión");
@@ -29,7 +28,7 @@ public class RevisionsAdapter {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    Date revisionDate = Date.valueOf(revisionDateInput.getText());
+                    Date revisionDate = revisionDateInput.getValue();
                     int idPlane = idPlaneInput.getInt();
                     Revisions revision = new Revisions(0, revisionDate, idPlane);
                     revisionsService.createRevision(revision);
@@ -50,7 +49,7 @@ public class RevisionsAdapter {
     public void updateRevision() {
         v = new ViewOut();
         ViewOut.VInput idInput = v.new VInput("Ingresa el ID de la Revisión", 30);
-        ViewOut.VInput revisionDateInput = v.new VInput("Ingresa la Fecha de la Revisión (YYYY-MM-DD)", 30);
+        ViewOut.VDate revisionDateInput = v.new VDate("Ingresa la Fecha de la Revisión (YYYY-MM-DD)", "date");
         ViewOut.VInput idPlaneInput = v.new VInput("Ingresa el ID del Avión", 30);
 
         JButton updateButton = new JButton("Actualizar Revisión");
@@ -59,7 +58,7 @@ public class RevisionsAdapter {
             public void actionPerformed(ActionEvent e) {
                 try {
                     int id = idInput.getInt();
-                    Date revisionDate = Date.valueOf(revisionDateInput.getText());
+                    Date revisionDate = revisionDateInput.getValue();
                     int idPlane = idPlaneInput.getInt();
                     Revisions revision = new Revisions(id, revisionDate, idPlane);
                     revisionsService.updateRevision(revision);

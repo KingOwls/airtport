@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+import javax.swing.JOptionPane;
 import com.campuslands.core.MySQL;
 import com.campuslands.modules.gates.domain.models.Gates;
 import com.campuslands.modules.gates.domain.repository.GatesRepository;
@@ -27,9 +27,11 @@ public class GatesMySQL extends MySQL implements GatesRepository {
                 statement.setString(1, gate.getGetNumber());
                 statement.setString(2, gate.getIdAirport());
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Puerta creada exitosamente ", "INSERT", 0);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
@@ -42,9 +44,11 @@ public class GatesMySQL extends MySQL implements GatesRepository {
                 statement.setString(2, gate.getIdAirport());
                 statement.setInt(3, gate.getId());
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Puerta actaulizada", "UPDATE", 0);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
@@ -57,16 +61,16 @@ public class GatesMySQL extends MySQL implements GatesRepository {
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
                         Gates gate = new Gates(
-                            resultSet.getInt("id"),
-                            resultSet.getString("gate_number"),
-                            resultSet.getString("airport_id")
-                        );
+                                resultSet.getInt("id"),
+                                resultSet.getString("gate_number"),
+                                resultSet.getString("airport_id"));
                         return Optional.of(gate);
                     }
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
         return Optional.empty();
     }
@@ -78,9 +82,11 @@ public class GatesMySQL extends MySQL implements GatesRepository {
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, id);
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Puerta eliminada", "DELETE", 0);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
@@ -90,20 +96,19 @@ public class GatesMySQL extends MySQL implements GatesRepository {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             String query = "SELECT * FROM gates";
             try (PreparedStatement statement = connection.prepareStatement(query);
-                 ResultSet resultSet = statement.executeQuery()) {
+                    ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     Gates gate = new Gates(
-                        resultSet.getInt("id"),
-                        resultSet.getString("gate_number"),
-                        resultSet.getString("airport_id")
-                    );
+                            resultSet.getInt("id"),
+                            resultSet.getString("gate_number"),
+                            resultSet.getString("airport_id"));
                     gates.add(gate);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
         return gates;
     }
 }
-

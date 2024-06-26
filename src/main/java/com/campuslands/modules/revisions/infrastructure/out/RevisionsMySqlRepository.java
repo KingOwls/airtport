@@ -58,10 +58,9 @@ public class RevisionsMySqlRepository extends MySQL implements RevisionsReposito
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
                         Revisions revisions = new Revisions(
-                            resultSet.getInt("id"),
-                            resultSet.getDate("revision_date"),
-                            resultSet.getInt("id_plane")
-                        );
+                                resultSet.getInt("id"),
+                                resultSet.getDate("revision_date"),
+                                resultSet.getInt("id_plane"));
                         return Optional.of(revisions);
                     }
                 }
@@ -91,13 +90,12 @@ public class RevisionsMySqlRepository extends MySQL implements RevisionsReposito
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             String query = "SELECT * FROM revisions";
             try (PreparedStatement statement = connection.prepareStatement(query);
-                 ResultSet resultSet = statement.executeQuery()) {
+                    ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     Revisions revision = new Revisions(
-                        resultSet.getInt("id"),
-                        resultSet.getDate("revision_date"),
-                        resultSet.getInt("id_plane")
-                    );
+                            resultSet.getInt("id"),
+                            resultSet.getDate("revision_date"),
+                            resultSet.getInt("id_plane"));
                     revisions.add(revision);
                 }
             }

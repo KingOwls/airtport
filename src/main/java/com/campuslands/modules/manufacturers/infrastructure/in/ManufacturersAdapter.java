@@ -29,7 +29,8 @@ public class ManufacturersAdapter {
                     String name = nameInput.getText();
                     Manufacturers manufacturer = new Manufacturers(0, name);
                     manufacturersService.createManufacturer(manufacturer);
-                    JOptionPane.showMessageDialog(v.container, "Fabricante agregado exitosamente.");
+                    // JOptionPane.showMessageDialog(v.container, "Fabricante agregado
+                    // exitosamente.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container,
                             "Error al agregar el fabricante: " + ex.getMessage(), "Error",
@@ -56,7 +57,8 @@ public class ManufacturersAdapter {
                     String name = nameInput.getText();
                     Manufacturers manufacturer = new Manufacturers(id, name);
                     manufacturersService.updateManufacturer(manufacturer);
-                    JOptionPane.showMessageDialog(v.container, "Fabricante actualizado exitosamente.");
+                    // JOptionPane.showMessageDialog(v.container, "Fabricante actualizado
+                    // exitosamente.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container,
                             "Error al actualizar el fabricante: " + ex.getMessage(), "Error",
@@ -81,7 +83,8 @@ public class ManufacturersAdapter {
                 try {
                     int id = idInput.getInt();
                     manufacturersService.deleteManufacturer(id);
-                    JOptionPane.showMessageDialog(v.container, "Fabricante eliminado exitosamente.");
+                    // JOptionPane.showMessageDialog(v.container, "Fabricante eliminado
+                    // exitosamente.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container,
                             "Error al eliminar el fabricante: " + ex.getMessage(), "Error",

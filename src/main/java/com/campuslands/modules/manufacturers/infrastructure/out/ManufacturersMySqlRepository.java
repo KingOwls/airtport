@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+import javax.swing.JOptionPane;
 import com.campuslands.core.MySQL;
 import com.campuslands.modules.manufacturers.domain.models.Manufacturers;
 import com.campuslands.modules.manufacturers.domain.repository.ManufacturersRepository;
@@ -26,9 +26,11 @@ public class ManufacturersMySqlRepository extends MySQL implements Manufacturers
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, manufacturers.getName());
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Manufactura  cereada exitosamente", "INSERT", 0);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
@@ -40,9 +42,11 @@ public class ManufacturersMySqlRepository extends MySQL implements Manufacturers
                 statement.setString(1, manufacturers.getName());
                 statement.setInt(2, manufacturers.getId());
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Manufactura actualizada correctamente", "UPDATE", 0);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
@@ -55,15 +59,15 @@ public class ManufacturersMySqlRepository extends MySQL implements Manufacturers
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
                         Manufacturers manufacturers = new Manufacturers(
-                            resultSet.getInt("id"),
-                            resultSet.getString("name")
-                        );
+                                resultSet.getInt("id"),
+                                resultSet.getString("name"));
                         return Optional.of(manufacturers);
                     }
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
         return Optional.empty();
     }
@@ -75,9 +79,11 @@ public class ManufacturersMySqlRepository extends MySQL implements Manufacturers
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, id);
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Manufactura  eliminada exitosamente", "DELETE", 0);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
@@ -87,17 +93,17 @@ public class ManufacturersMySqlRepository extends MySQL implements Manufacturers
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             String query = "SELECT * FROM manufacturers";
             try (PreparedStatement statement = connection.prepareStatement(query);
-                 ResultSet resultSet = statement.executeQuery()) {
+                    ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     Manufacturers manufacturer = new Manufacturers(
-                        resultSet.getInt("id"),
-                        resultSet.getString("name")
-                    );
+                            resultSet.getInt("id"),
+                            resultSet.getString("name"));
                     manufacturers.add(manufacturer);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
         return manufacturers;
     }

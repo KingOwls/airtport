@@ -6,16 +6,15 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
 
 import com.campuslands.views.application.ViewsService;
 import com.campuslands.views.domain.models.DateInput;
 import com.campuslands.views.domain.models.Header;
 import com.campuslands.views.domain.models.Input;
+import com.campuslands.views.domain.models.Table;
 import com.campuslands.views.domain.models.View;
 
 public class ViewOut extends ViewsService {
@@ -39,6 +38,14 @@ public class ViewOut extends ViewsService {
         public VDate(String title, String format) {
             super(title, format);
 
+        }
+
+    }
+
+    public class VTable extends Table {
+
+        public VTable(String[] columnNames, Object[][] data) {
+            super(columnNames, data);
         }
 
     }

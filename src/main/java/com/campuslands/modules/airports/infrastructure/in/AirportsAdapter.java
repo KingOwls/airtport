@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import java.util.List;
 
 import com.campuslands.views.infrastructure.out.ViewOut;
 import com.campuslands.modules.airports.domain.models.Airport;
@@ -98,23 +99,18 @@ public class AirportsAdapter {
 
     public void VFindAirportAll() {
         v = new ViewOut();
+        List<Airport> airports = airportsService.getAllAirports();
+        String[] columnNames = { "ID", "Nombre", "Id City" };
+        Object[][] data = new Object[airports.size()][3];
 
-        JButton findButton = new JButton("Buscar");
-        findButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    // Aquí debes implementar la lógica para obtener todas las aerolíneas
-                    // Ejemplo: List<Airlines> airlinesList = airlinesService.findAllAirlines();
-                    // y luego mostrar los resultados en la vista.
-                    v.showMessage("Resultado de búsqueda: ");
-                } catch (Exception ex) {
-                    v.showError("Error al buscar aeropuerto: " + ex.getMessage());
-                }
-            }
-        });
+        for (int i = 0; i < airports.size(); i++) {
+            Airport airport = airports.get(i);
+            data[i][0] = airport.getId();
+            data[i][1] = airport.getName();
+            data[i][2] = airport.getIdCity();
+        }
 
-        v.printBody(findButton, v.BackButton());
+        v.container.add(v.new VTable(columnNames, data).getDiv());
+        v.printBody(v.BackButton());
     }
-
 }

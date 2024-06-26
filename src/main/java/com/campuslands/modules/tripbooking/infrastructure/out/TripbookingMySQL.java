@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.swing.JOptionPane;
+
 import com.campuslands.core.MySQL;
 import com.campuslands.modules.tripbooking.domain.models.TripBooking;
 import com.campuslands.modules.tripbooking.domain.repository.TripBookingRepository;
@@ -28,9 +30,11 @@ public class TripbookingMySQL extends MySQL implements TripBookingRepository {
                 statement.setDate(1, new java.sql.Date(tripBooking.getDate().getTime()));
                 statement.setInt(2, tripBooking.getId());
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Se Agrego Correctamente", "INSERT", 1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
@@ -43,9 +47,11 @@ public class TripbookingMySQL extends MySQL implements TripBookingRepository {
                 statement.setInt(2, tripBooking.getId());
                 statement.setInt(3, tripBooking.getId());
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Se actualizo Correctamente", "UPDATE", 2);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
@@ -58,16 +64,16 @@ public class TripbookingMySQL extends MySQL implements TripBookingRepository {
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
                         TripBooking tripBooking = new TripBooking(
-                            resultSet.getInt("id"),
-                            resultSet.getDate("date"),
-                            resultSet.getInt("trip_id")
-                        );
+                                resultSet.getInt("id"),
+                                resultSet.getDate("date"),
+                                resultSet.getInt("trip_id"));
                         return Optional.of(tripBooking);
                     }
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            // e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
         return Optional.empty();
     }
@@ -79,9 +85,11 @@ public class TripbookingMySQL extends MySQL implements TripBookingRepository {
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, id);
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Se elimino correctamente", "DELETE", 0);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            // e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
@@ -91,18 +99,18 @@ public class TripbookingMySQL extends MySQL implements TripBookingRepository {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             String query = "SELECT * FROM trip_bookings";
             try (PreparedStatement statement = connection.prepareStatement(query);
-                 ResultSet resultSet = statement.executeQuery()) {
+                    ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     TripBooking tripBooking = new TripBooking(
                             resultSet.getInt("id"),
                             resultSet.getDate("date"),
-                            resultSet.getInt("trip_id")
-                        );
+                            resultSet.getInt("trip_id"));
                     tripBookings.add(tripBooking);
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            // e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
         return tripBookings;
     }

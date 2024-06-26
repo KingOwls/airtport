@@ -1,12 +1,14 @@
 package com.campuslands.modules.tripcrews.infrastructure.in;
 
 import com.campuslands.modules.tripcrews.domain.models.Tripcrews;
+
 import com.campuslands.modules.tripcrews.application.TripcrewsService; // Asegúrate de importar el servicio correcto
 import com.campuslands.views.infrastructure.out.ViewOut;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class TripcrewsAdapter {
     private ViewOut v;
@@ -28,10 +30,11 @@ public class TripcrewsAdapter {
                 try {
                     int idEmployees = idEmployeesInput.getInt();
                     int idConnection = idConnectionInput.getInt();
-
                     Tripcrews tripcrew = new Tripcrews(idEmployees, idConnection);
                     tripcrewsService.createTripcrew(tripcrew);
-                    JOptionPane.showMessageDialog(v.container, "Tripcrew agregado exitosamente.");
+
+                    // JOptionPane.showMessageDialog(v.container, "Tripcrew agregado
+                    // exitosamente.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container, "Error al agregar el Tripcrew: " + ex.getMessage(),
                             "Error", JOptionPane.ERROR_MESSAGE);
@@ -59,7 +62,8 @@ public class TripcrewsAdapter {
 
                     Tripcrews tripcrew = new Tripcrews(idEmployees, idConnection);
                     tripcrewsService.updateTripcrew(tripcrew);
-                    JOptionPane.showMessageDialog(v.container, "Tripcrew actualizado exitosamente.");
+                    // JOptionPane.showMessageDialog(v.container, "Tripcrew actualizado
+                    // exitosamente.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container, "Error al actualizar el Tripcrew: " + ex.getMessage(),
                             "Error", JOptionPane.ERROR_MESSAGE);
@@ -83,7 +87,8 @@ public class TripcrewsAdapter {
                 try {
 
                     tripcrewsService.deleteTripcrew(idEmployeesInput.getInt());
-                    JOptionPane.showMessageDialog(v.container, "Tripcrew eliminado exitosamente.");
+                    // JOptionPane.showMessageDialog(v.container, "Tripcrew eliminado
+                    // exitosamente.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container, "Error al eliminar el Tripcrew: " + ex.getMessage(),
                             "Error", JOptionPane.ERROR_MESSAGE);
@@ -97,26 +102,17 @@ public class TripcrewsAdapter {
 
     public void findAllTripcrews() {
         v = new ViewOut();
-        JButton findButton = new JButton("Buscar Todos los Tripcrews");
-        findButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    java.util.List<Tripcrews> tripcrews = tripcrewsService.getAllTripcrews();
-                    StringBuilder tripcrewsList = new StringBuilder("Lista de Tripcrews:\n");
-                    for (Tripcrews tripcrew : tripcrews) {
-                        tripcrewsList.append("ID Empleado: ").append(tripcrew.getIdemployees())
-                                .append(", ID Conexión: ").append(tripcrew.getIdconection())
-                                .append("\n");
-                    }
-                    JOptionPane.showMessageDialog(v.container, tripcrewsList.toString());
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(v.container, "Error al buscar los Tripcrews: " + ex.getMessage(),
-                            "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
+        List<Tripcrews> tripCrew = tripcrewsService.getAllTripcrews();
+        String[] columnNames = { "id empleado", "id conexión" };
+        Object[][] data = new Object[tripCrew.size()][6];
 
-        v.printBody(findButton, v.BackButton());
+        for (int i = 0; i < tripCrew.size(); i++) {
+            Tripcrews tripCrews = tripCrew.get(i);
+            data[i][0] = tripCrews.getIdemployees();
+            data[i][1] = tripCrews.getIdconection();
+        }
+
+        v.container.add(v.new VTable(columnNames, data).getDiv());
+        v.printBody(v.BackButton());
     }
 }

@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.swing.JOptionPane;
+
 import com.campuslands.core.MySQL;
 import com.campuslands.modules.cities.domain.models.Cities;
 import com.campuslands.modules.cities.domain.repository.CitiesRepository;
@@ -26,9 +28,11 @@ public class CitiesMySQL extends MySQL implements CitiesRepository {
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, cities.getName());
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Ciudad Creada Correctamente", "INSERT", 0);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
@@ -40,9 +44,11 @@ public class CitiesMySQL extends MySQL implements CitiesRepository {
                 statement.setString(1, cities.getName());
                 statement.setInt(2, cities.getId());
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Ciudad Actualizada Correctamente", "UPDATE", 0);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
@@ -55,10 +61,9 @@ public class CitiesMySQL extends MySQL implements CitiesRepository {
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
                         Cities cities = new Cities(
-                            resultSet.getInt("id"),
-                            resultSet.getString("name"),
-                            resultSet.getString("id_country")
-                        );
+                                resultSet.getInt("id"),
+                                resultSet.getString("name"),
+                                resultSet.getInt("id_country"));
                         return Optional.of(cities);
                     }
                 }
@@ -76,9 +81,11 @@ public class CitiesMySQL extends MySQL implements CitiesRepository {
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, id);
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Ciudad eliminada correctamente", "DELETLE", 0);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showInputDialog(null, e, "Error", 0);
         }
     }
 
@@ -88,19 +95,20 @@ public class CitiesMySQL extends MySQL implements CitiesRepository {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             String query = "SELECT * FROM cities";
             try (PreparedStatement statement = connection.prepareStatement(query);
-                 ResultSet resultSet = statement.executeQuery()) {
+                    ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     Cities city = new Cities(
-                        resultSet.getInt("id"),
-                        resultSet.getString("name"),
-                        resultSet.getString("id_country")
-                        
+                            resultSet.getInt("id"),
+                            resultSet.getString("name"),
+                            resultSet.getInt("id_country")
+
                     );
                     cities.add(city);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showInputDialog(null, e, "Error", 0);
         }
         return cities;
     }
