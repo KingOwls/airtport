@@ -18,6 +18,14 @@ public class Trips {
         this.arrival_airport = arrival_airport;
     }
 
+    public Trips(Date date, double price, String departure_airport, String arrival_airport) {
+        //this.id = id;
+        this.date = date;
+        this.price = price;
+        this.departure_airport = departure_airport;
+        this.arrival_airport = arrival_airport;
+    }
+
     public int getId() {
         return id;
     }

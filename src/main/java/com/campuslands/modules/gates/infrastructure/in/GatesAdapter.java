@@ -7,6 +7,7 @@ import com.campuslands.views.infrastructure.out.ViewOut;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class GatesAdapter {
     private ViewOut v;
@@ -100,27 +101,19 @@ public class GatesAdapter {
     }
 
     public void findAllGates() {
-        v = new ViewOut();
-        JButton findButton = new JButton("Buscar Todas las Puertas");
-        findButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    java.util.List<Gates> gates = gatesService.getAllGates();
-                    StringBuilder gatesList = new StringBuilder("Lista de Puertas:\n");
-                    for (Gates gate : gates) {
-                        gatesList.append("ID: ").append(gate.getId()).append(", Número: ")
-                                .append(gate.getGetNumber()).append(", ID Aeropuerto: ").append(gate.getIdAirport())
-                                .append("\n");
-                    }
-                    JOptionPane.showMessageDialog(v.container, gatesList.toString());
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(v.container, "Error al buscar las puertas: " + ex.getMessage(),
-                            "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
+         v = new ViewOut();
+        List<Gates> Gates = gatesService.getAllGates();
+        String[] columnNames = { "ID", "Número", "Id Aeropuerto"};
+        Object[][] data = new Object[Gates.size()][4];
 
-        v.printBody(findButton, v.BackButton());
+        for (int i = 0; i < Gates.size(); i++) {
+            Gates Gate = Gates.get(i);
+            data[i][0] = Gate.getId();
+            data[i][1] = Gate.getGetNumber();
+            data[i][2] = Gate.getIdAirport();
+        }
+
+        v.container.add(v.new VTable(columnNames, data).getDiv());
+        v.printBody(v.BackButton());
     }
 }

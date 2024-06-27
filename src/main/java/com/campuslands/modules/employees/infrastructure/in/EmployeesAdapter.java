@@ -141,7 +141,7 @@ public class EmployeesAdapter {
     public void findAllEmployees() {
         v = new ViewOut();
         List<Employee> employees = employeesService.getAllEmployees();
-        String[] columnNames = { "ID", "Nombre", "Email", "Fecha Ingreso", "Id Aerolinea", "d Aeropuerto", "contraseña",
+        String[] columnNames = { "ID", "Nombre", "Email", "Fecha Ingreso", "Id Aerolinea", "Id Aeropuerto", "contraseña",
                 " Id Rol" };
         Object[][] data = new Object[employees.size()][8];
 

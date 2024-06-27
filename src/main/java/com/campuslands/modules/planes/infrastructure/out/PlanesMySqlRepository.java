@@ -79,11 +79,11 @@ public class PlanesMySqlRepository extends MySQL implements PlanesRepository {
                     if (resultSet.next()) {
                         Planes planes = new Planes(
                                 resultSet.getInt("id"),
-                                resultSet.getString("name"),
-                                resultSet.getInt("plates"),
-                                resultSet.getDate("capacity"),
-                                resultSet.getInt("fabrication_date"),
-                                resultSet.getInt("id_status"));
+                                resultSet.getString("plateNumber"),
+                                resultSet.getInt("capacity"),
+                                resultSet.getDate("fabrication_date"),
+                                resultSet.getInt("id_status"),
+                                resultSet.getInt("id_model"));
                         return Optional.of(planes);
                     }
                 }

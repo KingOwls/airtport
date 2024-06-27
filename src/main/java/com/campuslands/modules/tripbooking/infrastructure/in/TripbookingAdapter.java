@@ -9,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
 
+import java.util.List;
+
 public class TripbookingAdapter {
     private ViewOut v;
     private final TripbookingService tripBookingService;
@@ -103,28 +105,19 @@ public class TripbookingAdapter {
     }
 
     public void findAllTripBookings() {
-        v = new ViewOut();
-        JButton findButton = new JButton("Buscar Todas las Reservas de Viaje");
-        findButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    java.util.List<TripBooking> tripBookings = tripBookingService.getAllTripbookings();
-                    StringBuilder tripBookingsList = new StringBuilder("Lista de Reservas de Viaje:\n");
-                    for (TripBooking tripBooking : tripBookings) {
-                        tripBookingsList.append("ID: ").append(tripBooking.getId()).append(", Fecha: ")
-                                .append(tripBooking.getDate()).append(", ID Viaje: ").append(tripBooking.getIdtrips())
-                                .append("\n");
-                    }
-                    JOptionPane.showMessageDialog(v.container, tripBookingsList.toString());
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(v.container,
-                            "Error al buscar las reservas de viaje: " + ex.getMessage(),
-                            "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
+         v = new ViewOut();
+        List<TripBooking> tripBookings = tripBookingService.getAllTripbookings();
+        String[] columnNames = { "ID ", "Fecha", "Id Viaje"};
+        Object[][] data = new Object[tripBookings.size()][3];
 
-        v.printBody(findButton, v.BackButton());
+        for (int i = 0; i < tripBookings.size(); i++) {
+            TripBooking tripBooking = tripBookings.get(i);
+            data[i][0] = tripBooking.getId();
+            data[i][1] = tripBooking.getDate();
+            data[i][2] = tripBooking.getIdtrips();
+        }
+
+        v.container.add(v.new VTable(columnNames, data).getDiv());
+        v.printBody(v.BackButton());
     }
 }

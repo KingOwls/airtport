@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.swing.JOptionPane;
+
 import com.campuslands.core.MySQL;
 import com.campuslands.modules.revemployee.domain.models.Revemployee;
 import com.campuslands.modules.revemployee.domain.repository.RevEmployeeRepository;
@@ -26,9 +28,11 @@ public class RevEmployeeMySqlRepository extends MySQL implements RevEmployeeRepo
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, revEmployee.getIdEmployee());
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Revicion de empleados agregados correctamente", "INSERT", 0);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
@@ -40,9 +44,12 @@ public class RevEmployeeMySqlRepository extends MySQL implements RevEmployeeRepo
                 statement.setInt(1, revEmployee.getIdEmployee());
                 statement.setInt(2, revEmployee.getIdRevision());
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null,"Se actulizo la revicion de empleados","UPDATE",0);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
+
         }
     }
 
@@ -63,6 +70,8 @@ public class RevEmployeeMySqlRepository extends MySQL implements RevEmployeeRepo
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
+
         }
         return Optional.empty();
     }
@@ -77,6 +86,8 @@ public class RevEmployeeMySqlRepository extends MySQL implements RevEmployeeRepo
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
+
         }
     }
 
@@ -96,6 +107,8 @@ public class RevEmployeeMySqlRepository extends MySQL implements RevEmployeeRepo
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
+
         }
         return revEmployees;
     }

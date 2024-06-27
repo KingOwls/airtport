@@ -51,7 +51,7 @@ public class TripsOutModule {
         option.add(new JMenuItem(new AbstractAction("Buscar Viaje") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // adapter.VFindAirportAll();
+                tripsAdapter.findByIdTrip();
             }
         }));
 

@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.swing.JOptionPane;
+
 import com.campuslands.core.MySQL;
 import com.campuslands.modules.airports.domain.models.Airport;
 import com.campuslands.modules.airports.domain.repository.AirportsRepository;
@@ -25,30 +27,32 @@ public class AirportsMySQL extends MySQL implements AirportsRepository {
     @Override
     public void save(Airport airports) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "INSERT INTO airports (id, name, idcity) VALUES (?, ?, ?);";
+            String query = "INSERT INTO airports (id, name, idcity) VALUES (?,?, ?);";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setString(1, airports.getName());
-                statement.setInt(2, airports.getId());
+                statement.setInt(1, airports.getId());
+                statement.setString(2, airports.getName());
                 statement.setInt(3, airports.getIdCity());
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Aeropuerto creado correctamente", "INSERT", 1);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            JOptionPane.showInputDialog(null, e, "Error", 0);
         }
     }
 
     @Override
     public void update(Airport airports) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "UPDATE airports SET name = ? WHERE id = ?";
+            String query = "UPDATE airports SET name = ? idcity = ?  WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, airports.getName());
-                statement.setInt(2, airports.getId());
-                statement.setInt(3, airports.getIdCity());
+                statement.setInt(2, airports.getIdCity());
+                statement.setInt(3, airports.getId());
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Aeropuerto Actualizado correctamente", "INSERT", 1);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            JOptionPane.showInputDialog(null, e, "Error", 0);
         }
     }
 
@@ -63,13 +67,13 @@ public class AirportsMySQL extends MySQL implements AirportsRepository {
                         Airport airport = new Airport(
                                 resultSet.getInt("id"),
                                 resultSet.getString("name"),
-                                resultSet.getInt("city"));
+                                resultSet.getInt("idcity"));
                         return Optional.of(airport);
                     }
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            JOptionPane.showInputDialog(null, e, "Error", 0);
         }
         return Optional.empty();
     }
@@ -81,9 +85,10 @@ public class AirportsMySQL extends MySQL implements AirportsRepository {
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, id);
                 statement.executeUpdate();
-            }
+                JOptionPane.showMessageDialog(null, "Aeropuerto Borrado correctamente", "INSERT", 1);
+            }   
         } catch (SQLException e) {
-            e.printStackTrace();
+            JOptionPane.showInputDialog(null, e, "Error", 0);
         }
     }
 
@@ -96,14 +101,14 @@ public class AirportsMySQL extends MySQL implements AirportsRepository {
                     ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     Airport airport = new Airport(
-                            resultSet.getInt("id"),
-                            resultSet.getString("name"),
-                            resultSet.getInt("city"));
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getInt("idcity"));
                     airports.add(airport);
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            JOptionPane.showInputDialog(null, e, "Error", 0);
         }
         return airports;
     }

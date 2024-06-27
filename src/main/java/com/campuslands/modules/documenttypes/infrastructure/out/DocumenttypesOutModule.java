@@ -51,7 +51,7 @@ public class DocumenttypesOutModule {
         option.add(new JMenuItem(new AbstractAction("Buscar Tipo de Documentos") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // adapter.VFindAirportAll();
+                DocumentTypesAdapter.findByIdDocumentType();
             }
         }));
 

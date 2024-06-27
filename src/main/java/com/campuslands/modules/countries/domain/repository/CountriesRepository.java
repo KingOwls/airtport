@@ -1,7 +1,5 @@
 package com.campuslands.modules.countries.domain.repository;
 
-
-
 import com.campuslands.modules.countries.domain.models.Country;
 
 import java.util.List;

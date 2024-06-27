@@ -6,15 +6,15 @@ public class Airport{
   private String name;
   private int idCity;
 
+
+
+
+
   public Airport(int id, String name, int idCity) {
     this.id = id;
     this.name = name;
     this.idCity = idCity;
   }
-
-  public Airport(String name) {
-        this.name = name;
-    }
 
   public int getId() {
     return id;

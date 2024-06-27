@@ -8,6 +8,8 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import java.util.List;
+
 public class TripbookingdetailsAdapter {
     private ViewOut v;
     private final TripbookingdetailsService tripbookingdetailsService;
@@ -111,31 +113,19 @@ public class TripbookingdetailsAdapter {
 
     public void findAllTripbookingdetails() {
         v = new ViewOut();
-        JButton findButton = new JButton("Buscar Todos los Detalles de Reserva de Viaje");
-        findButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    java.util.List<Tripbookingdetails> tripbookingdetails = tripbookingdetailsService
-                            .getAllTripbookingdetails();
-                    StringBuilder tripbookingdetailsList = new StringBuilder(
-                            "Lista de Detalles de Reserva de Viaje:\n");
-                    for (Tripbookingdetails tripbookingdetail : tripbookingdetails) {
-                        tripbookingdetailsList.append("ID: ").append(tripbookingdetail.getId())
-                                .append(", ID Reserva: ").append(tripbookingdetail.getIdtripbooking())
-                                .append(", ID Cliente: ").append(tripbookingdetail.getIdcustomers())
-                                .append(", ID Tarifa: ").append(tripbookingdetail.getIdfares())
-                                .append("\n");
-                    }
-                    JOptionPane.showMessageDialog(v.container, tripbookingdetailsList.toString());
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(v.container,
-                            "Error al buscar los Detalles de Reserva de Viaje: " + ex.getMessage(),
-                            "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
+        List<Tripbookingdetails> tripbookingdetails = tripbookingdetailsService.getAllTripbookingdetails();
+        String[] columnNames = { "ID ", "id Libro de viajes", "Id cliente", "Id tarifas"};
+        Object[][] data = new Object[tripbookingdetails.size()][3];
 
-        v.printBody(findButton, v.BackButton());
+        for (int i = 0; i < tripbookingdetails.size(); i++) {
+            Tripbookingdetails tripBooking = tripbookingdetails.get(i);
+            data[i][0] = tripBooking.getId();
+            data[i][1] = tripBooking.getIdtripbooking();
+            data[i][2] = tripBooking.getIdcustomers();
+            data[i][3] = tripBooking.getIdfares();
+        }
+
+        v.container.add(v.new VTable(columnNames, data).getDiv());
+        v.printBody(v.BackButton());
     }
 }

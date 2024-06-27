@@ -94,6 +94,18 @@ public class ViewOut extends ViewsService {
         return backButton;
     }
 
+    public JButton BackButton(String key, JPanel lastWindow) {
+        View.getInstance().addBackView(key, lastWindow);
+        JButton backButton = new JButton("Regresar");
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                View.getInstance().loadBody(View.getInstance().getHistoryPanel(key));
+            }
+        });
+        return backButton;
+    }
+
     public JButton BackButton() {
         JButton backButton = new JButton("Regresar");
         backButton.addActionListener(new ActionListener() {

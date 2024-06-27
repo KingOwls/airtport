@@ -22,13 +22,12 @@ public class TripsMySqlRepository extends MySQL implements TripsRepository {
     @Override
     public void save(Trips trips) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "INSERT INTO trips (trip_name) VALUES (?)";
+            String query = "INSERT INTO trips (trip_date, price_tripe, departure_airport, arrival_airport) VALUES (?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setInt(1, trips.getId());
-                statement.setDate(2, trips.getDate());
-                statement.setDouble(3, trips.getPrice());
-                statement.setString(4, trips.getDeparture_airport());
-                statement.setString(5, trips.getArrival_airport());
+                statement.setDate(1, trips.getDate());
+                statement.setDouble(2, trips.getPrice());
+                statement.setString(3, trips.getDeparture_airport());
+                statement.setString(4, trips.getArrival_airport());
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
@@ -39,13 +38,13 @@ public class TripsMySqlRepository extends MySQL implements TripsRepository {
     @Override
     public void update(Trips trips) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "UPDATE trips SET trip_name = ? WHERE id = ?";
+            String query = "UPDATE trips SET trip_date = ?, price_tripe = ?, departure_airport = ?, arrival_airport = ? WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setInt(1, trips.getId());
-                statement.setDate(2, trips.getDate());
-                statement.setDouble(3, trips.getPrice());
-                statement.setString(4, trips.getDeparture_airport());
-                statement.setString(5, trips.getArrival_airport());
+                statement.setDate(1, trips.getDate());
+                statement.setDouble(2, trips.getPrice());
+                statement.setString(3, trips.getDeparture_airport());
+                statement.setString(4, trips.getArrival_airport());
+                statement.setInt(5, trips.getId());
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
@@ -62,12 +61,11 @@ public class TripsMySqlRepository extends MySQL implements TripsRepository {
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
                         Trips trips = new Trips(
-                            resultSet.getInt("id"),
-                            resultSet.getDate("date"),
-                            resultSet.getDouble("price"),
-                            resultSet.getString("departure_airport"),
-                            resultSet.getString("arrival_airport")
-                        );
+                                resultSet.getInt("id"),
+                                resultSet.getDate("trip_date"),
+                                resultSet.getDouble("price_tripe"),
+                                resultSet.getString("departure_airport"),
+                                resultSet.getString("arrival_airport"));
                         return Optional.of(trips);
                     }
                 }
@@ -97,15 +95,14 @@ public class TripsMySqlRepository extends MySQL implements TripsRepository {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             String query = "SELECT * FROM trips";
             try (PreparedStatement statement = connection.prepareStatement(query);
-                 ResultSet resultSet = statement.executeQuery()) {
+                    ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     Trips trip = new Trips(
-                        resultSet.getInt("id"),
-                        resultSet.getDate("date"),
-                        resultSet.getDouble("price"),
-                        resultSet.getString("departure_airport"),
-                        resultSet.getString("arrival_airport")
-                    );
+                            resultSet.getInt("id"),
+                            resultSet.getDate("trip_date"),
+                            resultSet.getDouble("price_tripe"),
+                            resultSet.getString("departure_airport"),
+                            resultSet.getString("arrival_airport"));
                     trips.add(trip);
                 }
             }

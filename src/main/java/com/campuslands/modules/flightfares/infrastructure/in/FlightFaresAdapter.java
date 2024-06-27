@@ -1,12 +1,13 @@
 package com.campuslands.modules.flightfares.infrastructure.in;
 
 import com.campuslands.modules.flightfares.domain.models.Flightfares;
-import com.campuslands.modules.flightfares.application.FlightfaresService; // Asegúrate de importar el servicio correcto
+import com.campuslands.modules.flightfares.application.FlightfaresService; 
 import com.campuslands.views.infrastructure.out.ViewOut;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class FlightFaresAdapter {
     private ViewOut v;
@@ -111,29 +112,21 @@ public class FlightFaresAdapter {
     }
 
     public void findAllFlightfares() {
-        v = new ViewOut();
-        JButton findButton = new JButton("Buscar Todas las Tarifas de Vuelo");
-        findButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    java.util.List<Flightfares> flightfares = flightfaresService.getAllFlightfares();
-                    StringBuilder flightfaresList = new StringBuilder("Lista de Tarifas de Vuelo:\n");
-                    for (Flightfares flightfare : flightfares) {
-                        flightfaresList.append("ID: ").append(flightfare.getId()).append(", Descripción: ")
-                                .append(flightfare.getDescription()).append(", Detalles: ")
-                                .append(flightfare.getDetails())
-                                .append(", Valor: ").append(flightfare.getValue()).append("\n");
-                    }
-                    JOptionPane.showMessageDialog(v.container, flightfaresList.toString());
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(v.container,
-                            "Error al buscar las tarifas de vuelo: " + ex.getMessage(),
-                            "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
+       v = new ViewOut();
+        List<Flightfares> flightfares = flightfaresService.getAllFlightfares();
+        String[] columnNames = { "ID", "descripción", "Detalles", " Valor"};
+        Object[][] data = new Object[flightfares.size()][4];
 
-        v.printBody(findButton, v.BackButton());
+        for (int i = 0; i < flightfares.size(); i++) {
+            Flightfares flightfare = flightfares.get(i);
+            data[i][0] = flightfare.getId();
+            data[i][1] = flightfare.getDescription();
+            data[i][2] = flightfare.getDetails();
+            data[i][3] = flightfare.getValue();
+
+        }
+
+        v.container.add(v.new VTable(columnNames, data).getDiv());
+        v.printBody(v.BackButton());
     }
 }

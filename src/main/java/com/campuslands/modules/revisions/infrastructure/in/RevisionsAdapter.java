@@ -103,27 +103,18 @@ public class RevisionsAdapter {
 
     public void findAllRevisions() {
         v = new ViewOut();
-        JButton findButton = new JButton("Buscar Todas las Revisiones");
-        findButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    List<Revisions> revisions = revisionsService.getAllRevisions();
-                    StringBuilder revisionsList = new StringBuilder("Lista de Revisiones:\n");
-                    for (Revisions revision : revisions) {
-                        revisionsList.append("ID: ").append(revision.getId()).append(", Fecha: ")
-                                .append(revision.getRevision_date()).append(", ID del Avión: ")
-                                .append(revision.getId_plane()).append("\n");
-                    }
-                    JOptionPane.showMessageDialog(v.container, revisionsList.toString());
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(v.container,
-                            "Error al buscar las revisiones: " + ex.getMessage(), "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
+        List<Revisions> revisions = revisionsService.getAllRevisions();
+        String[] columnNames = { "ID Empleado", "Fecha de revisión" ,"ID Avion"};
+        Object[][] data = new Object[revisions.size()][3];
 
-        v.printBody(findButton, v.BackButton());
-    }
+        for (int i = 0; i < revisions.size(); i++) {
+            Revisions revisionDetail = revisions.get(i);
+            data[i][0] = revisionDetail.getId();
+            data[i][1] = revisionDetail.getRevision_date();
+            data[i][2] = revisionDetail.getId_plane();
+        }
+
+        v.container.add(v.new VTable(columnNames, data).getDiv());
+        v.printBody(v.BackButton());
+    } 
 }

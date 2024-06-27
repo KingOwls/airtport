@@ -103,28 +103,20 @@ public class TripulationrolesAdapter {
     }
 
     public void findAllTripulationRoles() {
-        v = new ViewOut();
-        JButton findButton = new JButton("Buscar Todos los Roles de Tripulación");
-        findButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    List<Tripulationroles> tripulationRoles = tripulationrolesService.getAllTripulationroles();
-                    StringBuilder rolesList = new StringBuilder("Lista de Roles de Tripulación:\n");
-                    for (Tripulationroles role : tripulationRoles) {
-                        rolesList.append("ID: ").append(role.getId())
-                                .append(", Nombre: ").append(role.getName())
-                                .append("\n");
-                    }
-                    // JOptionPane.showMessageDialog(v.container, rolesList.toString());
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(v.container,
-                            "Error al buscar los Roles de Tripulación: " + ex.getMessage(),
-                            "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
+    v = new ViewOut();
+            List<Tripulationroles> tripulationroles = tripulationrolesService.getAllTripulationroles();
+            String[] columnNames = { "ID ", "Nombre"};
+            Object[][] data = new Object[tripulationroles.size()][5];
 
-        v.printBody(findButton, v.BackButton());
+            for (int i = 0; i < tripulationroles.size(); i++) {
+                Tripulationroles tripulationrole = tripulationroles.get(i);
+                data[i][0] = tripulationrole.getId();
+                data[i][1] = tripulationrole.getName();
+
+            }
+
+            v.container.add(v.new VTable(columnNames, data).getDiv());
+            v.printBody(v.BackButton());
+
     }
 }

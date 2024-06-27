@@ -54,7 +54,7 @@ public class AirportsOutModule {
         option.add(new JMenuItem(new AbstractAction("Buscar Aeropuerto") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // adapter.VFindAirportAll();
+                adapter.findByIdAirport();
             }
         }));
 

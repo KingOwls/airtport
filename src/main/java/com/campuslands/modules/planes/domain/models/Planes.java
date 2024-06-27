@@ -68,7 +68,6 @@ public class Planes {
         this.id_model = id_model;
     }
 
-    
 
 
 }

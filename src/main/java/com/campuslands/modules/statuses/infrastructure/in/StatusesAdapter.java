@@ -7,6 +7,7 @@ import com.campuslands.views.infrastructure.out.ViewOut;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class StatusesAdapter {
     private ViewOut v;
@@ -94,26 +95,19 @@ public class StatusesAdapter {
     }
 
     public void findAllStatuses() {
-        v = new ViewOut();
-        JButton findButton = new JButton("Buscar Todos los Estados");
-        findButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    java.util.List<Statuses> statuses = statusesService.getAllStatuses();
-                    StringBuilder statusesList = new StringBuilder("Lista de Estados:\n");
-                    for (Statuses status : statuses) {
-                        statusesList.append("ID: ").append(status.getId()).append(", Nombre: ")
-                                .append(status.getName()).append("\n");
-                    }
-                    // JOptionPane.showMessageDialog(v.container, statusesList.toString());
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(v.container, "Error al buscar los estados: " + ex.getMessage(),
-                            "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
+         v = new ViewOut();
+        List<Statuses> statuses = statusesService.getAllStatuses();
+        String[] columnNames = { "ID ", "Nombre"};
+        Object[][] data = new Object[statuses.size()][2];
 
-        v.printBody(findButton, v.BackButton());
-    }
+        for (int i = 0; i < statuses.size(); i++) {
+            Statuses statuse = statuses.get(i);
+            data[i][0] = statuse.getId();
+            data[i][1] = statuse.getName();
+        }
+
+        v.container.add(v.new VTable(columnNames, data).getDiv());
+        v.printBody(v.BackButton());
+      
+  }
 }

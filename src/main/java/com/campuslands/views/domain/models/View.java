@@ -50,7 +50,9 @@ public class View {
     }
 
     public void addBackView(String key, JPanel div) {
-        historyPanel.put(key, div);
+        if (!historyPanel.containsKey(key)) {
+            historyPanel.put(key, div);
+        }
     }
 
     public void fire() {

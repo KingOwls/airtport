@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.swing.JOptionPane;
+
 import com.campuslands.core.MySQL;
 import com.campuslands.modules.models.domain.models.Models;
 import com.campuslands.modules.models.domain.repository.ModelsRepository;
@@ -28,9 +30,11 @@ public class ModelsMySqlRepository extends MySQL implements ModelsRepository {
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, models.getName());
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Modelos agregados correctamente","INSERT", 0);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
@@ -45,6 +49,8 @@ public class ModelsMySqlRepository extends MySQL implements ModelsRepository {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
+
         }
     }
 
@@ -66,6 +72,8 @@ public class ModelsMySqlRepository extends MySQL implements ModelsRepository {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
+
         }
         return Optional.empty();
     }
@@ -80,6 +88,8 @@ public class ModelsMySqlRepository extends MySQL implements ModelsRepository {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
+
         }
     }
 
@@ -100,6 +110,8 @@ public class ModelsMySqlRepository extends MySQL implements ModelsRepository {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
+
         }
         return models;
     }

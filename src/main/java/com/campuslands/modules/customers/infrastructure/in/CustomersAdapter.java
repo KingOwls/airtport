@@ -123,8 +123,8 @@ public class CustomersAdapter {
     public void findAllCustomers() {
         v = new ViewOut();
         List<Customer> customers = customersService.getAllCustomers();
-        String[] columnNames = { "ID", "Nombre" };
-        Object[][] data = new Object[customers.size()][7];
+        String[] columnNames = { "ID", "Nombre", "Edad", "Id Document", "Contraseña", "Correo Electronico",  };
+        Object[][] data = new Object[customers.size()][6];
 
         for (int i = 0; i < customers.size(); i++) {
             Customer customer = customers.get(i);
@@ -134,7 +134,6 @@ public class CustomersAdapter {
             data[i][3] = customer.getIddocument();
             data[i][4] = customer.getPassword();
             data[i][5] = customer.getEmail();
-            data[i][6] = customer.getPassword();
         }
 
         v.container.add(v.new VTable(columnNames, data).getDiv());

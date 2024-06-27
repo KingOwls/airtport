@@ -51,8 +51,7 @@ public class PlanesOutModule {
         option.add(new JMenuItem(new AbstractAction("Buscar Avion") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // adapter.VFindAirportAll();
-
+                planesAdapter.findById();
             }
         }));
 

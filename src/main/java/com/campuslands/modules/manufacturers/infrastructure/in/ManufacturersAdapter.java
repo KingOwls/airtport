@@ -98,27 +98,18 @@ public class ManufacturersAdapter {
     }
 
     public void findAllManufacturers() {
-        v = new ViewOut();
-        JButton findButton = new JButton("Buscar Todos los Fabricantes");
-        findButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    List<Manufacturers> manufacturers = manufacturersService.getAllManufacturers();
-                    StringBuilder manufacturersList = new StringBuilder("Lista de Fabricantes:\n");
-                    for (Manufacturers manufacturer : manufacturers) {
-                        manufacturersList.append("ID: ").append(manufacturer.getId()).append(", Nombre: ")
-                                .append(manufacturer.getName()).append("\n");
-                    }
-                    JOptionPane.showMessageDialog(v.container, manufacturersList.toString());
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(v.container,
-                            "Error al buscar los fabricantes: " + ex.getMessage(), "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
+          v = new ViewOut();
+        List<Manufacturers> Manufacturers = manufacturersService.getAllManufacturers();
+        String[] columnNames = { "ID", "Nombre"};
+        Object[][] data = new Object[Manufacturers.size()][2];
 
-        v.printBody(findButton, v.BackButton());
+        for (int i = 0; i < Manufacturers.size(); i++) {
+            Manufacturers Manufacturer = Manufacturers.get(i);
+            data[i][0] = Manufacturer.getId();
+            data[i][1] = Manufacturer.getName();
+        }
+
+        v.container.add(v.new VTable(columnNames, data).getDiv());
+        v.printBody(v.BackButton());
     }
 }

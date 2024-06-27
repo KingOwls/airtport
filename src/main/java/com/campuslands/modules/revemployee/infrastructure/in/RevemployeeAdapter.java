@@ -7,6 +7,7 @@ import com.campuslands.views.infrastructure.out.ViewOut;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class RevemployeeAdapter {
     private ViewOut v;
@@ -31,7 +32,7 @@ public class RevemployeeAdapter {
 
                     Revemployee revemployee = new Revemployee(idEmployee, idRevision);
                     revemployeeService.createRevemployee(revemployee);
-                    JOptionPane.showMessageDialog(v.container, "Relación agregada exitosamente.");
+                    //JOptionPane.showMessageDialog(v.container, "Relación agregada exitosamente.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container, "Error al agregar la relación: " + ex.getMessage(),
                             "Error", JOptionPane.ERROR_MESSAGE);
@@ -54,7 +55,7 @@ public class RevemployeeAdapter {
             public void actionPerformed(ActionEvent e) {
                 try {
                     revemployeeService.deleteRevemployee(idEmployeeInput.getInt());
-                    JOptionPane.showMessageDialog(v.container, "Relación eliminada exitosamente.");
+                  //  JOptionPane.showMessageDialog(v.container, "Relación eliminada exitosamente.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container, "Error al eliminar la relación: " + ex.getMessage(),
                             "Error", JOptionPane.ERROR_MESSAGE);
@@ -67,21 +68,19 @@ public class RevemployeeAdapter {
     }
 
     public void findRevemployeeAll() {
-        v = new ViewOut();
-        // Traer
+         v = new ViewOut();
+        List<Revemployee> revemployees = revemployeeService.getAllRevemployees();
+        String[] columnNames = { "ID Empleado", "ID Revision"};
+        Object[][] data = new Object[revemployees.size()][2];
 
-        JButton addButton = new JButton("Buscar");
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
+        for (int i = 0; i < revemployees.size(); i++) {
+            Revemployee revemployee = revemployees.get(i);
+            data[i][0] = revemployee.getIdEmployee();
+            data[i][1] = revemployee.getIdRevision();
 
-                } catch (Exception a) {
+        }
 
-                }
-            }
-        });
-
-        v.printBody(addButton, v.BackButton());
+        v.container.add(v.new VTable(columnNames, data).getDiv());
+        v.printBody(v.BackButton());
     }
 }

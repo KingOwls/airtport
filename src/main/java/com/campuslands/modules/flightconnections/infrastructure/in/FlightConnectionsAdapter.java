@@ -7,6 +7,7 @@ import com.campuslands.views.infrastructure.out.ViewOut;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class FlightConnectionsAdapter {
     private ViewOut v;
@@ -133,32 +134,24 @@ public class FlightConnectionsAdapter {
     }
 
     public void findAllFlightConnections() {
-        v = new ViewOut();
-        JButton findButton = new JButton("Buscar Todas las Conexiones de Vuelo");
-        findButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    java.util.List<FlightConnection> flightConnections = flightConnectionsService
-                            .getAllFlightConnections();
-                    StringBuilder flightConnectionsList = new StringBuilder("Lista de Conexiones de Vuelo:\n");
-                    for (FlightConnection flightConnection : flightConnections) {
-                        flightConnectionsList.append("ID: ").append(flightConnection.getId())
-                                .append(", Número de Conexión: ").append(flightConnection.getConnection_number())
-                                .append(", ID Viaje: ").append(flightConnection.getId_trip())
-                                .append(", ID Avión: ").append(flightConnection.getId_plane())
-                                .append(", ID Aeropuerto: ").append(flightConnection.getId_airport())
-                                .append("\n");
-                    }
-                    JOptionPane.showMessageDialog(v.container, flightConnectionsList.toString());
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(v.container,
-                            "Error al buscar las conexiones de vuelo: " + ex.getMessage(), "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
+         v = new ViewOut();
+        List<FlightConnection> flightConnections = flightConnectionsService.getAllFlightConnections();
+        String[] columnNames = { "ID", "Nombre", "Numero de Conexión", "Id viaje", "Id aeropuerto", "Tipo de vuelo", "Ultima Escala"};
+        Object[][] data = new Object[flightConnections.size()][7];
 
-        v.printBody(findButton, v.BackButton());
+        for (int i = 0; i < flightConnections.size(); i++) {
+            FlightConnection flightConnection = flightConnections.get(i);
+            data[i][0] = flightConnection.getId();
+            data[i][1] = flightConnection.getConnection_number();
+            data[i][2] = flightConnection.getId_trip();
+            data[i][3] = flightConnection.getId_plane();
+            data[i][4] = flightConnection.getId_airport();
+            data[i][5] = flightConnection.getType_flight();
+            data[i][6] = flightConnection.getLast_Scale();
+
+        }
+
+        v.container.add(v.new VTable(columnNames, data).getDiv());
+        v.printBody(v.BackButton());
     }
 }

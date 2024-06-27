@@ -7,6 +7,7 @@ public class TripBooking {
     int id;
     Date date;
     int idtrips;
+    
     public TripBooking(int id, Date date, int idtrips) {
         this.id = id;
         this.date = date;

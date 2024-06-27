@@ -39,10 +39,11 @@ public class TripcrewsMySQL extends MySQL implements TripcrewsRepository {
     @Override
     public void update(Tripcrews tripcrews) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "UPDATE tripcrews SET idemployees = ?, idconection = ? WHERE id = ?";
+            String query = "UPDATE tripcrews SET idemployees = ?, idconection = ? WHERE idemployees = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, tripcrews.getIdemployees());
                 statement.setInt(2, tripcrews.getIdconection());
+                statement.setInt(3, tripcrews.getIdemployees());
                 statement.executeUpdate();
                 JOptionPane.showMessageDialog(null, "Se Actualizo Tripulacion", "INSERT", 0);
             }
@@ -55,7 +56,7 @@ public class TripcrewsMySQL extends MySQL implements TripcrewsRepository {
     @Override
     public Optional<Tripcrews> findById(int id) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT idemployees, idconection FROM tripcrews WHERE id = ?";
+            String query = "SELECT idemployees, idconection FROM tripcrews WHERE idemployees = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, id);
                 try (ResultSet resultSet = statement.executeQuery()) {
@@ -78,7 +79,7 @@ public class TripcrewsMySQL extends MySQL implements TripcrewsRepository {
     @Override
     public void delete(int id) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "DELETE FROM tripcrews WHERE id = ?";
+            String query = "DELETE FROM tripcrews WHERE idemployees = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, id);
                 statement.executeUpdate();

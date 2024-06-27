@@ -31,7 +31,7 @@ public class ModelsAdapter {
                     int manufactureId = manufactureIdInput.getInt();
                     Models model = new Models(0, name, manufactureId);
                     modelsService.createModel(model);
-                    JOptionPane.showMessageDialog(v.container, "Modelo agregado exitosamente.");// ELIMINAR ESTOS DEL
+                   // JOptionPane.showMessageDialog(v.container, "Modelo agregado exitosamente.");// ELIMINAR ESTOS DEL
                                                                                                 // CRUD
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container,
@@ -62,7 +62,7 @@ public class ModelsAdapter {
                     int manufactureId = manufactureIdInput.getInt();
                     Models model = new Models(id, name, manufactureId);
                     modelsService.updateModel(model);
-                    JOptionPane.showMessageDialog(v.container, "Modelo actualizado exitosamente.");
+                    //JOptionPane.showMessageDialog(v.container, "Modelo actualizado exitosamente.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container,
                             "Error al actualizar el modelo: " + ex.getMessage(), "Error",
@@ -88,7 +88,7 @@ public class ModelsAdapter {
                 try {
                     int id = idInput.getInt();
                     modelsService.deleteModel(id);
-                    JOptionPane.showMessageDialog(v.container, "Modelo eliminado exitosamente.");
+                  //  JOptionPane.showMessageDialog(v.container, "Modelo eliminado exitosamente.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container,
                             "Error al eliminar el modelo: " + ex.getMessage(), "Error",
@@ -103,27 +103,20 @@ public class ModelsAdapter {
 
     public void findAllModels() {
         v = new ViewOut();
-        JButton findButton = new JButton("Buscar Todos los Modelos");
-        findButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    List<Models> models = modelsService.getAllModels();
-                    StringBuilder modelsList = new StringBuilder("Lista de Modelos:\n");
-                    for (Models model : models) {
-                        modelsList.append("ID: ").append(model.getId()).append(", Nombre: ")
-                                .append(model.getName()).append(", ID del Fabricante: ")
-                                .append(model.getManuFactureId()).append("\n");
-                    }
-                    JOptionPane.showMessageDialog(v.container, modelsList.toString());
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(v.container,
-                            "Error al buscar los modelos: " + ex.getMessage(), "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
+        List<Models> Models = modelsService.getAllModels();
+        String[] columnNames = { "ID", "Nombre", "ID manufactura"};
+        Object[][] data = new Object[Models.size()][3];
 
-        v.printBody(findButton, v.BackButton());
+        for (int i = 0; i < Models.size(); i++) {
+            Models Model = Models.get(i);
+            data[i][0] = Model.getId();
+            data[i][1] = Model.getName();
+            data[i][2] = Model.getManuFactureId();
+        }
+
+        v.container.add(v.new VTable(columnNames, data).getDiv());
+        v.printBody(v.BackButton());
     }
+
+
 }

@@ -102,27 +102,18 @@ public class Revision_detailsAdapter {
 
     public void findAllRevisionDetails() {
         v = new ViewOut();
-        JButton findButton = new JButton("Buscar Todos los Detalles de Revisión");
-        findButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    List<RevisionDetails> revisionDetails = revisionDetailsService.getAllRevisionDetails();
-                    StringBuilder revisionDetailsList = new StringBuilder("Lista de Detalles de Revisión:\n");
-                    for (RevisionDetails detail : revisionDetails) {
-                        revisionDetailsList.append("ID: ").append(detail.getId()).append(", Descripción: ")
-                                .append(detail.getDescription()).append(", ID de Empleado: ")
-                                .append(detail.getId_employee()).append("\n");
-                    }
-                    JOptionPane.showMessageDialog(v.container, revisionDetailsList.toString());
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(v.container,
-                            "Error al buscar los detalles de revisión: " + ex.getMessage(), "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
+        List<RevisionDetails> revisionDetails = revisionDetailsService.getAllRevisionDetails();
+        String[] columnNames = { "ID Empleado", "Descripción" ,"ID Empleado"};
+        Object[][] data = new Object[revisionDetails.size()][3];
 
-        v.printBody(findButton, v.BackButton());
+        for (int i = 0; i < revisionDetails.size(); i++) {
+            RevisionDetails revisionDetail = revisionDetails.get(i);
+            data[i][0] = revisionDetail.getId();
+            data[i][1] = revisionDetail.getDescription();
+            data[i][2] = revisionDetail.getId_employee();
+        }
+
+        v.container.add(v.new VTable(columnNames, data).getDiv());
+        v.printBody(v.BackButton());
     }
 }
