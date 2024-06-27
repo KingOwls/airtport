@@ -4,15 +4,27 @@ public class Customer {
     int id;
     String name;
     int age;
-    int iddocument;
+    int id_document_type;
+    String id_document;
     String password;
     String email;
 
-    public Customer(int id, String name, int age, int iddocument, String password, String email) {
+    public Customer(String name, int age, int id_document_type, String id_document, String password, String email) {
+        this.name = name;
+        this.age = age;
+        this.id_document_type = id_document_type;
+        this.id_document = id_document;
+        this.password = password;
+        this.email = email;
+    }
+
+    public Customer(int id, String name, int age, int id_document_type, String id_document, String password,
+            String email) {
         this.id = id;
         this.name = name;
         this.age = age;
-        this.iddocument = iddocument;
+        this.id_document_type = id_document_type;
+        this.id_document = id_document;
         this.password = password;
         this.email = email;
     }
@@ -41,28 +53,36 @@ public class Customer {
         this.age = age;
     }
 
-    public int getIddocument() {
-        return iddocument;
+    public int getId_document_type() {
+        return id_document_type;
     }
 
-    public void setIddocument(int iddocument) {
-        this.iddocument = iddocument;
+    public void setId_document_type(int id_document_type) {
+        this.id_document_type = id_document_type;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public String getId_document() {
+        return id_document;
+    }
+
+    public void setId_document(String id_document) {
+        this.id_document = id_document;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getEmail() {
         return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
 }

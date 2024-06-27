@@ -24,15 +24,16 @@ public class DocumenttypesMySQL extends MySQL implements DocumentTypesRepository
     @Override
     public void save(DocumentType documentType) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "INSERT INTO documenttypes (name) VALUES (?)";
+            String query = "INSERT INTO documenttypes (id, name) VALUES (?)";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setString(1, documentType.getName());
+                statement.setInt(1, documentType.getId());
+                statement.setString(2, documentType.getName());
                 statement.executeUpdate();
                 JOptionPane.showMessageDialog(null, "Documentos creados eXitosamente", "INSERT", 1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            JOptionPane.showInputDialog(null, e, "Error", 0);
+            JOptionPane.showMessageDialog(null, e, "Error", 0);
         }
     }
 
@@ -48,14 +49,14 @@ public class DocumenttypesMySQL extends MySQL implements DocumentTypesRepository
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            JOptionPane.showInputDialog(null, e, "Error", 0);
+            JOptionPane.showMessageDialog(null, e, "Error", 0);
         }
     }
 
     @Override
     public Optional<DocumentType> findById(int id) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT * FROM documenttypes WHERE id = ?";
+            String query = "SELECT id, name FROM documenttypes WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, id);
                 try (ResultSet resultSet = statement.executeQuery()) {
@@ -69,7 +70,7 @@ public class DocumenttypesMySQL extends MySQL implements DocumentTypesRepository
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            JOptionPane.showInputDialog(null, e, "Error", 0);
+            JOptionPane.showMessageDialog(null, e, "Error", 0);
         }
         return Optional.empty();
     }
@@ -85,7 +86,7 @@ public class DocumenttypesMySQL extends MySQL implements DocumentTypesRepository
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            JOptionPane.showInputDialog(null, e, "Error", 0);
+            JOptionPane.showMessageDialog(null, e, "Error", 0);
         }
     }
 
@@ -93,7 +94,7 @@ public class DocumenttypesMySQL extends MySQL implements DocumentTypesRepository
     public List<DocumentType> findAll() {
         List<DocumentType> documentTypes = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT * FROM documenttypes";
+            String query = "SELECT id, name FROM documenttypes";
             try (PreparedStatement statement = connection.prepareStatement(query);
                     ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
@@ -105,7 +106,7 @@ public class DocumenttypesMySQL extends MySQL implements DocumentTypesRepository
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            JOptionPane.showInputDialog(null, e, "Error", 0);
+            JOptionPane.showMessageDialog(null, e, "Error", 0);
         }
         return documentTypes;
     }

@@ -22,16 +22,17 @@ public class CustomersMySQL extends MySQL implements CustomersRepository {
     @Override
     public void save(Customer customers) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "INSERT INTO customers (name) VALUES (?)";
+            String query = "INSERT INTO customers (name, email, password, age, id_document, id_document_type) VALUES (?, ?, ?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setInt(1, customers.getId());
-                statement.setString(2, customers.getName());
-                statement.setInt(3, customers.getAge());
-                statement.setInt(4, customers.getIddocument());
-                statement.setString(5, customers.getPassword());
-                statement.setString(6, customers.getEmail());
+                // statement.setInt(1, customers.getId());
+                statement.setString(1, customers.getName());
+                statement.setString(2, customers.getEmail());
+                statement.setString(3, customers.getPassword());
+                statement.setInt(4, customers.getAge());
+                statement.setString(5, customers.getId_document());
+                statement.setInt(6, customers.getId_document_type());
                 statement.executeUpdate();
-                JOptionPane.showInputDialog(null, "Cliente creado exitosa mente", "INSERT", 0);
+                JOptionPane.showMessageDialog(null, "Cliente creado exitosa mente", "INSERT", 0);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -42,14 +43,15 @@ public class CustomersMySQL extends MySQL implements CustomersRepository {
     @Override
     public void update(Customer customers) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "UPDATE customers SET name = ? WHERE id = ?";
+            String query = "UPDATE customers SET name = ?, email = ?, password = ?, age = ?, id_document = ?, id_document_type = ? WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setInt(1, customers.getId());
-                statement.setString(2, customers.getName());
-                statement.setInt(3, customers.getAge());
-                statement.setInt(4, customers.getIddocument());
-                statement.setString(5, customers.getPassword());
-                statement.setString(6, customers.getEmail());
+                statement.setString(1, customers.getName());
+                statement.setString(2, customers.getEmail());
+                statement.setString(3, customers.getPassword());
+                statement.setInt(4, customers.getAge());
+                statement.setString(5, customers.getId_document());
+                statement.setInt(6, customers.getId_document_type());
+                statement.setInt(7, customers.getId());
                 statement.executeUpdate();
                 JOptionPane.showMessageDialog(null, "Cliente actualizado correctamente", "UPDATE", 0);
             }
@@ -61,28 +63,37 @@ public class CustomersMySQL extends MySQL implements CustomersRepository {
 
     @Override
     public Optional<Customer> findById(int id) {
-        try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT * FROM customers WHERE id = ?";
-            try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setInt(1, id);
-                try (ResultSet resultSet = statement.executeQuery()) {
-                    if (resultSet.next()) {
-                        Customer customers = new Customer(
-                                resultSet.getInt("id"),
-                                resultSet.getString("name"),
-                                resultSet.getInt("age"),
-                                resultSet.getInt("iddocument"),
-                                resultSet.getString("email"),
-                                resultSet.getString("password"));
-                        return Optional.of(customers);
-                    }
+        String query = "SELECT id, name, email, password, age, id_document, id_document_type FROM customers WHERE id = ?";
+
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+                PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setInt(1, id);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    Customer customer = new Customer(
+                            resultSet.getInt("id"),
+                            resultSet.getString("name"),
+                            resultSet.getInt("age"),
+                            resultSet.getInt("id_document_type"),
+                            resultSet.getString("email"),
+                            resultSet.getString("password"),
+                            resultSet.getString("id_document")
+
+                    );
+                    return Optional.of(customer);
+                } else {
+                    return Optional.empty(); // No customer found with the given id
                 }
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
-            JOptionPane.showInputDialog(null, e, "Error", 0);
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-        return Optional.empty();
+
+        return Optional.empty(); // Exception occurred or no customer found
     }
 
     @Override
@@ -96,7 +107,7 @@ public class CustomersMySQL extends MySQL implements CustomersRepository {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            JOptionPane.showInputDialog(null, e, "Error", 0);
+            JOptionPane.showMessageDialog(null, e, "Error", 0);
         }
     }
 
@@ -104,7 +115,7 @@ public class CustomersMySQL extends MySQL implements CustomersRepository {
     public List<Customer> findAll() {
         List<Customer> customers = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT * FROM customers";
+            String query = "SELECT id, name, email, password, age, id_document, id_document_type FROM customers";
             try (PreparedStatement statement = connection.prepareStatement(query);
                     ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
@@ -112,15 +123,16 @@ public class CustomersMySQL extends MySQL implements CustomersRepository {
                             resultSet.getInt("id"),
                             resultSet.getString("name"),
                             resultSet.getInt("age"),
-                            resultSet.getInt("iddocument"),
+                            resultSet.getInt("id_document_type"),
                             resultSet.getString("email"),
-                            resultSet.getString("password"));
+                            resultSet.getString("password"),
+                            resultSet.getString("id_document"));
                     customers.add(customer);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            JOptionPane.showInputDialog(null, e, "Error", 0);
+            JOptionPane.showMessageDialog(null, e, "Error", 0);
         }
         return customers;
     }

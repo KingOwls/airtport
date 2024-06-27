@@ -31,6 +31,7 @@ public class TripulationRolesMySQL extends MySQL implements TripulationRolesRepo
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
@@ -53,7 +54,7 @@ public class TripulationRolesMySQL extends MySQL implements TripulationRolesRepo
     @Override
     public Optional<Tripulationroles> findById(int id) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT * FROM tripulationroles WHERE id = ?";
+            String query = "SELECT id,name FROM tripulationroles WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, id);
                 try (ResultSet resultSet = statement.executeQuery()) {
@@ -94,7 +95,7 @@ public class TripulationRolesMySQL extends MySQL implements TripulationRolesRepo
     public List<Tripulationroles> findAll() {
         List<Tripulationroles> trips = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT * FROM trips";
+            String query = "SELECT id,name FROM trips";
             try (PreparedStatement statement = connection.prepareStatement(query);
                     ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {

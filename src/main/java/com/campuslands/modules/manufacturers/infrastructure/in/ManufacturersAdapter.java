@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Optional;
 
 public class ManufacturersAdapter {
     private ViewOut v;
@@ -98,9 +99,9 @@ public class ManufacturersAdapter {
     }
 
     public void findAllManufacturers() {
-          v = new ViewOut();
+        v = new ViewOut();
         List<Manufacturers> Manufacturers = manufacturersService.getAllManufacturers();
-        String[] columnNames = { "ID", "Nombre"};
+        String[] columnNames = { "ID", "Nombre" };
         Object[][] data = new Object[Manufacturers.size()][2];
 
         for (int i = 0; i < Manufacturers.size(); i++) {
@@ -112,4 +113,50 @@ public class ManufacturersAdapter {
         v.container.add(v.new VTable(columnNames, data).getDiv());
         v.printBody(v.BackButton());
     }
+
+    public void findByIdManufacturer() {
+        try {
+            v = new ViewOut();
+            ViewOut.VInput idInput = v.new VInput("Ingresa el ID del Fabricante a Buscar", 30);
+
+            JButton searchButton = new JButton("Buscar Fabricante");
+            searchButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        JPanel lastWindow = v.body; // Store the previous window panel
+                        v = new ViewOut(); // Create a new instance of ViewOut
+                        int id = idInput.getInt();
+                        Optional<Manufacturers> manufacturerOptional = manufacturersService.getManufacturerById(id);
+                        if (manufacturerOptional.isPresent()) {
+                            Manufacturers manufacturer = manufacturerOptional.get();
+                            String[] columnNames = { "ID", "Nombre" };
+                            Object[][] data = new Object[1][2];
+                            data[0][0] = manufacturer.getId();
+                            data[0][1] = manufacturer.getName();
+
+                            v.container.add(v.new VTable(columnNames, data).getDiv());
+                            v.printBody(v.BackButton("findByIdManufacturer", lastWindow));
+                        } else {
+                            JOptionPane.showMessageDialog(null, "No se encontró el fabricante con el ID especificado",
+                                    "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(null, "Ingrese un valor numérico para el ID del fabricante",
+                                "Error", JOptionPane.ERROR_MESSAGE);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(v.container, "Error al buscar el fabricante: " + ex.getMessage(),
+                                "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            });
+
+            v.container.add(idInput.getDiv());
+            v.printBody(searchButton, v.BackButton());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error al iniciar la búsqueda de fabricante: " + ex.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
 }

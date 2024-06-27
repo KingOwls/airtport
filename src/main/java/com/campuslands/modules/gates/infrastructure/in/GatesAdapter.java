@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Optional;
 
 public class GatesAdapter {
     private ViewOut v;
@@ -101,9 +102,9 @@ public class GatesAdapter {
     }
 
     public void findAllGates() {
-         v = new ViewOut();
+        v = new ViewOut();
         List<Gates> Gates = gatesService.getAllGates();
-        String[] columnNames = { "ID", "Número", "Id Aeropuerto"};
+        String[] columnNames = { "ID", "Número", "Id Aeropuerto" };
         Object[][] data = new Object[Gates.size()][4];
 
         for (int i = 0; i < Gates.size(); i++) {
@@ -116,4 +117,51 @@ public class GatesAdapter {
         v.container.add(v.new VTable(columnNames, data).getDiv());
         v.printBody(v.BackButton());
     }
+
+    public void findByIdGate() {
+        try {
+            v = new ViewOut();
+            ViewOut.VInput idInput = v.new VInput("Ingresa el ID de la Puerta a Buscar", 30);
+
+            JButton searchButton = new JButton("Buscar Puerta");
+            searchButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        JPanel lastWindow = v.body; // Store the previous window panel
+                        v = new ViewOut(); // Create a new instance of ViewOut
+                        int id = idInput.getInt();
+                        Optional<Gates> gateOptional = gatesService.getGateById(id);
+                        if (gateOptional.isPresent()) {
+                            Gates gate = gateOptional.get();
+                            String[] columnNames = { "ID", "Número", "ID Aeropuerto" };
+                            Object[][] data = new Object[1][3];
+                            data[0][0] = gate.getId();
+                            data[0][1] = gate.getGetNumber();
+                            data[0][2] = gate.getIdAirport();
+
+                            v.container.add(v.new VTable(columnNames, data).getDiv());
+                            v.printBody(v.BackButton("findByIdGate", lastWindow));
+                        } else {
+                            JOptionPane.showMessageDialog(null, "No se encontró la puerta con el ID especificado",
+                                    "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(null, "Ingrese un valor numérico para el ID de la puerta",
+                                "Error", JOptionPane.ERROR_MESSAGE);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(v.container, "Error al buscar la puerta: " + ex.getMessage(),
+                                "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            });
+
+            v.container.add(idInput.getDiv());
+            v.printBody(searchButton, v.BackButton());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error al iniciar la búsqueda de puerta: " + ex.getMessage(), "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
 }

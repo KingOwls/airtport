@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Optional;
 
 public class FlightConnectionsAdapter {
     private ViewOut v;
@@ -134,9 +135,10 @@ public class FlightConnectionsAdapter {
     }
 
     public void findAllFlightConnections() {
-         v = new ViewOut();
+        v = new ViewOut();
         List<FlightConnection> flightConnections = flightConnectionsService.getAllFlightConnections();
-        String[] columnNames = { "ID", "Nombre", "Numero de Conexión", "Id viaje", "Id aeropuerto", "Tipo de vuelo", "Ultima Escala"};
+        String[] columnNames = { "ID", "Nombre", "Numero de Conexión", "Id viaje", "Id aeropuerto", "Tipo de vuelo",
+                "Ultima Escala" };
         Object[][] data = new Object[flightConnections.size()][7];
 
         for (int i = 0; i < flightConnections.size(); i++) {
@@ -154,4 +156,60 @@ public class FlightConnectionsAdapter {
         v.container.add(v.new VTable(columnNames, data).getDiv());
         v.printBody(v.BackButton());
     }
+
+    public void findByIdFlightConnection() {
+        try {
+            v = new ViewOut();
+            ViewOut.VInput idInput = v.new VInput("Ingresa el ID de la Conexión de Vuelo a Buscar", 30);
+
+            JButton searchButton = new JButton("Buscar Conexión de Vuelo");
+            searchButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        JPanel lastWindow = v.body; // Store the previous window panel
+                        v = new ViewOut(); // Create a new instance of ViewOut
+                        int id = idInput.getInt();
+                        Optional<FlightConnection> flightConnectionOptional = flightConnectionsService
+                                .getFlightConnectionById(id);
+                        if (flightConnectionOptional.isPresent()) {
+                            FlightConnection flightConnection = flightConnectionOptional.get();
+                            String[] columnNames = { "ID", "Número de Conexión", "ID Viaje", "ID Avión",
+                                    "ID Aeropuerto", "Tipo de Vuelo", "Última Escala" };
+                            Object[][] data = new Object[1][7];
+                            data[0][0] = flightConnection.getId();
+                            data[0][1] = flightConnection.getConnection_number();
+                            data[0][2] = flightConnection.getId_trip();
+                            data[0][3] = flightConnection.getId_plane();
+                            data[0][4] = flightConnection.getId_airport();
+                            data[0][5] = flightConnection.getType_flight();
+                            data[0][6] = flightConnection.getLast_Scale();
+
+                            v.container.add(v.new VTable(columnNames, data).getDiv());
+                            v.printBody(v.BackButton("findByIdFlightConnection", lastWindow));
+                        } else {
+                            JOptionPane.showMessageDialog(null,
+                                    "No se encontró la conexión de vuelo con el ID especificado", "Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(null,
+                                "Ingrese un valor numérico para el ID de la conexión de vuelo", "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(v.container,
+                                "Error al buscar la conexión de vuelo: " + ex.getMessage(), "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            });
+
+            v.container.add(idInput.getDiv());
+            v.printBody(searchButton, v.BackButton());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error al iniciar la búsqueda de conexión de vuelo: " + ex.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
 }

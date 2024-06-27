@@ -12,6 +12,8 @@ import java.sql.SQLException;
 
 import java.util.Optional;
 
+import javax.swing.JOptionPane;
+
 public class AuthMySQL extends MySQL implements AuthRepository {
 
     public AuthMySQL() {
@@ -23,8 +25,10 @@ public class AuthMySQL extends MySQL implements AuthRepository {
         Optional<Auth> user = findEmployee(email, pas);
         if (user.isEmpty()) {
             user = findClient(email, pas);
+            return user;
+        } else {
+            return user;
         }
-        return user;
     }
 
     public Optional<Auth> findEmployee(String email, String pas) {
@@ -49,7 +53,8 @@ public class AuthMySQL extends MySQL implements AuthRepository {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            // e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
         return Optional.empty();
     }
@@ -58,12 +63,11 @@ public class AuthMySQL extends MySQL implements AuthRepository {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             String query = "SELECT id, email, password FROM customers"
                     + " WHERE email = ?";
-
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, email);
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
-                        if (resultSet.getString("password") == pas) {
+                        if (resultSet.getString("password").equals(pas)) {
                             Auth auth = Auth.getInstance();
                             auth.setUid(resultSet.getString("id"));
                             auth.setEmail(resultSet.getString("email"));
@@ -75,7 +79,8 @@ public class AuthMySQL extends MySQL implements AuthRepository {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            // e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
         return Optional.empty();
     }

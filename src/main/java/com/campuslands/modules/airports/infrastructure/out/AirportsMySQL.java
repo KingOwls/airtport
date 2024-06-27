@@ -27,7 +27,7 @@ public class AirportsMySQL extends MySQL implements AirportsRepository {
     @Override
     public void save(Airport airports) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "INSERT INTO airports (id, name, idcity) VALUES (?,?, ?);";
+            String query = "INSERT INTO airports (id, name, idcity) VALUES (?,?,?);";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, airports.getId());
                 statement.setString(2, airports.getName());
@@ -43,7 +43,7 @@ public class AirportsMySQL extends MySQL implements AirportsRepository {
     @Override
     public void update(Airport airports) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "UPDATE airports SET name = ? idcity = ?  WHERE id = ?";
+            String query = "UPDATE airports SET name = ?, idcity = ? WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, airports.getName());
                 statement.setInt(2, airports.getIdCity());
@@ -59,7 +59,7 @@ public class AirportsMySQL extends MySQL implements AirportsRepository {
     @Override
     public Optional<Airport> findById(int id) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT * FROM airports WHERE id = ?";
+            String query = "SELECT id, name, idcity FROM airports WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, id);
                 try (ResultSet resultSet = statement.executeQuery()) {
@@ -86,7 +86,7 @@ public class AirportsMySQL extends MySQL implements AirportsRepository {
                 statement.setInt(1, id);
                 statement.executeUpdate();
                 JOptionPane.showMessageDialog(null, "Aeropuerto Borrado correctamente", "INSERT", 1);
-            }   
+            }
         } catch (SQLException e) {
             JOptionPane.showInputDialog(null, e, "Error", 0);
         }
@@ -96,14 +96,14 @@ public class AirportsMySQL extends MySQL implements AirportsRepository {
     public List<Airport> findAll() {
         List<Airport> airports = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT * FROM airports";
+            String query = "SELECT id, name, idcity FROM airports";
             try (PreparedStatement statement = connection.prepareStatement(query);
                     ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     Airport airport = new Airport(
-                        resultSet.getInt("id"),
-                        resultSet.getString("name"),
-                        resultSet.getInt("idcity"));
+                            resultSet.getInt("id"),
+                            resultSet.getString("name"),
+                            resultSet.getInt("idcity"));
                     airports.add(airport);
                 }
             }

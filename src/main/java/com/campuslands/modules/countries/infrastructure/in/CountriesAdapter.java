@@ -7,6 +7,8 @@ import com.campuslands.views.infrastructure.out.ViewOut;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import javax.swing.*;
+import java.util.Optional;
 
 import javax.swing.JButton;
 
@@ -101,4 +103,50 @@ public class CountriesAdapter {
         v.container.add(v.new VTable(columnNames, data).getDiv());
         v.printBody(v.BackButton());
     }
+
+    public void findByIdCountry() {
+        try {
+            v = new ViewOut();
+            ViewOut.VInput idInput = v.new VInput("Ingresa el ID del País a Buscar", 30);
+
+            JButton searchButton = new JButton("Buscar País");
+            searchButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        JPanel lastWindow = v.body;
+                        v = new ViewOut();
+                        int id = idInput.getInt();
+                        Optional<Country> countryOptional = countriesService.getCountryById(id);
+                        if (countryOptional.isPresent()) {
+                            Country country = countryOptional.get();
+                            String[] columnNames = { "ID", "Nombre" };
+                            Object[][] data = new Object[1][2];
+                            data[0][0] = country.getId();
+                            data[0][1] = country.getName();
+
+                            v.container.add(v.new VTable(columnNames, data).getDiv());
+                            v.printBody(v.BackButton("findByIdCountry", lastWindow));
+                        } else {
+                            JOptionPane.showMessageDialog(null, "No se encontró el país con el ID especificado",
+                                    "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(null, "Ingrese un valor numérico para el ID del país", "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(v.container, "Error al buscar el país: " + ex.getMessage(),
+                                "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            });
+
+            v.container.add(idInput.getDiv());
+            v.printBody(searchButton, v.BackButton());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error al iniciar la búsqueda de país: " + ex.getMessage(), "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
 }

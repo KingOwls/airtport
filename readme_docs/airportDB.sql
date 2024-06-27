@@ -131,15 +131,16 @@ CREATE TABLE `airports` (
 
 DROP TABLE IF EXISTS `customers`;
 CREATE TABLE `customers` (
-  `id` int NOT NULL ,
+  `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL UNIQUE,
   `password` varchar(255) DEFAULT NULL,
   `age` int DEFAULT NULL,
-  `iddocument` int DEFAULT NULL,
+  `id_document` varchar(255) DEFAULT NULL UNIQUE,
+  `id_document_type` int DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `Fk_customers` (`iddocument`),
-  CONSTRAINT `Fk_customers` FOREIGN KEY (`iddocument`) REFERENCES `documenttypes` (`id`)
+  KEY `Fk_customers` (`id_document_type`),
+  CONSTRAINT `Fk_customers` FOREIGN KEY (`id_document_type`) REFERENCES `documenttypes` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
@@ -154,7 +155,7 @@ CREATE TABLE `customers` (
 
 DROP TABLE IF EXISTS `employees`;
 CREATE TABLE `employees` (
-  `id` int NOT NULL ,
+  `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
@@ -216,7 +217,7 @@ CREATE TABLE `flight_connections` (
   `id_trip` INT DEFAULT NULL,
   `id_plane` INT DEFAULT NULL,
   `type_fright` VARCHAR(255) DEFAULT NULL,
-  `Last_Scale` VARCHAR(255) DEFAULT NULL,
+  `last_scale` VARCHAR(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_trip_connection` (`id_trip`),
   KEY `fk_plane_connection` (`id_plane`),
@@ -364,12 +365,12 @@ INSERT INTO manufacturers (name) VALUES
 
 
 
-INSERT INTO customers (id, name, email, password, age, iddocument) VALUES 
-(1, 'cliente', 'cliente', 'cliente', 30, 1), 
-(2, 'Customer B', 'customerB@example.com', 'passwordB', 25, 2), 
-(3, 'Customer C', 'customerC@example.com', 'passwordC', 35, 3), 
-(4, 'Customer D', 'customerD@example.com', 'passwordD', 40, 4), 
-(5, 'Customer E', 'customerE@example.com', 'passwordE', 45, 5);
+INSERT INTO customers (id, name, email, password, age, id_document, id_document_type) VALUES 
+(1, 'cliente', 'cliente', 'cliente', 30,"123456", 1), 
+(2, 'Customer B', 'customerB@example.com', 'passwordB', 25,"123", 2), 
+(3, 'Customer C', 'customerC@example.com', 'passwordC', 35, "321", 3), 
+(4, 'Customer D', 'customerD@example.com', 'passwordD', 40, "323", 4), 
+(5, 'Customer E', 'customerE@example.com', 'passwordE', 45,"113",  5);
 
 INSERT INTO employees (id, name, email, password, idrol, ingressdate, idairline, idairport) VALUES 
 (1, 'admin', 'admin', 'admin', 1, '2015-06-01', 1, 1), 

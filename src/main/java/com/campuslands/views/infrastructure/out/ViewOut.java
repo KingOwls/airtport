@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -14,6 +15,7 @@ import com.campuslands.views.application.ViewsService;
 import com.campuslands.views.domain.models.DateInput;
 import com.campuslands.views.domain.models.Header;
 import com.campuslands.views.domain.models.Input;
+import com.campuslands.views.domain.models.Select;
 import com.campuslands.views.domain.models.Table;
 import com.campuslands.views.domain.models.View;
 
@@ -38,6 +40,14 @@ public class ViewOut extends ViewsService {
         public VDate(String title, String format) {
             super(title, format);
 
+        }
+
+    }
+
+    public class VSelect extends Select {
+
+        public VSelect(String labelText, List<String> list) {
+            super(labelText, list);
         }
 
     }

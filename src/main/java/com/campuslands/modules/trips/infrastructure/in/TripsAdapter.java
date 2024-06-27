@@ -21,7 +21,7 @@ public class TripsAdapter {
 
     public void createTrip() {
         v = new ViewOut();
-        //ViewOut.VInput idInput = v.new VInput("Ingresa el id del Viaje", 30);
+        // ViewOut.VInput idInput = v.new VInput("Ingresa el id del Viaje", 30);
         ViewOut.VDate dateInput = v.new VDate("Ingresa la Fecha del Viaje (YYYY-MM-DD)", "date");
         ViewOut.VInput priceInput = v.new VInput("Ingresa el Precio del Viaje", 30);
         ViewOut.VInput depurateInput = v.new VInput("Destino de salida", 30);
@@ -32,22 +32,24 @@ public class TripsAdapter {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    //int id = idInput.getInt();
+                    // int id = idInput.getInt();
                     Date date = dateInput.getValue();
                     double price = Double.parseDouble(priceInput.getText());
                     String depurate_airport = depurateInput.getText();
                     String arrival_airport = depurateInput.getText();
 
-                    Trips trip = new Trips(date, price,  depurate_airport, arrival_airport); // El ID se asignará automáticamente en la base de datos
+                    Trips trip = new Trips(date, price, depurate_airport, arrival_airport); // El ID se asignará
+                                                                                            // automáticamente en la
+                                                                                            // base de datos
                     tripsService.createTrip(trip);
-                    JOptionPane.showMessageDialog(v.container, "Viaje agregado exitosamente.");
+                    // JOptionPane.showMessageDialog(v.container, "Viaje agregado exitosamente.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container, "Error al agregar el Viaje: " + ex.getMessage(),
                             "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
-        //v.container.add(idInput.getDiv());
+        // v.container.add(idInput.getDiv());
         v.container.add(dateInput.getDiv());
         v.container.add(priceInput.getDiv());
         v.container.add(depurateInput.getDiv());
@@ -63,7 +65,6 @@ public class TripsAdapter {
         ViewOut.VInput depurateInput = v.new VInput("Destino de salida", 30);
         ViewOut.VInput arrivalInput = v.new VInput("Destino de llegada", 30);
 
-
         JButton updateButton = new JButton("Actualizar Viaje");
         updateButton.addActionListener(new ActionListener() {
             @Override
@@ -75,9 +76,10 @@ public class TripsAdapter {
                     String depurate_airport = depurateInput.getText();
                     String arrival_airport = depurateInput.getText();
 
-                    Trips trip = new Trips(id, date, price,depurate_airport,arrival_airport);
+                    Trips trip = new Trips(id, date, price, depurate_airport, arrival_airport);
                     tripsService.updateTrip(trip);
-                    JOptionPane.showMessageDialog(v.container, "Viaje actualizado exitosamente.");
+                    // JOptionPane.showMessageDialog(v.container, "Viaje actualizado
+                    // exitosamente.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container, "Error al actualizar el Viaje: " + ex.getMessage(),
                             "Error", JOptionPane.ERROR_MESSAGE);
@@ -104,7 +106,7 @@ public class TripsAdapter {
                 try {
                     int id = Integer.parseInt(idInput.getText());
                     tripsService.deleteTrip(id);
-                    JOptionPane.showMessageDialog(v.container, "Viaje eliminado exitosamente.");
+                    // JOptionPane.showMessageDialog(v.container, "Viaje eliminado exitosamente.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container, "Error al eliminar el Viaje: " + ex.getMessage(),
                             "Error", JOptionPane.ERROR_MESSAGE);
@@ -117,85 +119,68 @@ public class TripsAdapter {
     }
 
     public void findAllTrips() {
-         v = new ViewOut();
-            List<Trips> trips = tripsService.getAllTrips();
-            String[] columnNames = { "ID ", "Precio", "Fecha", "aeropuerto de salida", "aeropuerto de llegada"};
-            Object[][] data = new Object[trips.size()][5];
+        v = new ViewOut();
+        List<Trips> trips = tripsService.getAllTrips();
+        String[] columnNames = { "ID ", "Precio", "Fecha", "aeropuerto de salida", "aeropuerto de llegada" };
+        Object[][] data = new Object[trips.size()][5];
 
-            for (int i = 0; i < trips.size(); i++) {
-                Trips trip = trips.get(i);
-                data[i][0] = trip.getId();
-                data[i][1] = trip.getDate();
-                data[i][2] = trip.getPrice();
-                data[i][3] = trip.getDeparture_airport();
-                data[i][4] = trip.getArrival_airport();
-            }
+        for (int i = 0; i < trips.size(); i++) {
+            Trips trip = trips.get(i);
+            data[i][0] = trip.getId();
+            data[i][1] = trip.getDate();
+            data[i][2] = trip.getPrice();
+            data[i][3] = trip.getDeparture_airport();
+            data[i][4] = trip.getArrival_airport();
+        }
 
-            v.container.add(v.new VTable(columnNames, data).getDiv());
-            v.printBody(v.BackButton());
+        v.container.add(v.new VTable(columnNames, data).getDiv());
+        v.printBody(v.BackButton());
 
     }
 
     public void findByIdTrip() {
-    // Create a new instance of ViewOut for displaying the GUI components
-    v = new ViewOut();
-    
-    // Create an input field for the trip ID
-    ViewOut.VInput idInput = v.new VInput("Ingresa el ID del Viaje a Buscar", 30);
-    
-    // Create a button for searching the trip
-    JButton searchButton = new JButton("Buscar Viaje");
-    searchButton.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            try {
-                // Store the previous window panel
-                JPanel lastWindow = v.body;
-                
-                // Create a new instance of ViewOut
-                v = new ViewOut();
-                
-                // Get the trip ID from the input field
-                int id = idInput.getInt();
-                
-                // Fetch the trip by ID using the service
-                Optional<Trips> tripOptional = tripsService.getTripById(id);
-                
-                if (tripOptional.isPresent()) {
-                    // If the trip is found, extract its details
-                    Trips trip = tripOptional.get();
-                    String[] columnNames = { "ID", "Precio", "Fecha", "Aeropuerto de Salida", "Aeropuerto de Llegada" };
-                    Object[][] data = new Object[1][5];
-                    
-                    data[0][0] = trip.getId();
-                    data[0][1] = trip.getPrice();
-                    data[0][2] = trip.getDate();
-                    data[0][3] = trip.getDeparture_airport();
-                    data[0][4] = trip.getArrival_airport();
-                    
-                    // Add the trip details to the container in a table format
-                    v.container.add(v.new VTable(columnNames, data).getDiv());
-                    
-                    // Add a back button to return to the previous window
-                    v.printBody(v.BackButton("findByIdTrip", lastWindow));
-                } else {
-                    // If the trip is not found, show a message dialog
-                    JOptionPane.showMessageDialog(null, "No se Encontro el id", null, id);
+        v = new ViewOut();
+        ViewOut.VInput idInput = v.new VInput("Ingresa el ID del Viaje a Buscar", 30);
+
+        JButton searchButton = new JButton("Buscar Viaje");
+        searchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    JPanel lastWindow = v.body;
+                    v = new ViewOut();
+                    int id = idInput.getInt();
+                    Optional<Trips> tripOptional = tripsService.getTripById(id);
+
+                    if (tripOptional.isPresent()) {
+
+                        Trips trip = tripOptional.get();
+                        String[] columnNames = { "ID", "Precio", "Fecha", "Aeropuerto de Salida",
+                                "Aeropuerto de Llegada" };
+                        Object[][] data = new Object[1][5];
+
+                        data[0][0] = trip.getId();
+                        data[0][1] = trip.getPrice();
+                        data[0][2] = trip.getDate();
+                        data[0][3] = trip.getDeparture_airport();
+                        data[0][4] = trip.getArrival_airport();
+
+                        v.container.add(v.new VTable(columnNames, data).getDiv());
+
+                        v.printBody(v.BackButton("findByIdTrip", lastWindow));
+                    } else {
+                        JOptionPane.showMessageDialog(null, "No se Encontro el id", null, id);
+                    }
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(v.container,
+                            "Error al Buscar el viaje: " + ex.getMessage(), "Error",
+                            JOptionPane.ERROR_MESSAGE);
                 }
-            } catch (Exception ex) {
-                // If an error occurs, show an error message dialog
-                JOptionPane.showMessageDialog(v.container,
-                        "Error al Buscar el viaje: " + ex.getMessage(), "Error",
-                        JOptionPane.ERROR_MESSAGE);
             }
-        }
-    });
+        });
 
-    // Add the input field and the search button to the container
-    v.container.add(idInput.getDiv());
-    v.printBody(searchButton, v.BackButton());
-}
-
-
+        v.container.add(idInput.getDiv());
+        v.printBody(searchButton, v.BackButton());
+    }
 
 }

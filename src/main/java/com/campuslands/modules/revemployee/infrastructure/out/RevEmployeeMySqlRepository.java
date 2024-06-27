@@ -24,9 +24,10 @@ public class RevEmployeeMySqlRepository extends MySQL implements RevEmployeeRepo
     @Override
     public void save(Revemployee revEmployee) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "INSERT INTO revemployee (name) VALUES (?)";
+            String query = "INSERT INTO revemployee (idemployee,idrevision) VALUES (?,?)";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, revEmployee.getIdEmployee());
+                statement.setInt(2, revEmployee.getIdRevision());
                 statement.executeUpdate();
                 JOptionPane.showMessageDialog(null, "Revicion de empleados agregados correctamente", "INSERT", 0);
             }
@@ -39,12 +40,12 @@ public class RevEmployeeMySqlRepository extends MySQL implements RevEmployeeRepo
     @Override
     public void update(Revemployee revEmployee) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "UPDATE revemployee SET name = ? WHERE id = ?";
+            String query = "UPDATE revemployee SET idrevision = ? WHERE idemployee = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, revEmployee.getIdEmployee());
                 statement.setInt(2, revEmployee.getIdRevision());
                 statement.executeUpdate();
-                JOptionPane.showMessageDialog(null,"Se actulizo la revicion de empleados","UPDATE",0);
+                JOptionPane.showMessageDialog(null, "Se actulizo la revicion de empleados", "UPDATE", 0);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -56,13 +57,13 @@ public class RevEmployeeMySqlRepository extends MySQL implements RevEmployeeRepo
     @Override
     public Optional<Revemployee> findById(int id) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT * FROM revemployee WHERE id = ?";
+            String query = "SELECT idemployee,idrevision FROM revemployee WHERE idemployee = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, id);
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
                         Revemployee revEmployee = new Revemployee(
-                                resultSet.getInt("id"),
+                                resultSet.getInt("idemployee"),
                                 resultSet.getInt("idRevision"));
                         return Optional.of(revEmployee);
                     }
@@ -95,7 +96,7 @@ public class RevEmployeeMySqlRepository extends MySQL implements RevEmployeeRepo
     public List<Revemployee> findAll() {
         List<Revemployee> revEmployees = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT * FROM revemployee";
+            String query = "SELECT idemployee,idrevision FROM revemployee";
             try (PreparedStatement statement = connection.prepareStatement(query);
                     ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {

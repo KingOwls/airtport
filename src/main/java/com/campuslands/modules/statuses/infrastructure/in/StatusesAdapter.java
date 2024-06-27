@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Optional;
 
 public class StatusesAdapter {
     private ViewOut v;
@@ -95,9 +96,9 @@ public class StatusesAdapter {
     }
 
     public void findAllStatuses() {
-         v = new ViewOut();
+        v = new ViewOut();
         List<Statuses> statuses = statusesService.getAllStatuses();
-        String[] columnNames = { "ID ", "Nombre"};
+        String[] columnNames = { "ID ", "Nombre" };
         Object[][] data = new Object[statuses.size()][2];
 
         for (int i = 0; i < statuses.size(); i++) {
@@ -108,6 +109,52 @@ public class StatusesAdapter {
 
         v.container.add(v.new VTable(columnNames, data).getDiv());
         v.printBody(v.BackButton());
-      
-  }
+
+    }
+
+    public void findByIdStatus() {
+        try {
+            v = new ViewOut();
+            ViewOut.VInput idInput = v.new VInput("Ingresa el ID del Estado a Buscar", 30);
+
+            JButton searchButton = new JButton("Buscar Estado");
+            searchButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        JPanel lastWindow = v.body; // Store the previous window panel
+                        v = new ViewOut(); // Create a new instance of ViewOut
+                        int id = idInput.getInt();
+                        Optional<Statuses> statusOptional = statusesService.getStatusById(id);
+                        if (statusOptional.isPresent()) {
+                            Statuses status = statusOptional.get();
+                            String[] columnNames = { "ID", "Nombre" };
+                            Object[][] data = new Object[1][2];
+                            data[0][0] = status.getId();
+                            data[0][1] = status.getName();
+
+                            v.container.add(v.new VTable(columnNames, data).getDiv());
+                            v.printBody(v.BackButton("findByIdStatus", lastWindow));
+                        } else {
+                            JOptionPane.showMessageDialog(null, "No se encontró el estado con el ID especificado",
+                                    "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(null, "Ingrese un valor numérico para el ID del estado", "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(v.container, "Error al buscar el estado: " + ex.getMessage(),
+                                "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            });
+
+            v.container.add(idInput.getDiv());
+            v.printBody(searchButton, v.BackButton());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error al iniciar la búsqueda de estado: " + ex.getMessage(), "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
 }

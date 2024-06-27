@@ -7,6 +7,7 @@ import com.campuslands.views.infrastructure.out.ViewOut;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Optional;
 
 import com.campuslands.modules.cities.application.CitiesService;
 import com.campuslands.modules.cities.domain.models.Cities;
@@ -117,4 +118,51 @@ public class CitiesAdapter {
         v.container.add(v.new VTable(columnNames, data).getDiv());
         v.printBody(v.BackButton());
     }
+
+    public void findByIdCity() {
+        try {
+            v = new ViewOut();
+            ViewOut.VInput idInput = v.new VInput("Ingresa el ID de la Ciudad a Buscar", 30);
+
+            JButton searchButton = new JButton("Buscar Ciudad");
+            searchButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        JPanel lastWindow = v.body; // Store the previous window panel
+                        v = new ViewOut(); // Create a new instance of ViewOut
+                        int id = idInput.getInt();
+                        Optional<Cities> cityOptional = citiesService.getCityById(id);
+                        if (cityOptional.isPresent()) {
+                            Cities city = cityOptional.get();
+                            String[] columnNames = { "ID", "Ciudad", "ID de País" };
+                            Object[][] data = new Object[1][3];
+                            data[0][0] = city.getId();
+                            data[0][1] = city.getName();
+                            data[0][2] = city.getIdCountry();
+
+                            v.container.add(v.new VTable(columnNames, data).getDiv());
+                            v.printBody(v.BackButton("findByIdCity", lastWindow));
+                        } else {
+                            JOptionPane.showMessageDialog(null, "No se encontró la ciudad con el ID especificado",
+                                    "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(null, "Ingrese un valor numérico para el ID de la ciudad",
+                                "Error", JOptionPane.ERROR_MESSAGE);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(v.container, "Error al buscar la ciudad: " + ex.getMessage(),
+                                "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            });
+
+            v.container.add(idInput.getDiv());
+            v.printBody(searchButton, v.BackButton());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error al iniciar la búsqueda de ciudad: " + ex.getMessage(), "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
 }

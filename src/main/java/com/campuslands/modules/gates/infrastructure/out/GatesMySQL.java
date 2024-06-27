@@ -22,10 +22,11 @@ public class GatesMySQL extends MySQL implements GatesRepository {
     @Override
     public void save(Gates gate) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "INSERT INTO gates (gate_number, airport_id) VALUES (?, ?)";
+            String query = "INSERT INTO gates (id, gatenumber, idairport) VALUES (?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setString(1, gate.getGetNumber());
-                statement.setString(2, gate.getIdAirport());
+                statement.setInt(1, gate.getId());
+                statement.setString(2, gate.getGetNumber());
+                statement.setString(3, gate.getIdAirport());
                 statement.executeUpdate();
                 JOptionPane.showMessageDialog(null, "Puerta creada exitosamente ", "INSERT", 0);
             }
@@ -38,7 +39,7 @@ public class GatesMySQL extends MySQL implements GatesRepository {
     @Override
     public void update(Gates gate) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "UPDATE gates SET gate_number = ?, airport_id = ? WHERE id = ?";
+            String query = "UPDATE gates SET id = ?, gate_number = ?, airport_id = ? WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, gate.getGetNumber());
                 statement.setString(2, gate.getIdAirport());
@@ -55,7 +56,7 @@ public class GatesMySQL extends MySQL implements GatesRepository {
     @Override
     public Optional<Gates> findById(int id) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT * FROM gates WHERE id = ?";
+            String query = "SELECT id, gatenumber, idairports FROM gates WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, id);
                 try (ResultSet resultSet = statement.executeQuery()) {
@@ -94,7 +95,7 @@ public class GatesMySQL extends MySQL implements GatesRepository {
     public List<Gates> findAll() {
         List<Gates> gates = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT * FROM gates";
+            String query = "SELECT id, gatenumber, idairport FROM gates";
             try (PreparedStatement statement = connection.prepareStatement(query);
                     ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {

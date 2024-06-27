@@ -1,12 +1,15 @@
 package com.campuslands.modules.flightfares.infrastructure.out;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 import com.campuslands.modules.flightfares.application.FlightfaresService;
+import com.campuslands.modules.flightfares.domain.models.Flightfares;
 import com.campuslands.modules.flightfares.infrastructure.in.FlightFaresAdapter;
 
 public class FlightfaresOutModule {
@@ -52,7 +55,7 @@ public class FlightfaresOutModule {
         option.add(new JMenuItem(new AbstractAction("Buscar Tarifas de vuelo") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // adapter.VFindAirportAll();
+                flightFaresAdapter.findAllFlightfares();
             }
         }));
 
@@ -64,5 +67,17 @@ public class FlightfaresOutModule {
         }));
 
         return option;
+    }
+
+    public List<String> selectOptions() {
+        List<String> optionsMap = new ArrayList<String>();
+
+        List<Flightfares> all = flightFaresService.getAllFlightfares();
+
+        for (Flightfares item : all) {
+            optionsMap.add(item.getId() + " " + item.getDescription() + "Precio: " + item.getValue());
+        }
+
+        return optionsMap;
     }
 }

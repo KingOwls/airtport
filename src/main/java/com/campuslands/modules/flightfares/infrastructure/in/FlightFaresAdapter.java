@@ -1,13 +1,14 @@
 package com.campuslands.modules.flightfares.infrastructure.in;
 
 import com.campuslands.modules.flightfares.domain.models.Flightfares;
-import com.campuslands.modules.flightfares.application.FlightfaresService; 
+import com.campuslands.modules.flightfares.application.FlightfaresService;
 import com.campuslands.views.infrastructure.out.ViewOut;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Optional;
 
 public class FlightFaresAdapter {
     private ViewOut v;
@@ -112,9 +113,9 @@ public class FlightFaresAdapter {
     }
 
     public void findAllFlightfares() {
-       v = new ViewOut();
+        v = new ViewOut();
         List<Flightfares> flightfares = flightfaresService.getAllFlightfares();
-        String[] columnNames = { "ID", "descripción", "Detalles", " Valor"};
+        String[] columnNames = { "ID", "descripción", "Detalles", " Valor" };
         Object[][] data = new Object[flightfares.size()][4];
 
         for (int i = 0; i < flightfares.size(); i++) {
@@ -129,4 +130,55 @@ public class FlightFaresAdapter {
         v.container.add(v.new VTable(columnNames, data).getDiv());
         v.printBody(v.BackButton());
     }
+
+    public void findByIdFlightfare() {
+        try {
+            v = new ViewOut();
+            ViewOut.VInput idInput = v.new VInput("Ingresa el ID de la Tarifa de Vuelo a Buscar", 30);
+
+            JButton searchButton = new JButton("Buscar Tarifa de Vuelo");
+            searchButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        JPanel lastWindow = v.body; // Store the previous window panel
+                        v = new ViewOut(); // Create a new instance of ViewOut
+                        int id = idInput.getInt();
+                        Optional<Flightfares> flightfareOptional = flightfaresService.getFlightfareById(id);
+                        if (flightfareOptional.isPresent()) {
+                            Flightfares flightfare = flightfareOptional.get();
+                            String[] columnNames = { "ID", "Descripción", "Detalles", "Valor" };
+                            Object[][] data = new Object[1][4];
+                            data[0][0] = flightfare.getId();
+                            data[0][1] = flightfare.getDescription();
+                            data[0][2] = flightfare.getDetails();
+                            data[0][3] = flightfare.getValue();
+
+                            v.container.add(v.new VTable(columnNames, data).getDiv());
+                            v.printBody(v.BackButton("findByIdFlightfare", lastWindow));
+                        } else {
+                            JOptionPane.showMessageDialog(null,
+                                    "No se encontró la tarifa de vuelo con el ID especificado", "Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(null,
+                                "Ingrese un valor numérico para el ID de la tarifa de vuelo", "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(v.container,
+                                "Error al buscar la tarifa de vuelo: " + ex.getMessage(), "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            });
+
+            v.container.add(idInput.getDiv());
+            v.printBody(searchButton, v.BackButton());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error al iniciar la búsqueda de tarifa de vuelo: " + ex.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
 }

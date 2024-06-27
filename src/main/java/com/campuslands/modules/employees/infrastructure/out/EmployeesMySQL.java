@@ -25,14 +25,14 @@ public class EmployeesMySQL extends MySQL implements EmployeesRepository {
     @Override
     public void save(Employee employees) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "INSERT INTO employees (name) VALUES (?)";
+            String query = "INSERT INTO users ( name, email, ingressdate, idairline, idairport, password, idrol) VALUES (?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, employees.getName());
+                statement.setString(2, employees.getEmail());
                 statement.setInt(2, employees.getId());
                 statement.setInt(3, employees.getIdrol());
                 statement.setDate(4, employees.getIngressdate());
                 statement.setInt(5, employees.getIdairline());
-                statement.setString(6, employees.getEmail());
                 statement.setString(7, employees.getPassword());
                 statement.setInt(8, employees.getIdairport());
                 statement.executeUpdate();
@@ -47,7 +47,7 @@ public class EmployeesMySQL extends MySQL implements EmployeesRepository {
     @Override
     public void update(Employee employees) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "UPDATE employees SET name = ? WHERE id = ?";
+            String query = "UPDATE employees SET name = ?, email = ?, password = ?, idrol = ?, idairline = ?, idairport = ? WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, employees.getName());
                 statement.setInt(2, employees.getId());
@@ -69,7 +69,7 @@ public class EmployeesMySQL extends MySQL implements EmployeesRepository {
     @Override
     public Optional<Employee> findById(int id) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT * FROM employees WHERE id = ?";
+            String query = "SELECT id, name, email, password, idrol,  ingressdate, idairline, idairport FROM employees WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, id);
                 try (ResultSet resultSet = statement.executeQuery()) {
@@ -113,7 +113,7 @@ public class EmployeesMySQL extends MySQL implements EmployeesRepository {
     public List<Employee> findAll() {
         List<Employee> employee = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT * FROM employees";
+            String query = "SELECT id, name, email, paassword, idrol, ingressdate, idairline, idairport FROM employees";
             try (PreparedStatement statement = connection.prepareStatement(query);
                     ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {

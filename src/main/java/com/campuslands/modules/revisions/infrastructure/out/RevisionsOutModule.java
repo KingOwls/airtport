@@ -37,28 +37,28 @@ public class RevisionsOutModule {
         option.add(new JMenuItem(new AbstractAction("Actualizar Revisiones") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // employeesAdapter.updateEmployee();
+                revisionsAdapter.updateRevision();
             }
         }));
 
         option.add(new JMenuItem(new AbstractAction("Eliminar Revisiones") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // employeesAdapter.deleteEmployee();
+                revisionsAdapter.deleteRevision();
             }
         }));
 
         option.add(new JMenuItem(new AbstractAction("Buscar Revisiones") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // adapter.VFindAirportAll();
+                revisionsAdapter.findByIdRevisions();
             }
         }));
 
         option.add(new JMenuItem(new AbstractAction("Mostrar todos los Revisiones") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // employeesAdapter.findAllEmployees();
+                revisionsAdapter.findAllRevisions();
             }
         }));
 

@@ -27,7 +27,7 @@ public class AirportsAdapter {
 
     public void VCreateAirport() {
         v = new ViewOut();
-        ViewOut.VInput idInput = v.new VInput("Ingresa el Nombre del Aeropuerto", 30);
+        ViewOut.VInput idInput = v.new VInput("Ingresa el id del Aeropuerto", 30);
         ViewOut.VInput nameInput = v.new VInput("Ingresa el Nombre del Aeropuerto", 30);
         ViewOut.VInput idCity = v.new VInput("Ingresa el id de la ciudad", 30);
 

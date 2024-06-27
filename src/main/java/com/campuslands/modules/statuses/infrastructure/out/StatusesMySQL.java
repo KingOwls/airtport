@@ -55,7 +55,7 @@ public class StatusesMySQL extends MySQL implements StatusesRepository {
     @Override
     public Optional<Statuses> findById(int id) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT * FROM statuses WHERE id = ?";
+            String query = "SELECT id,name FROM statuses WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, id);
                 try (ResultSet resultSet = statement.executeQuery()) {
@@ -93,7 +93,7 @@ public class StatusesMySQL extends MySQL implements StatusesRepository {
     public List<Statuses> findAll() {
         List<Statuses> statuses = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT * FROM statuses";
+            String query = "SELECT id, name FROM statuses";
             try (PreparedStatement statement = connection.prepareStatement(query);
                     ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {

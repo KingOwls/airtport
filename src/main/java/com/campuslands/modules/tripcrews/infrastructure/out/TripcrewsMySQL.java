@@ -95,7 +95,7 @@ public class TripcrewsMySQL extends MySQL implements TripcrewsRepository {
     public List<Tripcrews> findAll() {
         List<Tripcrews> tripBookingDetails = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT * FROM tripcrews";
+            String query = "SELECT idemployees, idconection FROM tripcrews";
             try (PreparedStatement statement = connection.prepareStatement(query);
                     ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {

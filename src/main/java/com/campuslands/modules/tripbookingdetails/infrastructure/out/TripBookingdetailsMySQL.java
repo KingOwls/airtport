@@ -25,14 +25,16 @@ public class TripBookingdetailsMySQL extends MySQL implements TripBookingReposit
     @Override
     public void save(TripBooking tripBooking) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "INSERT INTO tripbooking (booking_date) VALUES (?)";
+            String query = "INSERT INTO tripbooking (date,idtrips) VALUES (?,?)";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setDate(1, tripBooking.getDate());
+                statement.setInt(2, tripBooking.getIdtrips());
                 statement.executeUpdate();
                 JOptionPane.showMessageDialog(null, "Se Agrego el detalle del libro de viajes", "INSERT", 0);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
@@ -96,7 +98,7 @@ public class TripBookingdetailsMySQL extends MySQL implements TripBookingReposit
     public List<TripBooking> findAll() {
         List<TripBooking> tripBookings = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT * FROM tripbooking";
+            String query = "SELECT id, date, idtrips FROM tripbooking";
             try (PreparedStatement statement = connection.prepareStatement(query);
                     ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {

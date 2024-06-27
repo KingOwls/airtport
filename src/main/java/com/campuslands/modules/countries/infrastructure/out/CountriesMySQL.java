@@ -22,9 +22,10 @@ public class CountriesMySQL extends MySQL implements CountriesRepository {
     @Override
     public void save(Country countries) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "INSERT INTO countries (name) VALUES (?)";
+            String query = "INSERT INTO countries (id, name) VALUES (?,?)";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setString(1, countries.getName());
+                statement.setInt(1, countries.getId());
+                statement.setString(2, countries.getName());
                 statement.executeUpdate();
                 JOptionPane.showMessageDialog(null, "Pais Creado Correctamente", "INSERT", 0);
 
@@ -54,7 +55,7 @@ public class CountriesMySQL extends MySQL implements CountriesRepository {
     @Override
     public Optional<Country> findById(int id) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT * FROM countries WHERE id = ?";
+            String query = "SELECT id, name FROM countries WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, id);
                 try (ResultSet resultSet = statement.executeQuery()) {
@@ -92,7 +93,7 @@ public class CountriesMySQL extends MySQL implements CountriesRepository {
     public List<Country> findAll() {
         List<Country> countries = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT * FROM countries";
+            String query = "SELECT id, name FROM countries";
             try (PreparedStatement statement = connection.prepareStatement(query);
                     ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {

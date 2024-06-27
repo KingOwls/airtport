@@ -51,7 +51,7 @@ public class CustomersOutModule {
         option.add(new JMenuItem(new AbstractAction("Buscar Cliente") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // adapter.VFindAirportAll();
+                customersAdapter.findByIdCustomer();
             }
         }));
 

@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Optional;
 
 public class TripcrewsAdapter {
     private ViewOut v;
@@ -115,4 +116,54 @@ public class TripcrewsAdapter {
         v.container.add(v.new VTable(columnNames, data).getDiv());
         v.printBody(v.BackButton());
     }
+
+    public void findByIdTripCrews() {
+        try {
+            v = new ViewOut();
+            ViewOut.VInput idInput = v.new VInput("Ingresa el ID de la Tripulación de Viaje a Buscar", 30);
+
+            JButton searchButton = new JButton("Buscar Tripulación de Viaje");
+            searchButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        JPanel lastWindow = v.body; // Store the previous window panel
+                        v = new ViewOut(); // Create a new instance of ViewOut
+                        int id = idInput.getInt();
+                        Optional<Tripcrews> tripCrewOptional = tripcrewsService.getTripcrewById(id);
+                        if (tripCrewOptional.isPresent()) {
+                            Tripcrews tripCrew = tripCrewOptional.get();
+                            String[] columnNames = { "ID Empleado", "ID Conexión" };
+                            Object[][] data = new Object[1][2];
+                            data[0][0] = tripCrew.getIdemployees();
+                            data[0][1] = tripCrew.getIdconection();
+
+                            v.container.add(v.new VTable(columnNames, data).getDiv());
+                            v.printBody(v.BackButton("findByIdTripCrews", lastWindow));
+                        } else {
+                            JOptionPane.showMessageDialog(null,
+                                    "No se encontró la tripulación de viaje con el ID especificado", "Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(null,
+                                "Ingrese un valor numérico para el ID de la tripulación de viaje", "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(v.container,
+                                "Error al buscar la tripulación de viaje: " + ex.getMessage(), "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            });
+
+            v.container.add(idInput.getDiv());
+            v.printBody(searchButton, v.BackButton());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null,
+                    "Error al iniciar la búsqueda de la tripulación de viaje: " + ex.getMessage(), "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
 }

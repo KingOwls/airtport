@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 
 public class EmployeesAdapter {
     private ViewOut v;
@@ -141,7 +142,8 @@ public class EmployeesAdapter {
     public void findAllEmployees() {
         v = new ViewOut();
         List<Employee> employees = employeesService.getAllEmployees();
-        String[] columnNames = { "ID", "Nombre", "Email", "Fecha Ingreso", "Id Aerolinea", "Id Aeropuerto", "contraseña",
+        String[] columnNames = { "ID", "Nombre", "Email", "Fecha Ingreso", "Id Aerolinea", "Id Aeropuerto",
+                "contraseña",
                 " Id Rol" };
         Object[][] data = new Object[employees.size()][8];
 
@@ -160,4 +162,57 @@ public class EmployeesAdapter {
         v.container.add(v.new VTable(columnNames, data).getDiv());
         v.printBody(v.BackButton());
     }
+
+    public void findByIdEmployee() {
+        try {
+            v = new ViewOut();
+            ViewOut.VInput idInput = v.new VInput("Ingresa el ID del Empleado a Buscar", 30);
+
+            JButton searchButton = new JButton("Buscar Empleado");
+            searchButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        JPanel lastWindow = v.body; // Store the previous window panel
+                        v = new ViewOut(); // Create a new instance of ViewOut
+                        int id = idInput.getInt();
+                        Optional<Employee> employeeOptional = employeesService.getEmployeeById(id);
+                        if (employeeOptional.isPresent()) {
+                            Employee employee = employeeOptional.get();
+                            String[] columnNames = { "ID", "Nombre", "Email", "Fecha Ingreso", "ID Aerolínea",
+                                    "ID Aeropuerto", "Contraseña", "ID Rol" };
+                            Object[][] data = new Object[1][8];
+                            data[0][0] = employee.getId();
+                            data[0][1] = employee.getName();
+                            data[0][2] = employee.getEmail();
+                            data[0][3] = employee.getIngressdate();
+                            data[0][4] = employee.getIdairline();
+                            data[0][5] = employee.getIdairport();
+                            data[0][6] = employee.getPassword();
+                            data[0][7] = employee.getIdrol();
+
+                            v.container.add(v.new VTable(columnNames, data).getDiv());
+                            v.printBody(v.BackButton("findByIdEmployee", lastWindow));
+                        } else {
+                            JOptionPane.showMessageDialog(null, "No se encontró el empleado con el ID especificado",
+                                    "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(null, "Ingrese un valor numérico para el ID del empleado",
+                                "Error", JOptionPane.ERROR_MESSAGE);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(v.container, "Error al buscar el empleado: " + ex.getMessage(),
+                                "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            });
+
+            v.container.add(idInput.getDiv());
+            v.printBody(searchButton, v.BackButton());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error al iniciar la búsqueda de empleado: " + ex.getMessage(), "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
 }

@@ -7,7 +7,6 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-
 public class Select {
     protected JPanel div;
     protected JComboBox<String> select;
@@ -21,9 +20,10 @@ public class Select {
         div = new JPanel();
         div.add(new JLabel(labelText));
         div.add(select);
+        addOptions(list);
     }
 
-    public void addOptions(List<String> list){
+    public void addOptions(List<String> list) {
         for (String label : list) {
             options.add(label);
         }
@@ -41,7 +41,7 @@ public class Select {
         }
     }
 
-    public JPanel getSelect() {
+    public JPanel getDiv() {
         return div;
     }
 

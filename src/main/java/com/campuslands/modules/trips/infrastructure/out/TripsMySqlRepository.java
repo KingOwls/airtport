@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+import javax.swing.JOptionPane;
 import com.campuslands.core.MySQL;
 import com.campuslands.modules.trips.domain.models.Trips;
 import com.campuslands.modules.trips.domain.repository.TripsRepository;
@@ -29,9 +29,11 @@ public class TripsMySqlRepository extends MySQL implements TripsRepository {
                 statement.setString(3, trips.getDeparture_airport());
                 statement.setString(4, trips.getArrival_airport());
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Viaje creado correctamente", "INSERT", 0);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
@@ -46,16 +48,18 @@ public class TripsMySqlRepository extends MySQL implements TripsRepository {
                 statement.setString(4, trips.getArrival_airport());
                 statement.setInt(5, trips.getId());
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Viaje actualizado correctamente", "UPDATE", 0);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
     @Override
     public Optional<Trips> findById(int id) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT * FROM trips WHERE id = ?";
+            String query = "SELECT is,trip_date,price_tripe,depar,arrival_airport FROM trips WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, id);
                 try (ResultSet resultSet = statement.executeQuery()) {
@@ -72,6 +76,7 @@ public class TripsMySqlRepository extends MySQL implements TripsRepository {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
         return Optional.empty();
     }
@@ -83,9 +88,11 @@ public class TripsMySqlRepository extends MySQL implements TripsRepository {
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, id);
                 statement.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Viaje eliminado correctamente", "DELETE", 0);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
 
@@ -93,7 +100,7 @@ public class TripsMySqlRepository extends MySQL implements TripsRepository {
     public List<Trips> findAll() {
         List<Trips> trips = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT * FROM trips";
+            String query = "SELECT id, trip_date, price_tripe, departure_airport, arrival_airport FROM trips";
             try (PreparedStatement statement = connection.prepareStatement(query);
                     ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
@@ -108,6 +115,7 @@ public class TripsMySqlRepository extends MySQL implements TripsRepository {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
         return trips;
     }

@@ -5,6 +5,7 @@ import com.campuslands.modules.customers.infrastructure.out.CustomersOutModule;
 import com.campuslands.modules.documenttypes.infrastructure.out.DocumenttypesOutModule;
 import com.campuslands.modules.planes.infrastructure.out.PlanesOutModule;
 import com.campuslands.modules.revisions.infrastructure.out.RevisionsOutModule;
+import com.campuslands.modules.tripbookingdetails.infrastructure.out.TripbookingdetailsOutModule;
 import com.campuslands.modules.tripcrews.infrastructure.out.TripcrewsOutModule;
 import com.campuslands.modules.trips.infrastructure.out.TripsOutModule;
 import com.campuslands.views.application.ViewsService;
@@ -27,6 +28,9 @@ public class ViewAdapter {
         TripcrewsOutModule tripcrewsOutModule = new TripcrewsOutModule();
         CustomersOutModule customersOutModule = new CustomersOutModule();
         RevisionsOutModule revisionsOutModule = new RevisionsOutModule();
+
+        TripbookingdetailsOutModule tripbookingdetailsOutModule = new TripbookingdetailsOutModule();
+        // TripsOutModule tripsOutModule = new TripsOutModule();
         switch (rol) {
             case "administrador":
                 Header.getInstance().addOption(PlanesOutModule.options());
@@ -92,12 +96,14 @@ public class ViewAdapter {
 
             case "cliente":
 
+                Header.getInstance().addOption(tripsOutModule.options());
                 // Buscar vuelos
                 // Seleccionar vuelos
                 // Añadir pasajeros
                 // Seleccionar asientos
                 // Realizar pago
 
+                Header.getInstance().addOption(tripbookingdetailsOutModule.options());
                 // consultar reserva
                 // cancelar reserva de vuelo
                 // modificar reserva

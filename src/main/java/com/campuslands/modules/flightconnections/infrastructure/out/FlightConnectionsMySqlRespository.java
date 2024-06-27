@@ -24,15 +24,14 @@ public class FlightConnectionsMySqlRespository extends MySQL implements FlightCo
     @Override
     public void save(FlightConnection flightConnections) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "INSERT INTO flight_connections (departure, arrival) VALUES (?, ?)";
+            String query = "INSERT INTO flight_connections (id, connection_number, id_trip, id_plane, type_fright, last_scale) VALUES (?, ?, ?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, flightConnections.getId());
                 statement.setString(2, flightConnections.getConnection_number());
                 statement.setInt(3, flightConnections.getId_trip());
                 statement.setInt(4, flightConnections.getId_plane());
-                statement.setString(5, flightConnections.getId_airport());
-                statement.setString(6, flightConnections.getType_flight());
-                statement.setString(7, flightConnections.getLast_Scale());
+                statement.setString(5, flightConnections.getType_flight());
+                statement.setString(6, flightConnections.getLast_Scale());
                 statement.executeUpdate();
                 JOptionPane.showMessageDialog(null, "Conexion creada  exitosamente", "INSERT", 0);
             }
@@ -45,15 +44,14 @@ public class FlightConnectionsMySqlRespository extends MySQL implements FlightCo
     @Override
     public void update(FlightConnection flightConnections) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "UPDATE flight_connections SET departure = ?, arrival = ? WHERE id = ?";
+            String query = "UPDATE flight_connections SET id = ?, connection_number = ?, id_trip = ?, id_plane = ?, type_fright = ?, last_scale = ? WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, flightConnections.getId());
                 statement.setString(2, flightConnections.getConnection_number());
                 statement.setInt(3, flightConnections.getId_trip());
                 statement.setInt(4, flightConnections.getId_plane());
-                statement.setString(5, flightConnections.getId_airport());
-                statement.setString(6, flightConnections.getType_flight());
-                statement.setString(7, flightConnections.getLast_Scale());
+                statement.setString(5, flightConnections.getType_flight());
+                statement.setString(6, flightConnections.getLast_Scale());
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
@@ -65,7 +63,7 @@ public class FlightConnectionsMySqlRespository extends MySQL implements FlightCo
     @Override
     public Optional<FlightConnection> findById(int id) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT * FROM flight_connections WHERE id = ?";
+            String query = "SELECT id, connection_number, id_trip, id_plane, id_airport, type_flight, last_scale FROM flight_connections WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, id);
                 try (ResultSet resultSet = statement.executeQuery()) {
@@ -77,7 +75,7 @@ public class FlightConnectionsMySqlRespository extends MySQL implements FlightCo
                                 resultSet.getInt("id_plane"),
                                 resultSet.getString("id_airport"),
                                 resultSet.getString("type_flight"),
-                                resultSet.getString("Last_Scale"));
+                                resultSet.getString("last_scale"));
                         return Optional.of(flightConnections);
                     }
                 }
@@ -108,7 +106,7 @@ public class FlightConnectionsMySqlRespository extends MySQL implements FlightCo
     public List<FlightConnection> findAll() {
         List<FlightConnection> flightConnections = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT * FROM flight_connections";
+            String query = "SELECT id, connection_number, id_trip, id_plane, type_fright, last_sacaleFROM flight_connections";
             try (PreparedStatement statement = connection.prepareStatement(query);
                     ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
@@ -119,9 +117,7 @@ public class FlightConnectionsMySqlRespository extends MySQL implements FlightCo
                             resultSet.getInt("id_plane"),
                             resultSet.getString("id_airport"),
                             resultSet.getString("type_flight"),
-                            resultSet.getString("Last_Scale")
-
-                    );
+                            resultSet.getString("last_scale"));
                     flightConnections.add(flightConnection);
                 }
             }

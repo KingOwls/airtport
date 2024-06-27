@@ -72,7 +72,7 @@ public class PlanesMySqlRepository extends MySQL implements PlanesRepository {
     @Override
     public Optional<Planes> findById(int id) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT * FROM planes WHERE id = ?";
+            String query = "SELECT id,plateNumber,capacity,fabrication_date,id_status,id_model FROM planes WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, id);
                 try (ResultSet resultSet = statement.executeQuery()) {
@@ -114,7 +114,7 @@ public class PlanesMySqlRepository extends MySQL implements PlanesRepository {
     public List<Planes> findAll() {
         List<Planes> planes = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT * FROM planes";
+            String query = "SELECT id,plateNumber,capacity,fabrication_date,id_status,id_model FROM planes";
             try (PreparedStatement statement = connection.prepareStatement(query);
                     ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {

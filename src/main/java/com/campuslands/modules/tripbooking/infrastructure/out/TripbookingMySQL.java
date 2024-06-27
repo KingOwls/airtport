@@ -25,7 +25,7 @@ public class TripbookingMySQL extends MySQL implements TripBookingRepository {
     @Override
     public void save(TripBooking tripBooking) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "INSERT INTO trip_bookings (date, trip_id) VALUES (?, ?)";
+            String query = "INSERT INTO trip_bookings (date, idtrips) VALUES (?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setDate(1, new java.sql.Date(tripBooking.getDate().getTime()));
                 statement.setInt(2, tripBooking.getId());
@@ -44,7 +44,7 @@ public class TripbookingMySQL extends MySQL implements TripBookingRepository {
             String query = "UPDATE trip_bookings SET date = ?, trip_id = ? WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setDate(1, new java.sql.Date(tripBooking.getDate().getTime()));
-                statement.setInt(2, tripBooking.getId());
+                statement.setInt(2, tripBooking.getIdtrips());
                 statement.setInt(3, tripBooking.getId());
                 statement.executeUpdate();
                 JOptionPane.showMessageDialog(null, "Se actualizo Correctamente", "UPDATE", 2);
@@ -58,7 +58,7 @@ public class TripbookingMySQL extends MySQL implements TripBookingRepository {
     @Override
     public Optional<TripBooking> findById(int id) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT * FROM trip_bookings WHERE id = ?";
+            String query = "SELECT id,date,idtrips FROM trip_bookings WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, id);
                 try (ResultSet resultSet = statement.executeQuery()) {
@@ -97,7 +97,7 @@ public class TripbookingMySQL extends MySQL implements TripBookingRepository {
     public List<TripBooking> findAll() {
         List<TripBooking> tripBookings = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT * FROM trip_bookings";
+            String query = "SELECT id, date, trip_id FROM trip_bookings";
             try (PreparedStatement statement = connection.prepareStatement(query);
                     ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {

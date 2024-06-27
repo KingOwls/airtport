@@ -49,7 +49,7 @@ public class AirlinesMySQL extends MySQL implements AirlinesRepository {
     @Override
     public Optional<Airlines> findById(int id) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT * FROM airlines WHERE id = ?";
+            String query = "SELECT id, name FROM airlines WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, id);
                 try (ResultSet resultSet = statement.executeQuery()) {
@@ -84,7 +84,7 @@ public class AirlinesMySQL extends MySQL implements AirlinesRepository {
     public List<Airlines> findAll() {
         List<Airlines> airlines = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT * FROM airlines";
+            String query = "SELECT id, name FROM airlines";
             try (PreparedStatement statement = connection.prepareStatement(query);
                     ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {

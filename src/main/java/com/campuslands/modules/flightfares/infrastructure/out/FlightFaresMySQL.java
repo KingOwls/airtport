@@ -24,7 +24,7 @@ public class FlightFaresMySQL extends MySQL implements FlightfaresRepository {
     @Override
     public void save(Flightfares flightFares) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "INSERT INTO flightfares (price) VALUES (?)";
+            String query = "INSERT INTO flightfares (id, description, details, price) VALUES (?,?,?,?)";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, flightFares.getId());
                 statement.setString(2, flightFares.getDescription());
@@ -41,7 +41,7 @@ public class FlightFaresMySQL extends MySQL implements FlightfaresRepository {
     @Override
     public void update(Flightfares flightFares) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "UPDATE flightfares SET price = ? WHERE id = ?";
+            String query = "UPDATE flightfares SET id = ?, description = ?, details = ?, price = ? WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, flightFares.getId());
                 statement.setString(2, flightFares.getDescription());
@@ -59,7 +59,7 @@ public class FlightFaresMySQL extends MySQL implements FlightfaresRepository {
     @Override
     public Optional<Flightfares> findById(int id) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT * FROM flightfares WHERE id = ?";
+            String query = "SELECT id, description, details, value FROM flightfares WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, id);
                 try (ResultSet resultSet = statement.executeQuery()) {
@@ -99,7 +99,7 @@ public class FlightFaresMySQL extends MySQL implements FlightfaresRepository {
     public List<Flightfares> findAll() {
         List<Flightfares> flightFares = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT * FROM flightfares";
+            String query = "SELECT id, description, details, value FROM flightfares";
             try (PreparedStatement statement = connection.prepareStatement(query);
                     ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {

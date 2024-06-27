@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
+import java.util.Optional;
 
 import java.util.List;
 
@@ -34,7 +35,8 @@ public class TripbookingAdapter {
 
                     TripBooking tripBooking = new TripBooking(0, date, idTrips);
                     tripBookingService.createTripbooking(tripBooking);
-                    JOptionPane.showMessageDialog(v.container, "Reserva de viaje agregada exitosamente.");
+                    // JOptionPane.showMessageDialog(v.container, "Reserva de viaje agregada
+                    // exitosamente.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container,
                             "Error al agregar la reserva de viaje: " + ex.getMessage(),
@@ -65,7 +67,8 @@ public class TripbookingAdapter {
 
                     TripBooking tripBooking = new TripBooking(id, date, idTrips);
                     tripBookingService.updateTripbooking(tripBooking);
-                    JOptionPane.showMessageDialog(v.container, "Reserva de viaje actualizada exitosamente.");
+                    // JOptionPane.showMessageDialog(v.container, "Reserva de viaje actualizada
+                    // exitosamente.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container,
                             "Error al actualizar la reserva de viaje: " + ex.getMessage(),
@@ -91,7 +94,8 @@ public class TripbookingAdapter {
                 try {
                     int id = idInput.getInt();
                     tripBookingService.deleteTripbooking(id);
-                    JOptionPane.showMessageDialog(v.container, "Reserva de viaje eliminada exitosamente.");
+                    // JOptionPane.showMessageDialog(v.container, "Reserva de viaje eliminada
+                    // exitosamente.");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(v.container,
                             "Error al eliminar la reserva de viaje: " + ex.getMessage(),
@@ -105,9 +109,9 @@ public class TripbookingAdapter {
     }
 
     public void findAllTripBookings() {
-         v = new ViewOut();
+        v = new ViewOut();
         List<TripBooking> tripBookings = tripBookingService.getAllTripbookings();
-        String[] columnNames = { "ID ", "Fecha", "Id Viaje"};
+        String[] columnNames = { "ID ", "Fecha", "Id Viaje" };
         Object[][] data = new Object[tripBookings.size()][3];
 
         for (int i = 0; i < tripBookings.size(); i++) {
@@ -120,4 +124,54 @@ public class TripbookingAdapter {
         v.container.add(v.new VTable(columnNames, data).getDiv());
         v.printBody(v.BackButton());
     }
+
+    public void findByIdTripBooking() {
+        try {
+            v = new ViewOut();
+            ViewOut.VInput idInput = v.new VInput("Ingresa el ID de la Reserva de Viaje a Buscar", 30);
+
+            JButton searchButton = new JButton("Buscar Reserva de Viaje");
+            searchButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        JPanel lastWindow = v.body; // Store the previous window panel
+                        v = new ViewOut(); // Create a new instance of ViewOut
+                        int id = idInput.getInt();
+                        Optional<TripBooking> tripBookingOptional = tripBookingService.getTripbookingById(id);
+                        if (tripBookingOptional.isPresent()) {
+                            TripBooking tripBooking = tripBookingOptional.get();
+                            String[] columnNames = { "ID", "Fecha", "ID Viaje" };
+                            Object[][] data = new Object[1][3];
+                            data[0][0] = tripBooking.getId();
+                            data[0][1] = tripBooking.getDate();
+                            data[0][2] = tripBooking.getIdtrips();
+
+                            v.container.add(v.new VTable(columnNames, data).getDiv());
+                            v.printBody(v.BackButton("findByIdTripBooking", lastWindow));
+                        } else {
+                            JOptionPane.showMessageDialog(null,
+                                    "No se encontró la reserva de viaje con el ID especificado", "Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(null,
+                                "Ingrese un valor numérico para el ID de la reserva de viaje", "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(v.container,
+                                "Error al buscar la reserva de viaje: " + ex.getMessage(), "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            });
+
+            v.container.add(idInput.getDiv());
+            v.printBody(searchButton, v.BackButton());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error al iniciar la búsqueda de reserva de viaje: " + ex.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
 }

@@ -15,8 +15,6 @@ import com.campuslands.core.MySQL;
 import com.campuslands.modules.models.domain.models.Models;
 import com.campuslands.modules.models.domain.repository.ModelsRepository;
 
-//PENDIENTE TERMIANR LOS JOP 
-
 public class ModelsMySqlRepository extends MySQL implements ModelsRepository {
 
     public ModelsMySqlRepository() {
@@ -26,14 +24,14 @@ public class ModelsMySqlRepository extends MySQL implements ModelsRepository {
     @Override
     public void save(Models models) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "INSERT INTO models (name) VALUES (?)";
+            String query = "INSERT INTO models (name,manufacturerid) VALUES (?,?)";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, models.getName());
+                statement.setInt(1, models.getManuFactureId());
                 statement.executeUpdate();
-                JOptionPane.showMessageDialog(null, "Modelos agregados correctamente","INSERT", 0);
+                JOptionPane.showMessageDialog(null, "Modelos agregados correctamente", "INSERT", 0);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             JOptionPane.showMessageDialog(null, e, "ERROR", 0);
         }
     }
@@ -41,14 +39,14 @@ public class ModelsMySqlRepository extends MySQL implements ModelsRepository {
     @Override
     public void update(Models models) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "UPDATE models SET name = ? WHERE id = ?";
+            String query = "UPDATE models SET name = ? manufacturerid = ? WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, models.getName());
-                statement.setInt(2, models.getId());
+                statement.setInt(2, models.getManuFactureId());
+                statement.setInt(3, models.getId());
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             JOptionPane.showMessageDialog(null, e, "ERROR", 0);
 
         }
@@ -57,7 +55,7 @@ public class ModelsMySqlRepository extends MySQL implements ModelsRepository {
     @Override
     public Optional<Models> findById(int id) {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT * FROM models WHERE id = ?";
+            String query = "SELECT id,name,manufacturerid FROM models WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, id);
                 try (ResultSet resultSet = statement.executeQuery()) {
@@ -71,7 +69,6 @@ public class ModelsMySqlRepository extends MySQL implements ModelsRepository {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             JOptionPane.showMessageDialog(null, e, "ERROR", 0);
 
         }
@@ -87,7 +84,6 @@ public class ModelsMySqlRepository extends MySQL implements ModelsRepository {
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             JOptionPane.showMessageDialog(null, e, "ERROR", 0);
 
         }
@@ -97,7 +93,7 @@ public class ModelsMySqlRepository extends MySQL implements ModelsRepository {
     public List<Models> findAll() {
         List<Models> models = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT * FROM models";
+            String query = "SELECT id,name,manufacturerid FROM models";
             try (PreparedStatement statement = connection.prepareStatement(query);
                     ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
@@ -109,7 +105,6 @@ public class ModelsMySqlRepository extends MySQL implements ModelsRepository {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             JOptionPane.showMessageDialog(null, e, "ERROR", 0);
 
         }
